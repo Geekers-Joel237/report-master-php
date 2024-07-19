@@ -6,5 +6,5 @@ parameters:
         - routes
     excludePaths:
         - tests
-    autoload_directories:
-        - app
+    bootstrapFiles:
+        - vendor/autoload.php
