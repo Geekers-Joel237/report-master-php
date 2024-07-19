@@ -42,7 +42,7 @@ Ceci est la partie API
 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/votre-utilisateur/reportmaster.git
+git clone https://github.com/Geekers-Joel237/report-master-php.git
 cd reportmaster
 composer install
 npm install
