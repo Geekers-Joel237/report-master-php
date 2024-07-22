@@ -2,17 +2,19 @@
 
 namespace Tests\Unit\Project;
 
-use App\Core\Application\Command\Project\Save\SaveProjectCommand;
-use App\Core\Application\Command\Project\Save\SaveProjectHandler;
-use App\Core\Application\Command\Project\Save\SaveProjectResponse;
-use App\Core\Domain\Entities\Project;
-use App\Core\Domain\Exceptions\NotFoundProjectException;
-use App\Core\Domain\Repository\Project\WriteProjectRepository;
-use App\Core\Domain\Shared\IdGenerator;
+use App\Core\Project\Application\Command\Save\SaveProjectCommand;
+use App\Core\Project\Application\Command\Save\SaveProjectHandler;
+use App\Core\Project\Application\Command\Save\SaveProjectResponse;
+use App\Core\Project\Domain\Entities\Project;
+use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
+use App\Core\Project\Domain\Repository\WriteProjectRepository;
+use App\Core\Project\Domain\Vo\NameVo;
+use App\Core\Shared\Domain\IdGenerator;
 use DateTimeImmutable;
+use Tests\Shared\Unit\FixedIdGenerator;
 use Tests\TestCase;
 use Tests\Unit\Project\Repository\InMemoryWriteProjectRepository;
-use Tests\Unit\Shared\FixedIdGenerator;
+use Throwable;
 
 class SaveProjectTest extends TestCase
 {
@@ -27,6 +29,9 @@ class SaveProjectTest extends TestCase
         $this->idGenerator = new FixedIdGenerator();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function test_can_create_project(): void
     {
         //Given
@@ -43,33 +48,39 @@ class SaveProjectTest extends TestCase
         $this->assertEquals($this->idGenerator->generate(), $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
-        $this->assertEquals($command->name, $expectedProject->name);
+        $this->assertEquals($command->name, $expectedProject->name->value());
         $this->assertEquals($command->description, $expectedProject->description);
         $this->assertEquals((new DateTimeImmutable())->format('Y-m-d'), $expectedProject->createdAt()->format('Y-m-d'));
     }
 
+    /**
+     * @throws Throwable
+     */
     public function test_can_update_project(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: 'my-project-name');
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
         $this->repository->save($existingProject);
 
         $command = new SaveProjectCommand(
-            name: 'my-project-name-modified', description: 'my-project-description', id: $existingProject->id
+            name: 'my-project-name-modified', description: 'my-project-description', projectId: $existingProject->id
         );
         $response = $this->saveProject($command);
 
         $this->assertTrue($response->isSaved);
-        $this->assertEquals($command->id, $response->projectId);
+        $this->assertEquals($command->projectId, $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
-        $this->assertEquals($command->name, $expectedProject->name);
+        $this->assertEquals($command->name, $expectedProject->name->value());
         $this->assertEquals($command->description, $expectedProject->description);
         $this->assertEquals((new DateTimeImmutable())->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
     }
 
+    /**
+     * @throws Throwable
+     */
     public function test_save_project_with_existing_name_like(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: 'my-project-name');
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
         $this->repository->save($existingProject);
 
         $command = new SaveProjectCommand(
@@ -87,13 +98,17 @@ class SaveProjectTest extends TestCase
 
     }
 
+    /**
+     * @throws Throwable
+     */
     public function test_can_thrown_not_found_exception_when_update_not_existing_project(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: 'my-project-name');
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
+
         $this->repository->save($existingProject);
 
         $command = new SaveProjectCommand(
-            name: ' My-Project-Name ', description: 'my-project-description', id: 'not-existing-project'
+            name: ' My-Project-Name ', description: 'my-project-description', projectId: 'not-existing-project'
         );
 
         $this->expectException(NotFoundProjectException::class);
@@ -101,6 +116,9 @@ class SaveProjectTest extends TestCase
 
     }
 
+    /**
+     * @throws Throwable
+     */
     public function saveProject(SaveProjectCommand $command): SaveProjectResponse
     {
         $handler = new SaveProjectHandler($this->repository, $this->idGenerator);

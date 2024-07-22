@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Shared;
+namespace Tests\Shared\Unit;
 
-use App\Core\Domain\Shared\IdGenerator;
+use App\Core\Shared\Domain\IdGenerator;
 
 class FixedIdGenerator implements IdGenerator
 {
