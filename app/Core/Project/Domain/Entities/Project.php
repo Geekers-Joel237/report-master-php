@@ -16,7 +16,7 @@ class Project
         readonly public string $id,
         readonly public NameVo $name,
         readonly public ?string $description,
-        private readonly ProjectStatusEnum $status = ProjectStatusEnum::Started
+        private ProjectStatusEnum $status = ProjectStatusEnum::Started
     ) {
         $this->updatedAt = null;
         $this->createdAt = null;
@@ -44,5 +44,11 @@ class Project
     public function status(): ProjectStatusEnum
     {
         return $this->status;
+    }
+
+    public function updateStatus(string $status): void
+    {
+        $this->status = ProjectStatusEnum::in($status);
+        $this->updatedAt = new DateTimeImmutable();
     }
 }
