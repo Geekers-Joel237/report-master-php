@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Core\Application\Command\Project\Save;
+namespace App\Core\Project\Application\Command\Save;
 
 readonly class SaveProjectCommand
 {
     public function __construct(
         public string $name,
         public ?string $description = null,
-        public ?string $id = null,
+        public ?string $projectId = null,
     ) {}
 }

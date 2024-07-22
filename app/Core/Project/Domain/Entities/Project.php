@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Core\Domain\Entities;
+namespace App\Core\Project\Domain\Entities;
 
+use App\Core\Project\Domain\Vo\NameVo;
 use DateTimeImmutable;
 
 class Project
@@ -12,14 +13,14 @@ class Project
 
     final private function __construct(
         readonly public string $id,
-        readonly public string $name,
+        readonly public NameVo $name,
         readonly public ?string $description,
     ) {
         $this->updatedAt = null;
         $this->createdAt = null;
     }
 
-    public static function create(string $id, string $name, ?string $description = null, ?string $existingId = null): static
+    public static function create(string $id, NameVo $name, ?string $description = null, ?string $existingId = null): static
     {
         $projectId = $existingId ?? $id;
         $static = new static($projectId, $name, $description);

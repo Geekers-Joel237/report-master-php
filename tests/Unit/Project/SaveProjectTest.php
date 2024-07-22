@@ -11,9 +11,9 @@ use App\Core\Project\Domain\Repository\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Shared\Domain\IdGenerator;
 use DateTimeImmutable;
-use Tests\Shared\Unit\FixedIdGenerator;
 use Tests\TestCase;
 use Tests\Unit\Project\Repository\InMemoryWriteProjectRepository;
+use Tests\Unit\Shared\FixedIdGenerator;
 use Throwable;
 
 class SaveProjectTest extends TestCase

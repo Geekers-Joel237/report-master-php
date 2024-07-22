@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Domain\Repository\Project;
+namespace App\Core\Project\Domain\Repository;
 
-use App\Core\Domain\Entities\Project;
+use App\Core\Project\Domain\Entities\Project;
 
 interface WriteProjectRepository
 {

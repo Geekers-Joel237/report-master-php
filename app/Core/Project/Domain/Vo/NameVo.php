@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Domain\Vo;
+namespace App\Core\Project\Domain\Vo;
 
 use InvalidArgumentException;
 

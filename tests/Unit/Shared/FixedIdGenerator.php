@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Shared\Unit;
+namespace Tests\Unit\Shared;
 
 use App\Core\Shared\Domain\IdGenerator;
 

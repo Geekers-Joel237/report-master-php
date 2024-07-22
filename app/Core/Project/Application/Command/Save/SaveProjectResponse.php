@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Application\Command\Project\Save;
+namespace App\Core\Project\Application\Command\Save;
 
 class SaveProjectResponse
 {

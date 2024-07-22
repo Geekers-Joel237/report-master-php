@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Core\Application\Command\Project\Save;
+namespace App\Core\Project\Application\Command\Save;
 
-use App\Core\Domain\Entities\Project;
-use App\Core\Domain\Exceptions\NotFoundProjectException;
-use App\Core\Domain\Repository\Project\WriteProjectRepository;
-use App\Core\Domain\Shared\IdGenerator;
-use App\Core\Domain\Vo\NameVo;
+use App\Core\Project\Domain\Entities\Project;
+use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
+use App\Core\Project\Domain\Repository\WriteProjectRepository;
+use App\Core\Project\Domain\Vo\NameVo;
+use App\Core\Shared\Domain\IdGenerator;
 use Throwable;
 
 readonly class SaveProjectHandler
@@ -26,16 +26,16 @@ readonly class SaveProjectHandler
         $name = new NameVo($command->name);
         $id = $this->idGenerator->generate();
 
-        $this->checkIfProjectExistByIdOrThrownNotFoundException($command->id);
+        $this->checkIfProjectExistByIdOrThrownNotFoundException($command->projectId);
         $existingProject = $this->repository->ofName($name->value());
         if (! is_null($existingProject)) {
             $project = $this->updateExistingProject($existingProject, $name, $command);
         } else {
             $project = Project::create(
                 id: $id,
-                name: $command->name,
+                name: $name,
                 description: $command->description,
-                existingId: $command->id);
+                existingId: $command->projectId);
         }
 
         $this->repository->save($project);
@@ -50,7 +50,7 @@ readonly class SaveProjectHandler
     {
         return Project::create(
             id: $existingProject->id,
-            name: $name->value(),
+            name: $name,
             description: $command->description,
             existingId: $existingProject->id);
     }
