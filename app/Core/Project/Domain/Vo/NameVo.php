@@ -23,7 +23,7 @@ class NameVo
 
     private static function filter(string $name): string
     {
-        return strtolower(trim($name));
+        return strtolower(trim(htmlspecialchars($name)));
     }
 
     public function value(): string
