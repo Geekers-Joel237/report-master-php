@@ -7,4 +7,6 @@ class SaveProjectResponse
     public bool $isSaved = false;
 
     public string $projectId = '';
+
+    public string $message = '';
 }

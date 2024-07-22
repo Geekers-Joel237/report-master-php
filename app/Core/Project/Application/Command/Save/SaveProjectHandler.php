@@ -3,13 +3,15 @@
 namespace App\Core\Project\Application\Command\Save;
 
 use App\Core\Project\Domain\Entities\Project;
+use App\Core\Project\Domain\Enum\ProjectMessageEnum;
+use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repository\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Shared\Domain\IdGenerator;
 use Throwable;
 
-readonly class SaveProjectHandler
+final readonly class SaveProjectHandler
 {
     public function __construct(
         private WriteProjectRepository $repository,
@@ -17,6 +19,7 @@ readonly class SaveProjectHandler
     ) {}
 
     /**
+     * @throws ErrorOnSaveProjectException
      * @throws Throwable
      */
     public function handle(SaveProjectCommand $command): SaveProjectResponse
@@ -30,12 +33,14 @@ readonly class SaveProjectHandler
         $existingProject = $this->repository->ofName($name->value());
         if (! is_null($existingProject)) {
             $project = $this->updateExistingProject($existingProject, $name, $command);
+            $response->message = ProjectMessageEnum::UPDATED;
         } else {
             $project = Project::create(
                 id: $id,
                 name: $name,
                 description: $command->description,
                 existingId: $command->projectId);
+            $response->message = $command->projectId ? ProjectMessageEnum::UPDATED : ProjectMessageEnum::SAVE;
         }
 
         $this->repository->save($project);

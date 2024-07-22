@@ -28,4 +28,9 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
             return $project->name->value() === $value;
         }))[0] ?? null;
     }
+
+    public function delete(Project $existingProject): void
+    {
+        unset($this->projects[$existingProject->id]);
+    }
 }

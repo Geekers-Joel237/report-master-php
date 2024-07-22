@@ -6,6 +6,7 @@ use App\Core\Project\Application\Command\Save\SaveProjectCommand;
 use App\Core\Project\Application\Command\Save\SaveProjectHandler;
 use App\Core\Project\Application\Command\Save\SaveProjectResponse;
 use App\Core\Project\Domain\Entities\Project;
+use App\Core\Project\Domain\Enum\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repository\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
@@ -45,6 +46,7 @@ class SaveProjectTest extends TestCase
 
         //then
         $this->assertTrue($response->isSaved);
+        $this->assertEquals(ProjectMessageEnum::SAVE, $response->message);
         $this->assertEquals($this->idGenerator->generate(), $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
@@ -67,6 +69,7 @@ class SaveProjectTest extends TestCase
         $response = $this->saveProject($command);
 
         $this->assertTrue($response->isSaved);
+        $this->assertEquals(ProjectMessageEnum::UPDATED, $response->message);
         $this->assertEquals($command->projectId, $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
