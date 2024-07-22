@@ -2,6 +2,7 @@
 
 namespace App\Core\Project\Domain\Entities;
 
+use App\Core\Project\Domain\Enums\ProjectStatusEnum;
 use App\Core\Project\Domain\Vo\NameVo;
 use DateTimeImmutable;
 
@@ -15,6 +16,7 @@ class Project
         readonly public string $id,
         readonly public NameVo $name,
         readonly public ?string $description,
+        private readonly ProjectStatusEnum $status = ProjectStatusEnum::Started
     ) {
         $this->updatedAt = null;
         $this->createdAt = null;
@@ -37,5 +39,10 @@ class Project
     public function updatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function status(): ProjectStatusEnum
+    {
+        return $this->status;
     }
 }

@@ -5,7 +5,7 @@ namespace Project;
 use App\Core\Project\Application\Command\Delete\DeleteProjectHandler;
 use App\Core\Project\Application\Command\Delete\DeleteProjectResponse;
 use App\Core\Project\Domain\Entities\Project;
-use App\Core\Project\Domain\Enum\ProjectMessageEnum;
+use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Repository\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;

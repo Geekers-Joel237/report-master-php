@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Project\Domain\Enum;
+namespace App\Core\Project\Domain\Enums;
 
 enum ProjectMessageEnum: string
 {

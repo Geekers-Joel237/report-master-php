@@ -3,7 +3,7 @@
 namespace App\Core\Project\Application\Command\Delete;
 
 use App\Core\Project\Domain\Entities\Project;
-use App\Core\Project\Domain\Enum\ProjectMessageEnum;
+use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repository\WriteProjectRepository;

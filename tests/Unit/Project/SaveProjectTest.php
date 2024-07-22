@@ -6,7 +6,7 @@ use App\Core\Project\Application\Command\Save\SaveProjectCommand;
 use App\Core\Project\Application\Command\Save\SaveProjectHandler;
 use App\Core\Project\Application\Command\Save\SaveProjectResponse;
 use App\Core\Project\Domain\Entities\Project;
-use App\Core\Project\Domain\Enum\ProjectMessageEnum;
+use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repository\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
@@ -52,6 +52,7 @@ class SaveProjectTest extends TestCase
         $expectedProject = $this->repository->ofId($response->projectId);
         $this->assertEquals($command->name, $expectedProject->name->value());
         $this->assertEquals($command->description, $expectedProject->description);
+        $this->assertEquals(ProjectStatusEnum::STARTED, $expectedProject->status);
         $this->assertEquals((new DateTimeImmutable())->format('Y-m-d'), $expectedProject->createdAt()->format('Y-m-d'));
     }
 

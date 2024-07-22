@@ -2,7 +2,7 @@
 
 namespace App\Core\Project\Domain\Exceptions;
 
-use App\Core\Project\Domain\Enum\ProjectMessageEnum;
+use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use Exception;
 use Throwable;
 

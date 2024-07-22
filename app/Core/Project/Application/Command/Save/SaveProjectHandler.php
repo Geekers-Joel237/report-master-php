@@ -3,7 +3,7 @@
 namespace App\Core\Project\Application\Command\Save;
 
 use App\Core\Project\Domain\Entities\Project;
-use App\Core\Project\Domain\Enum\ProjectMessageEnum;
+use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repository\WriteProjectRepository;
@@ -30,9 +30,9 @@ final readonly class SaveProjectHandler
         $id = $this->idGenerator->generate();
 
         $this->checkIfProjectExistByIdOrThrownNotFoundException($command->projectId);
-        $existingProject = $this->repository->ofName($name->value());
-        if (! is_null($existingProject)) {
-            $project = $this->updateExistingProject($existingProject, $name, $command);
+        $existingProjectByName = $this->repository->ofName($name->value());
+        if (! is_null($existingProjectByName)) {
+            $project = $this->updateExistingProject($existingProjectByName, $name, $command);
             $response->message = ProjectMessageEnum::UPDATED;
         } else {
             $project = Project::create(
