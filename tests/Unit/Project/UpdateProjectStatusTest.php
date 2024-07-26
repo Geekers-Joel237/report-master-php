@@ -10,12 +10,12 @@ use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Enums\ProjectStatusEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
-use App\Core\Project\Domain\Repository\WriteProjectRepository;
+use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Shared\Domain\IdGenerator;
 use DateTimeImmutable;
 use Tests\TestCase;
-use Tests\Unit\Project\Repository\InMemoryWriteProjectRepository;
+use Tests\Unit\Project\Repositories\InMemoryWriteProjectRepository;
 use Tests\Unit\Shared\FixedIdGenerator;
 
 class UpdateProjectStatusTest extends TestCase

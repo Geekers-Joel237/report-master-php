@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Project\Domain\Repository;
+namespace App\Core\Project\Domain\Repositories;
 
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
@@ -19,5 +19,7 @@ interface WriteProjectRepository
     /**
      * @throws ErrorOnSaveProjectException
      */
-    public function delete(Project $existingProject): void;
+    public function delete(string $existingProjectId): void;
+
+    public function exists(string $projectId): bool;
 }

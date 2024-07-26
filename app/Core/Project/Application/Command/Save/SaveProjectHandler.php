@@ -6,7 +6,7 @@ use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
-use App\Core\Project\Domain\Repository\WriteProjectRepository;
+use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Shared\Domain\IdGenerator;
 use Throwable;

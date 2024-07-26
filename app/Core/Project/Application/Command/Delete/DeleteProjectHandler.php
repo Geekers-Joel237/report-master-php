@@ -2,11 +2,10 @@
 
 namespace App\Core\Project\Application\Command\Delete;
 
-use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
-use App\Core\Project\Domain\Repository\WriteProjectRepository;
+use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use Throwable;
 
 final readonly class DeleteProjectHandler
@@ -23,8 +22,8 @@ final readonly class DeleteProjectHandler
     {
         $response = new DeleteProjectResponse();
 
-        $existingProject = $this->getProjectIfExistOrThrowNotFoundException($projectId);
-        $this->repository->delete($existingProject);
+        $this->checkIfProjectExistOrThrowNotFoundException($projectId);
+        $this->repository->delete($projectId);
 
         $response->isDeleted = true;
         $response->message = ProjectMessageEnum::DELETED;
@@ -33,15 +32,12 @@ final readonly class DeleteProjectHandler
     }
 
     /**
-     * @throws Throwable
+     * @throws NotFoundProjectException
      */
-    private function getProjectIfExistOrThrowNotFoundException(string $projectId): Project
+    private function checkIfProjectExistOrThrowNotFoundException(string $projectId): void
     {
-        $existingProject = $this->repository->ofId($projectId);
-        if (is_null($existingProject)) {
+        if (! $this->repository->exists($projectId)) {
             throw new NotFoundProjectException();
         }
-
-        return $existingProject;
     }
 }

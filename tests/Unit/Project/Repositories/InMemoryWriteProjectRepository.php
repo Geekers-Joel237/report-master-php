@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Project\Repository;
+namespace Tests\Unit\Project\Repositories;
 
 use App\Core\Project\Domain\Entities\Project;
-use App\Core\Project\Domain\Repository\WriteProjectRepository;
+use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 
 class InMemoryWriteProjectRepository implements WriteProjectRepository
 {
@@ -29,8 +29,13 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
         }))[0] ?? null;
     }
 
-    public function delete(Project $existingProject): void
+    public function delete(string $existingProjectId): void
     {
-        unset($this->projects[$existingProject->id]);
+        unset($this->projects[$existingProjectId]);
+    }
+
+    public function exists(string $projectId): bool
+    {
+        return array_key_exists($projectId, $this->projects);
     }
 }

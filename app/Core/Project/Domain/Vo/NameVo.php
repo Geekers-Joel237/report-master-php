@@ -4,7 +4,7 @@ namespace App\Core\Project\Domain\Vo;
 
 use InvalidArgumentException;
 
-class NameVo
+readonly class NameVo
 {
     private string $value;
 

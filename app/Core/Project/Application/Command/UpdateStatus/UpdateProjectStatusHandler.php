@@ -5,7 +5,7 @@ namespace App\Core\Project\Application\Command\UpdateStatus;
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
-use App\Core\Project\Domain\Repository\WriteProjectRepository;
+use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 
 final readonly class UpdateProjectStatusHandler
 {
