@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+    mysql:
+        image: mysql:8.0
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: test-report-master
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        volumes:
+            - mysql_data:/var/lib/mysql
+
+volumes:
+    mysql_data:
+        driver: local
