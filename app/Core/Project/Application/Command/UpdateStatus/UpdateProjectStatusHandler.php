@@ -18,7 +18,7 @@ final readonly class UpdateProjectStatusHandler
      */
     public function handle(UpdateProjectStatusCommand $command): UpdateProjectStatusResponse
     {
-        $response = new UpdateProjectStatusResponse();
+        $response = new UpdateProjectStatusResponse;
 
         $existingProject = $this->getProjectIfExistOrThrowNotFoundException($command->projectId);
         $existingProject->updateStatus($command->status);
@@ -37,7 +37,7 @@ final readonly class UpdateProjectStatusHandler
     {
         $existingProject = $this->repository->ofId($projectId);
         if (is_null($existingProject)) {
-            throw new NotFoundProjectException();
+            throw new NotFoundProjectException;
         }
 
         return $existingProject;

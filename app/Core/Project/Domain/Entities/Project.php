@@ -26,7 +26,7 @@ class Project
     {
         $projectId = $existingId ?? $id;
         $static = new static($projectId, $name, $description);
-        $existingId ? $static->updatedAt = new DateTimeImmutable() : $static->createdAt = new DateTimeImmutable();
+        $existingId ? $static->updatedAt = new DateTimeImmutable : $static->createdAt = new DateTimeImmutable;
 
         return $static;
     }
@@ -49,6 +49,6 @@ class Project
     public function updateStatus(string $status): void
     {
         $this->status = ProjectStatusEnum::in($status);
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable;
     }
 }

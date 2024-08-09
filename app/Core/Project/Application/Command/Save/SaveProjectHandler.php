@@ -24,7 +24,7 @@ final readonly class SaveProjectHandler
      */
     public function handle(SaveProjectCommand $command): SaveProjectResponse
     {
-        $response = new SaveProjectResponse();
+        $response = new SaveProjectResponse;
 
         $name = new NameVo($command->name);
         $id = $this->idGenerator->generate();

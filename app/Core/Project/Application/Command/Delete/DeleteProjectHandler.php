@@ -20,7 +20,7 @@ final readonly class DeleteProjectHandler
      */
     public function handle(string $projectId): DeleteProjectResponse
     {
-        $response = new DeleteProjectResponse();
+        $response = new DeleteProjectResponse;
 
         $this->checkIfProjectExistOrThrowNotFoundException($projectId);
         $this->repository->delete($projectId);
@@ -37,7 +37,7 @@ final readonly class DeleteProjectHandler
     private function checkIfProjectExistOrThrowNotFoundException(string $projectId): void
     {
         if (! $this->repository->exists($projectId)) {
-            throw new NotFoundProjectException();
+            throw new NotFoundProjectException;
         }
     }
 }
