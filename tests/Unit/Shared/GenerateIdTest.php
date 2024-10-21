@@ -12,7 +12,7 @@ class GenerateIdTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->idGenerator = new FixedIdGenerator();
+        $this->idGenerator = new FixedIdGenerator;
     }
 
     public function test_can_generate_id()

@@ -6,6 +6,7 @@ use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
+use InvalidArgumentException;
 
 final readonly class UpdateProjectStatusHandler
 {
@@ -14,11 +15,12 @@ final readonly class UpdateProjectStatusHandler
     ) {}
 
     /**
+     * @throws InvalidArgumentException
      * @throws NotFoundProjectException
      */
     public function handle(UpdateProjectStatusCommand $command): UpdateProjectStatusResponse
     {
-        $response = new UpdateProjectStatusResponse();
+        $response = new UpdateProjectStatusResponse;
 
         $existingProject = $this->getProjectIfExistOrThrowNotFoundException($command->projectId);
         $existingProject->updateStatus($command->status);
@@ -37,7 +39,7 @@ final readonly class UpdateProjectStatusHandler
     {
         $existingProject = $this->repository->ofId($projectId);
         if (is_null($existingProject)) {
-            throw new NotFoundProjectException();
+            throw new NotFoundProjectException;
         }
 
         return $existingProject;

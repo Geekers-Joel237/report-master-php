@@ -5,6 +5,7 @@ namespace App\Core\Project\Domain\Entities;
 use App\Core\Project\Domain\Enums\ProjectStatusEnum;
 use App\Core\Project\Domain\Vo\NameVo;
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 class Project
 {
@@ -26,7 +27,7 @@ class Project
     {
         $projectId = $existingId ?? $id;
         $static = new static($projectId, $name, $description);
-        $existingId ? $static->updatedAt = new DateTimeImmutable() : $static->createdAt = new DateTimeImmutable();
+        $existingId ? $static->updatedAt = new DateTimeImmutable : $static->createdAt = new DateTimeImmutable;
 
         return $static;
     }
@@ -46,9 +47,12 @@ class Project
         return $this->status;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function updateStatus(string $status): void
     {
         $this->status = ProjectStatusEnum::in($status);
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable;
     }
 }
