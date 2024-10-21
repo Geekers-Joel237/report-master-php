@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Project\Repositories;
+namespace App\Core\Project\Tests\Unit\Repositories;
 
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;

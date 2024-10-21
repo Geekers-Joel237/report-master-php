@@ -5,6 +5,7 @@ namespace App\Core\Project\Domain\Entities;
 use App\Core\Project\Domain\Enums\ProjectStatusEnum;
 use App\Core\Project\Domain\Vo\NameVo;
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 class Project
 {
@@ -46,6 +47,9 @@ class Project
         return $this->status;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function updateStatus(string $status): void
     {
         $this->status = ProjectStatusEnum::in($status);

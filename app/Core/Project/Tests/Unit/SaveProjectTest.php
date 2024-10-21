@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Project;
+namespace App\Core\Project\Tests\Unit;
 
 use App\Core\Project\Application\Command\Save\SaveProjectCommand;
 use App\Core\Project\Application\Command\Save\SaveProjectHandler;
@@ -11,10 +11,10 @@ use App\Core\Project\Domain\Enums\ProjectStatusEnum;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
+use App\Core\Project\Tests\Unit\Repositories\InMemoryWriteProjectRepository;
 use App\Core\Shared\Domain\IdGenerator;
 use DateTimeImmutable;
 use Tests\TestCase;
-use Tests\Unit\Project\Repositories\InMemoryWriteProjectRepository;
 use Tests\Unit\Shared\FixedIdGenerator;
 use Throwable;
 
@@ -27,8 +27,8 @@ class SaveProjectTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->repository = new InMemoryWriteProjectRepository();
-        $this->idGenerator = new FixedIdGenerator();
+        $this->repository = new InMemoryWriteProjectRepository;
+        $this->idGenerator = new FixedIdGenerator;
     }
 
     /**
@@ -54,7 +54,7 @@ class SaveProjectTest extends TestCase
         $this->assertEquals($command->name, $expectedProject->name->value());
         $this->assertEquals($command->description, $expectedProject->description);
         $this->assertEquals(ProjectStatusEnum::Started, $expectedProject->status());
-        $this->assertEquals((new DateTimeImmutable())->format('Y-m-d'), $expectedProject->createdAt()->format('Y-m-d'));
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->createdAt()->format('Y-m-d'));
     }
 
     /**
@@ -77,7 +77,7 @@ class SaveProjectTest extends TestCase
         $expectedProject = $this->repository->ofId($response->projectId);
         $this->assertEquals($command->name, $expectedProject->name->value());
         $this->assertEquals($command->description, $expectedProject->description);
-        $this->assertEquals((new DateTimeImmutable())->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
     }
 
     /**
@@ -99,7 +99,7 @@ class SaveProjectTest extends TestCase
         $expectedProject = $this->repository->ofId($response->projectId);
         $this->assertEquals($existingProject->name, $expectedProject->name);
         $this->assertEquals($command->description, $expectedProject->description);
-        $this->assertEquals((new DateTimeImmutable())->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
 
     }
 

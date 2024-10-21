@@ -6,6 +6,7 @@ use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
+use InvalidArgumentException;
 
 final readonly class UpdateProjectStatusHandler
 {
@@ -14,6 +15,7 @@ final readonly class UpdateProjectStatusHandler
     ) {}
 
     /**
+     * @throws InvalidArgumentException
      * @throws NotFoundProjectException
      */
     public function handle(UpdateProjectStatusCommand $command): UpdateProjectStatusResponse

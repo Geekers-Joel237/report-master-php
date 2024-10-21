@@ -61,6 +61,7 @@ final readonly class SaveProjectHandler
     }
 
     /**
+     * @throws NotFoundProjectException
      * @throws Throwable
      */
     private function checkIfProjectExistByIdOrThrownNotFoundException(?string $projectId): void
