@@ -6,7 +6,6 @@ use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
-use Throwable;
 
 final readonly class DeleteProjectHandler
 {
@@ -16,7 +15,7 @@ final readonly class DeleteProjectHandler
 
     /**
      * @throws ErrorOnSaveProjectException
-     * @throws Throwable
+     * @throws NotFoundProjectException
      */
     public function handle(string $projectId): DeleteProjectResponse
     {
