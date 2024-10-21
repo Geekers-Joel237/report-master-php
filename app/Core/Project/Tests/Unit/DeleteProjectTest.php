@@ -38,12 +38,12 @@ class DeleteProjectTest extends TestCase
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
         $this->writeProjectRepository->save($existingProject);
 
-        $response = $this->deleteProject($existingProject->id);
+        $response = $this->deleteProject($existingProject->snapshot()->id);
 
         $this->assertTrue($response->isDeleted);
         $this->assertEquals(ProjectMessageEnum::DELETED, $response->message);
 
-        $expectedProject = $this->writeProjectRepository->ofId($existingProject->id);
+        $expectedProject = $this->writeProjectRepository->ofId($existingProject->snapshot()->id);
         $this->assertNull($expectedProject);
 
     }

@@ -16,7 +16,7 @@ readonly class NameVo
 
     private static function validate(string $name): void
     {
-        if (empty($name)) {
+        if (empty(trim($name))) {
             throw new InvalidArgumentException('Cette chaîne ne peut être vide !');
         }
     }

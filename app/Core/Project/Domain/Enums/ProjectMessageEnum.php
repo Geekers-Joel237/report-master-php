@@ -11,4 +11,6 @@ enum ProjectMessageEnum: string
     const DELETED = 'Projet supprimé avec succès !';
 
     const NOT_FOUND_PROJECT = 'Ce projet est introuvable !';
+
+    const ALREADY_EXIST_PROJECT_WITH_SAME_NAME = 'Un projet avec ce nom existe déjà !';
 }

@@ -26,7 +26,7 @@ final readonly class UpdateProjectStatusHandler
         $existingProject->updateStatus($command->status);
 
         $response->isSaved = true;
-        $response->projectId = $existingProject->id;
+        $response->projectId = $existingProject->snapshot()->id;
         $response->message = ProjectMessageEnum::UPDATED;
 
         return $response;

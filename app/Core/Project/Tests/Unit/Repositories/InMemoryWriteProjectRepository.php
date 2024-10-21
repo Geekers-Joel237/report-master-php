@@ -14,7 +14,7 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
 
     public function save(Project $project): void
     {
-        $this->projects[$project->id] = $project;
+        $this->projects[$project->snapshot()->id] = $project;
     }
 
     public function ofId(string $projectId): ?Project
@@ -25,7 +25,7 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
     public function ofName(string $value): ?Project
     {
         return array_values(array_filter($this->projects, function (Project $project) use ($value) {
-            return $project->name->value() === $value;
+            return $project->snapshot()->name === $value;
         }))[0] ?? null;
     }
 

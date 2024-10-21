@@ -40,7 +40,7 @@ class UpdateProjectStatusTest extends TestCase
         $this->repository->save($existingProject);
 
         $command = new UpdateProjectStatusCommand(
-            projectId: $existingProject->id,
+            projectId: $existingProject->snapshot()->id,
             status: ProjectStatusEnum::Completed->value
         );
         $response = $this->updateProjectStatus($command);
@@ -51,8 +51,8 @@ class UpdateProjectStatusTest extends TestCase
 
         $expectedProject = $this->repository->ofId($response->projectId);
         $this->assertNotNull($expectedProject);
-        $this->assertEquals($command->status, $expectedProject->status()->value);
-        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()?->format('Y-m-d'));
+        $this->assertEquals($command->status, $expectedProject->snapshot()->status);
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d H:i:s'), $expectedProject->snapshot()->updatedAt);
     }
 
     /**
