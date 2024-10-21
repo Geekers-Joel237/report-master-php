@@ -8,6 +8,7 @@ use App\Core\Project\Application\Command\Save\SaveProjectResponse;
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Enums\ProjectStatusEnum;
+use App\Core\Project\Domain\Exceptions\AlreadyExistsProjectWithSameNameException;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
@@ -98,7 +99,7 @@ class SaveProjectTest extends TestCase
     /**
      * @throws Throwable
      */
-    public function test_save_project_with_existing_name_like(): void
+    public function test_save_project_with_existing_name_like_when_create(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
         $this->repository->save($existingProject);
@@ -117,6 +118,24 @@ class SaveProjectTest extends TestCase
         $this->assertEquals($existingProject->snapshot()->name, $expectedProject->snapshot()->name);
         $this->assertEquals($command->description, $expectedProject->snapshot()->description);
         $this->assertEquals((new DateTimeImmutable)->format('Y-m-d H:i:s'), $expectedProject->snapshot()->updatedAt);
+
+    }
+
+    /**
+     * @throws ErrorOnSaveProjectException
+     * @throws Throwable
+     */
+    public function test_can_not_save_project_with_existing_name_like_when_update(): void
+    {
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
+        $this->repository->save($existingProject);
+
+        $command = new SaveProjectCommand(
+            name: ' My-Project-Name ', description: 'my-project-description', projectId: $existingProject->snapshot()->id
+        );
+
+        $this->expectException(AlreadyExistsProjectWithSameNameException::class);
+        $response = $this->saveProject($command);
 
     }
 
