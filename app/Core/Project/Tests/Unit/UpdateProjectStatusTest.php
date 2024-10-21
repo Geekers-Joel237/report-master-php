@@ -50,8 +50,9 @@ class UpdateProjectStatusTest extends TestCase
         $this->assertEquals($command->projectId, $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
+        $this->assertNotNull($expectedProject);
         $this->assertEquals($command->status, $expectedProject->status()->value);
-        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()?->format('Y-m-d'));
     }
 
     /**

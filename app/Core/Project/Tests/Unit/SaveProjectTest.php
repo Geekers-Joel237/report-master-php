@@ -51,10 +51,12 @@ class SaveProjectTest extends TestCase
         $this->assertEquals($this->idGenerator->generate(), $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
+
+        $this->assertNotNull($expectedProject);
         $this->assertEquals($command->name, $expectedProject->name->value());
         $this->assertEquals($command->description, $expectedProject->description);
         $this->assertEquals(ProjectStatusEnum::Started, $expectedProject->status());
-        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->createdAt()->format('Y-m-d'));
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->createdAt()?->format('Y-m-d'));
     }
 
     /**
@@ -75,9 +77,11 @@ class SaveProjectTest extends TestCase
         $this->assertEquals($command->projectId, $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
+
+        $this->assertNotNull($expectedProject);
         $this->assertEquals($command->name, $expectedProject->name->value());
         $this->assertEquals($command->description, $expectedProject->description);
-        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()?->format('Y-m-d'));
     }
 
     /**
@@ -97,9 +101,11 @@ class SaveProjectTest extends TestCase
         $this->assertEquals($existingProject->id, $response->projectId);
 
         $expectedProject = $this->repository->ofId($response->projectId);
+
+        $this->assertNotNull($expectedProject);
         $this->assertEquals($existingProject->name, $expectedProject->name);
         $this->assertEquals($command->description, $expectedProject->description);
-        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()->format('Y-m-d'));
+        $this->assertEquals((new DateTimeImmutable)->format('Y-m-d'), $expectedProject->updatedAt()?->format('Y-m-d'));
 
     }
 
