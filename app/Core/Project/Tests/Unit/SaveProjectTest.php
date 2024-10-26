@@ -77,7 +77,8 @@ class SaveProjectTest extends TestCase
     public function test_can_update_project(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
-        $this->repository->save($existingProject);
+
+        $this->repository->save($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
             name: 'my-project-name-modified', description: 'my-project-description', projectId: $existingProject->snapshot()->id
@@ -102,7 +103,7 @@ class SaveProjectTest extends TestCase
     public function test_save_project_with_existing_name_like_when_create(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
-        $this->repository->save($existingProject);
+        $this->repository->save($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
             name: ' My-Project-Name ', description: 'my-project-description'
@@ -128,14 +129,14 @@ class SaveProjectTest extends TestCase
     public function test_can_not_save_project_with_existing_name_like_when_update(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
-        $this->repository->save($existingProject);
+        $this->repository->save($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
             name: ' My-Project-Name ', description: 'my-project-description', projectId: $existingProject->snapshot()->id
         );
 
         $this->expectException(AlreadyExistsProjectWithSameNameException::class);
-        $response = $this->saveProject($command);
+        $this->saveProject($command);
 
     }
 
@@ -147,7 +148,7 @@ class SaveProjectTest extends TestCase
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
 
-        $this->repository->save($existingProject);
+        $this->repository->save($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
             name: ' My-Project-Name ', description: 'my-project-description', projectId: 'not-existing-project'

@@ -15,6 +15,7 @@ use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Project\Tests\Unit\Repositories\InMemoryWriteProjectRepository;
 use App\Core\Shared\Domain\IdGenerator;
 use DateTimeImmutable;
+use Exception;
 use Tests\TestCase;
 use Tests\Unit\Shared\FixedIdGenerator;
 
@@ -33,11 +34,12 @@ class UpdateProjectStatusTest extends TestCase
 
     /**
      * @throws ErrorOnSaveProjectException|NotFoundProjectException
+     * @throws Exception
      */
     public function test_can_update_project_status(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
-        $this->repository->save($existingProject);
+        $this->repository->save($existingProject->snapshot());
 
         $command = new UpdateProjectStatusCommand(
             projectId: $existingProject->snapshot()->id,
@@ -56,7 +58,7 @@ class UpdateProjectStatusTest extends TestCase
     }
 
     /**
-     * @throws NotFoundProjectException
+     * @throws NotFoundProjectException|ErrorOnSaveProjectException
      */
     private function updateProjectStatus(UpdateProjectStatusCommand $command): UpdateProjectStatusResponse
     {
