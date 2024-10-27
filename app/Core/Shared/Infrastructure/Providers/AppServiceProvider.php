@@ -3,6 +3,7 @@
 namespace App\Core\Shared\Infrastructure\Providers;
 
 use App\Core\Project\Infrastructure\Provider\ProjectServiceProvider;
+use App\Core\User\Infrastructure\Provider\UserServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerModules(): void
     {
+        $this->app->register(UserServiceProvider::class);
         $this->app->register(ProjectServiceProvider::class);
     }
 }

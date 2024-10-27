@@ -41,4 +41,10 @@ class ProjectSUT
 
         return $this;
     }
+
+    public function withExistingProjects(int $nbProjects): static
+    {
+        ProjectModel::factory()->count($nbProjects)->create();
+        return $this;
+    }
 }

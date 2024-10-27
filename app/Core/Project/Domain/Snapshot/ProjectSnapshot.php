@@ -12,4 +12,16 @@ readonly class ProjectSnapshot
         public ?string $createdAt,
         public ?string $updatedAt,
     ) {}
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'status' => $this->status,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
+        ];
+    }
 }
