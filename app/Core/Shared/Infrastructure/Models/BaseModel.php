@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property bool $is_deleted
  */
-
 #[ScopedBy([NotSoftDeleteScope::class])]
 class BaseModel extends Model
 {

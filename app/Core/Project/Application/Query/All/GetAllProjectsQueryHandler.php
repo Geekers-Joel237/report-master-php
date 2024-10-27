@@ -10,6 +10,9 @@ readonly class GetAllProjectsQueryHandler
         private ReadProjectRepository $repository
     ) {}
 
+    /**
+     * @return ProjectDto[]
+     */
     public function handle(): array
     {
         return $this->repository->all();

@@ -33,6 +33,9 @@ class ProjectServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * @return string[]
+     */
     private function routeConfig(): array
     {
         return [

@@ -60,6 +60,7 @@ class EloquentProjectRepositoryTest extends TestCase
         $sut = ProjectSUT::asSUT()
             ->withExistingProject()
             ->build();
+        $this->assertNotNull($sut->project);
         $this->repository->save($sut->project->snapshot());
         $dbProject = $this->repository->ofId($sut->project->snapshot()->id);
         $this->assertNotNull($dbProject);

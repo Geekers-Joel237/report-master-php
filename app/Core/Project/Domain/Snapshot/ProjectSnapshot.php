@@ -13,6 +13,9 @@ readonly class ProjectSnapshot
         public ?string $updatedAt,
     ) {}
 
+    /**
+     * @return array<string, string|null>
+     */
     public function toArray(): array
     {
         return [
