@@ -10,7 +10,9 @@ use Tests\TestCase;
 class GetAllProjetsActionTest extends TestCase
 {
     use RefreshDatabase;
+
     private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
