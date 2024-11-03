@@ -8,6 +8,7 @@ use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Tests\Unit\Repositories\InMemoryWriteProjectRepository;
 use App\Core\Report\Application\Command\Save\SaveReportHandler;
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
+use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Shared\Domain\IdGenerator;
 use DateTimeImmutable;
@@ -33,6 +34,7 @@ class SaveReportTest extends TestCase
     /**
      * @throws NotFoundProjectException
      * @throws ErrorOnSaveProjectException
+     * @throws NotFoundReportException
      */
     public function test_can_save_report(): void
     {
@@ -69,6 +71,7 @@ class SaveReportTest extends TestCase
 
         $this->assertNotNull($expectedReport);
         $this->assertEquals((new DateTimeImmutable)->format('Y-m-d H:i:s'), $expectedReport->snapshot()->createdAt);
-
+        $this->assertCount(0, $expectedReport->snapshot()->participants);
+        $this->assertCount(1, $expectedReport->snapshot()->tasks);
     }
 }
