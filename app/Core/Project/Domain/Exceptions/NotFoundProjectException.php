@@ -8,7 +8,7 @@ use Throwable;
 
 class NotFoundProjectException extends Exception
 {
-    public function __construct(string $message = ProjectMessageEnum::NOT_FOUND_PROJECT, int $code = 0, ?Throwable $previous = null)
+    public function __construct(string $message = ProjectMessageEnum::NOT_FOUND_PROJECT, int $code = 404, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
