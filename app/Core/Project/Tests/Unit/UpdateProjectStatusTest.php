@@ -38,7 +38,7 @@ class UpdateProjectStatusTest extends TestCase
      */
     public function test_can_update_project_status(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'),slug: 'my-project-name');
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
         $this->repository->save($existingProject->snapshot());
 
         $command = new UpdateProjectStatusCommand(

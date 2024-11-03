@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class LaravelSlugHelper implements SlugHelper
 {
-
     public function slugify(string $value): string
     {
         return Str::slug($value);
