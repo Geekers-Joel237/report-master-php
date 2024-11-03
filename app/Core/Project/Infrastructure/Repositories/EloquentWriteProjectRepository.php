@@ -9,6 +9,7 @@ use App\Core\Project\Domain\Snapshot\ProjectSnapshot;
 use App\Core\Project\Infrastructure\Models\Project as ProjectModel;
 use App\Core\Shared\Infrastructure\Models\Years;
 use Exception;
+use Illuminate\Support\Str;
 use Throwable;
 
 class EloquentWriteProjectRepository implements WriteProjectRepository
@@ -18,9 +19,9 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
         return ProjectModel::find($projectId)?->createFromModel();
     }
 
-    public function ofName(string $value): ?Project
+    public function ofSlug(string $value): ?Project
     {
-        return ProjectModel::where(['name' => $value])->first()
+        return ProjectModel::where(['slug' => Str::slug($value)])->first()
             ?->createFromModel();
 
     }

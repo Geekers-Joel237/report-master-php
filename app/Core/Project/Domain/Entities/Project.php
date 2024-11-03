@@ -18,6 +18,7 @@ class Project
     final private function __construct(
         readonly private string $id,
         private NameVo $name,
+        private readonly string $slug,
         private ?string $description,
         private ProjectStatusEnum $status
     ) {
@@ -28,11 +29,12 @@ class Project
     public static function create(
         string $id,
         NameVo $name,
+        string $slug,
         ?string $description = null,
         ProjectStatusEnum $status = ProjectStatusEnum::Started
     ): static {
         $projectId = $id;
-        $static = new static($projectId, $name, $description, $status);
+        $static = new static($projectId, $name, $slug, $description, $status);
         $static->createdAt = new DateTimeImmutable;
 
         return $static;
@@ -45,11 +47,12 @@ class Project
         string $id,
         string $name,
         string $status,
+        string $slug,
         ?string $description,
         ?string $createdAt,
         ?string $updatedAt
     ): static {
-        $project = new static($id, new NameVo($name), $description, ProjectStatusEnum::in($status));
+        $project = new static($id, new NameVo($name), $slug, $description, ProjectStatusEnum::in($status));
         $project->createdAt = $createdAt ? new DateTimeImmutable($createdAt) : null;
         $project->updatedAt = $updatedAt ? new DateTimeImmutable($updatedAt) : null;
 
@@ -80,6 +83,7 @@ class Project
         return new ProjectSnapshot(
             id: $this->id,
             name: $this->name->value(),
+            slug: $this->slug,
             description: $this->description,
             status: $this->status->value,
             createdAt: $this->createdAt?->format('Y-m-d H:i:s'),

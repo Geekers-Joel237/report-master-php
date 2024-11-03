@@ -10,10 +10,15 @@ use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Shared\Domain\IdGenerator;
+use App\Core\Shared\Domain\SlugHelper;
 
 final readonly class SaveProjectHandler
 {
-    public function __construct(private WriteProjectRepository $repository, private IdGenerator $idGenerator) {}
+    public function __construct(
+        private WriteProjectRepository $repository,
+        private IdGenerator $idGenerator,
+        private SlugHelper $slugHelper
+    ) {}
 
     /**
      * @throws ErrorOnSaveProjectException
@@ -25,11 +30,12 @@ final readonly class SaveProjectHandler
         $response = new SaveProjectResponse;
 
         $name = new NameVo($command->name);
-        $existingProjectByName = $this->repository->ofName($name->value());
+        $nameSlug = $this->slugHelper->slugify($name->value());
+        $existingProjectByName = $this->repository->ofSlug($nameSlug);
 
         if ($command->projectId) {
             $project = $this->getProjectIfExistByIdOrThrownNotFoundException($command->projectId);
-            if ($existingProjectByName?->snapshot()->name === $name->value()) {
+            if ($existingProjectByName?->snapshot()->slug === $nameSlug) {
                 throw new AlreadyExistsProjectWithSameNameException(ProjectMessageEnum::ALREADY_EXIST_PROJECT_WITH_SAME_NAME);
             }
             $project = $project->update($name, $command->description);
@@ -41,7 +47,7 @@ final readonly class SaveProjectHandler
                 $message = ProjectMessageEnum::UPDATED;
             } else {
                 $id = $this->idGenerator->generate();
-                $project = Project::create(id: $id, name: $name, description: $command->description);
+                $project = Project::create(id: $id, name: $name, slug: $nameSlug, description: $command->description);
                 $message = ProjectMessageEnum::SAVE;
             }
         }

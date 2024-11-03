@@ -4,9 +4,11 @@ namespace App\Core\Project\Domain\Snapshot;
 
 readonly class ProjectSnapshot
 {
+
     public function __construct(
         public string $id,
         public string $name,
+        public string $slug,
         public ?string $description,
         public string $status,
         public ?string $createdAt,
@@ -21,6 +23,7 @@ readonly class ProjectSnapshot
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
             'description' => $this->description,
             'status' => $this->status,
             'created_at' => $this->createdAt,

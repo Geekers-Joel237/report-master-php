@@ -30,7 +30,7 @@ class ProjectSUT
     public function withExistingProject(): static
     {
         $this->project = Project::create(
-            id: '001', name: new NameVo('Projet 1'), description: 'titre du projet 1'
+            id: '001', name: new NameVo('Projet 1'), slug: 'project-1', description: 'titre du projet 1'
         );
 
         return $this;

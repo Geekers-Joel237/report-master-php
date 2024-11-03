@@ -36,6 +36,7 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
             id: $projectSnapshot->id,
             name: $projectSnapshot->name,
             status: $projectSnapshot->status,
+            slug: $projectSnapshot->slug,
             description: $projectSnapshot->description,
             createdAt: $projectSnapshot->createdAt,
             updatedAt: $projectSnapshot->updatedAt,
@@ -45,7 +46,7 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
     /**
      * @throws Exception
      */
-    public function ofName(string $value): ?Project
+    public function ofSlug(string $value): ?Project
     {
         $projects = array_values(array_filter($this->projectSnapshots, function (ProjectSnapshot $project) use ($value) {
             return $project->name === $value;

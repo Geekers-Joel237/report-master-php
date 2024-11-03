@@ -15,6 +15,7 @@ use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Project\Tests\Unit\Repositories\InMemoryWriteProjectRepository;
 use App\Core\Shared\Domain\IdGenerator;
+use App\Core\Shared\Domain\SlugHelper;
 use DateTimeImmutable;
 use Tests\TestCase;
 use Tests\Unit\Shared\FixedIdGenerator;
@@ -26,11 +27,14 @@ class SaveProjectTest extends TestCase
 
     private IdGenerator $idGenerator;
 
+    private SlugHelper $slugHelper;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->repository = new InMemoryWriteProjectRepository;
         $this->idGenerator = new FixedIdGenerator;
+        $this->slugHelper = app(SlugHelper::class);
     }
 
     /**
@@ -66,7 +70,7 @@ class SaveProjectTest extends TestCase
      */
     public function saveProject(SaveProjectCommand $command): SaveProjectResponse
     {
-        $handler = new SaveProjectHandler($this->repository, $this->idGenerator);
+        $handler = new SaveProjectHandler($this->repository, $this->idGenerator, $this->slugHelper);
 
         return $handler->handle($command);
     }
@@ -76,7 +80,7 @@ class SaveProjectTest extends TestCase
      */
     public function test_can_update_project(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
 
         $this->repository->save($existingProject->snapshot());
 
@@ -102,7 +106,7 @@ class SaveProjectTest extends TestCase
      */
     public function test_save_project_with_existing_name_like_when_create(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
         $this->repository->save($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
@@ -128,7 +132,7 @@ class SaveProjectTest extends TestCase
      */
     public function test_can_not_save_project_with_existing_name_like_when_update(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
         $this->repository->save($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
@@ -146,7 +150,7 @@ class SaveProjectTest extends TestCase
      */
     public function test_can_thrown_not_found_exception_when_update_not_existing_project(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'));
+        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
 
         $this->repository->save($existingProject->snapshot());
 

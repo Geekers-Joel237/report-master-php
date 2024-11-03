@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $status
  * @property ?string $created_at
  * @property ?string $updated_at
+ * @property string $slug
  */
 class Project extends BaseModel
 {
@@ -34,6 +35,7 @@ class Project extends BaseModel
             id: $this->id,
             name: $this->name,
             status: $this->status,
+            slug: $this->slug,
             description: $this->description,
             createdAt: $this->created_at,
             updatedAt: $this->updated_at

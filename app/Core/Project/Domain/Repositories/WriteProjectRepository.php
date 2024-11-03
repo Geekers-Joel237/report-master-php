@@ -15,7 +15,7 @@ interface WriteProjectRepository
 
     public function ofId(string $projectId): ?Project;
 
-    public function ofName(string $value): ?Project;
+    public function ofSlug(string $value): ?Project;
 
     /**
      * @throws ErrorOnSaveProjectException
