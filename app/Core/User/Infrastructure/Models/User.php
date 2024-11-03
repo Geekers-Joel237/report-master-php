@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Core\Shared\Infrastructure\Models;
+namespace App\Core\User\Infrastructure\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Core\User\Infrastructure\database\factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,6 +32,11 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
 
     /**
      * Get the attributes that should be cast.

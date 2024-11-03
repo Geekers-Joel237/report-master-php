@@ -6,6 +6,7 @@ use App\Core\Project\Domain\Enums\ProjectStatusEnum;
 use App\Core\Project\Domain\Snapshot\ProjectSnapshot;
 use App\Core\Project\Domain\Vo\NameVo;
 use DateTimeImmutable;
+use Exception;
 use InvalidArgumentException;
 
 class Project
@@ -35,6 +36,24 @@ class Project
         $static->createdAt = new DateTimeImmutable;
 
         return $static;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function createFromAdapter(
+        string $id,
+        string $name,
+        string $status,
+        ?string $description,
+        ?string $createdAt,
+        ?string $updatedAt
+    ): static {
+        $project = new static($id, new NameVo($name), $description, ProjectStatusEnum::in($status));
+        $project->createdAt = $createdAt ? new DateTimeImmutable($createdAt) : null;
+        $project->updatedAt = $updatedAt ? new DateTimeImmutable($updatedAt) : null;
+
+        return $project;
     }
 
     /**

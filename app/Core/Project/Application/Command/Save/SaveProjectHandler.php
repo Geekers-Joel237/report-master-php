@@ -46,7 +46,7 @@ final readonly class SaveProjectHandler
             }
         }
 
-        $this->repository->save($project);
+        $this->repository->save($project->snapshot());
 
         $response->isSaved = true;
         $response->projectId = $project->snapshot()->id;
