@@ -5,6 +5,9 @@ namespace App\Core\Project\Tests\Feature\Builder;
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Project\Infrastructure\Models\Project as ProjectModel;
+use App\Core\Shared\Infrastructure\Models\Years;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class ProjectSUT
 {
@@ -12,9 +15,12 @@ class ProjectSUT
 
     public ?ProjectModel $dbProject;
 
+    private Collection|Model $year;
+
     public static function asSUT(): static
     {
         $static = new static;
+        $static->year = Years::factory()->create();
         $static->project = null;
         $static->dbProject = null;
 

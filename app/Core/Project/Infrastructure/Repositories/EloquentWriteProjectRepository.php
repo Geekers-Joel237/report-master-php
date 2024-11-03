@@ -7,6 +7,7 @@ use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Domain\Snapshot\ProjectSnapshot;
 use App\Core\Project\Infrastructure\Models\Project as ProjectModel;
+use App\Core\Shared\Infrastructure\Models\Years;
 use Exception;
 use Throwable;
 
@@ -46,10 +47,15 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
         try {
             ProjectModel::updateOrCreate(
                 ['id' => $project->id],
-                $project->toArray()
+                array_merge($project->toArray(), ['years_id' => $this->getActiveYearsIdentifier()])
             );
         } catch (Throwable|Exception $exception) {
             throw new ErrorOnSaveProjectException($exception->getMessage());
         }
+    }
+
+    private function getActiveYearsIdentifier(): string
+    {
+        return Years::select(['id'])->whereIsActive(true)->first()->id;
     }
 }

@@ -17,6 +17,7 @@ class ProjectFactory extends Factory
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
             'status' => ProjectStatusEnum::Started->value,
+            'years_id' => $this->faker->uuid,
         ];
     }
 }

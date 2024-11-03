@@ -28,6 +28,7 @@ class GetAllProjetsActionTest extends TestCase
         $response = $this->actingAs($this->user)->getJson('/api/v1/projects');
 
         $response->assertOk();
+        $this->assertIsArray($response->json()['projects']);
         $this->assertCount(5, $response->json()['projects']);
     }
 }

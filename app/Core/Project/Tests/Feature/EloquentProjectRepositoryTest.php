@@ -31,6 +31,7 @@ class EloquentProjectRepositoryTest extends TestCase
             ->withDbExistingProject()
             ->build();
 
+        $this->assertInstanceOf(\App\Core\Project\Infrastructure\Models\Project::class, $sut->dbProject);
         $dbProject = $this->repository->ofId($sut->dbProject->id);
 
         $this->assertNotNull($dbProject);
@@ -45,6 +46,7 @@ class EloquentProjectRepositoryTest extends TestCase
         $sut = ProjectSUT::asSUT()
             ->withExistingProject()
             ->build();
+        $this->assertInstanceOf(Project::class, $sut->project);
         $this->repository->save($sut->project->snapshot());
 
         $dbProject = $this->repository->ofId($sut->project->snapshot()->id);

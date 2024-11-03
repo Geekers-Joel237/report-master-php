@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('status');
             $table->softDeletes();
             $table->boolean('is_deleted')->default(false);
+            $table->string('years_id')->index('years_id');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_projects');
+        Schema::dropIfExists('projects');
     }
 };
