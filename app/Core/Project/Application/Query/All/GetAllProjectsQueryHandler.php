@@ -13,9 +13,9 @@ readonly class GetAllProjectsQueryHandler
     /**
      * @return ProjectDto[]
      */
-    public function handle(): array
+    public function handle(FilterProjectCommand $command): array
     {
-        return $this->repository->all();
+        return $this->repository->all(year: $command->year, status: $command->status);
 
     }
 }

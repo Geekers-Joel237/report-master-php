@@ -9,5 +9,5 @@ interface ReadProjectRepository
     /**
      * @return ProjectDto[]
      */
-    public function all(): array;
+    public function all(?string $year, ?string $status): array;
 }

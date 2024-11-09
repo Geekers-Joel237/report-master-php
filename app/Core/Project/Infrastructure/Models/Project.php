@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property ?string $created_at
  * @property ?string $updated_at
  * @property string $slug
+ * @property string $year_id
  */
 class Project extends BaseModel
 {

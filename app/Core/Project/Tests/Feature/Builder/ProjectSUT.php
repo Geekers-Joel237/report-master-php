@@ -6,8 +6,6 @@ use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Vo\NameVo;
 use App\Core\Project\Infrastructure\Models\Project as ProjectModel;
 use App\Core\Shared\Infrastructure\Models\Years;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class ProjectSUT
 {
@@ -15,7 +13,7 @@ class ProjectSUT
 
     public ?ProjectModel $dbProject;
 
-    private Collection|Model $year;
+    public Years $year;
 
     public static function asSUT(): static
     {
@@ -50,7 +48,9 @@ class ProjectSUT
 
     public function withExistingProjects(int $nbProjects): static
     {
-        ProjectModel::factory()->count($nbProjects)->create();
+        ProjectModel::factory()->count($nbProjects)->create([
+            'year_id' => $this->year->id,
+        ]);
 
         return $this;
     }
