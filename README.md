@@ -1,6 +1,8 @@
 # ReportMaster
 
-ReportMaster est une application de gestion de rapports hebdomadaires et d'objectifs de semaine pour Crina Studio. Elle permet aux développeurs de soumettre et de suivre leurs tâches et objectifs, et aux RH/administration de surveiller l'ensemble de l'équipe.
+ReportMaster est une application de gestion de rapports hebdomadaires et d'objectifs de semaine pour XXX. 
+Elle permet aux développeurs de soumettre et de suivre leurs tâches et objectifs, 
+et aux RH/administration de surveiller l'ensemble de l'équipe.
 
 ## Table des matières
 
@@ -14,13 +16,20 @@ ReportMaster est une application de gestion de rapports hebdomadaires et d'objec
 
 ## Introduction
 
-ReportMaster est conçu pour améliorer la gestion des tâches et des objectifs hebdomadaires chez Crina Studio. Il fournit une interface intuitive pour les développeurs et les administrateurs pour gérer les rapports et les objectifs de manière efficace.
+ReportMaster est conçu pour améliorer la gestion des tâches et des objectifs hebdomadaires chez XXX. 
+Il fournit une interface intuitive pour les développeurs et les administrateurs pour gérer les rapports et 
+les objectifs de manière efficace.
 Ceci est la partie API 
 ## Fonctionnalités
 
+- Gestion des projets
 - Gestion des rapports hebdomadaires
-- Suivi des objectifs de semaine
-- Gestion des rôles et des profils (RH/administration et développeurs)
+- Suivi des objectifs de semaine 
+- Gestion des rôles, des profils et permissions (RH/administration et développeurs)
+- Rappels de rédaction des rapports (mail, discord, slack)
+- Importation des rapports existants de Discord vers la plateforme
+- Suivi des tâches et envoie automatique en fin de journée (ia ++ pour la redaction)
+- Rappels / Changement de langue en fonction de la journée (Tous les mercredi)
 - API REST 
 ## Technologies Utilisées
 
@@ -36,6 +45,7 @@ Ceci est la partie API
 - PHP 8.3
 - Composer
 - Node.js et npm
+- Docker
 
 ### Étapes d'installation
 
@@ -53,7 +63,7 @@ php artisan serve
 ````
 
 ## Configuration
-- ``$ composer lint``
+- ``$ composer lint app``
 
 ## Structure du Projet
 
