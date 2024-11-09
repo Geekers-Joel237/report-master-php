@@ -5,8 +5,10 @@ namespace App\Core\Project\Infrastructure\Models;
 use App\Core\Project\Domain\Entities\Project as ProjectDomain;
 use App\Core\Project\Infrastructure\database\factories\ProjectFactory;
 use App\Core\Shared\Infrastructure\Models\BaseModel;
+use App\Core\Shared\Infrastructure\Models\Years;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property string $id
@@ -25,6 +27,11 @@ class Project extends BaseModel
     protected static function newFactory(): ProjectFactory
     {
         return ProjectFactory::new();
+    }
+
+    public function year(): HasOne
+    {
+        return $this->hasOne(Years::class);
     }
 
     /**
