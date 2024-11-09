@@ -2,7 +2,8 @@
 
 ReportMaster est une application de gestion de rapports hebdomadaires et d'objectifs de semaine pour XXX. 
 Elle permet aux développeurs de soumettre et de suivre leurs tâches et objectifs, 
-et aux RH/administration de surveiller l'ensemble de l'équipe.
+et aux RH/administration de surveiller l'ensemble de l'équipe. L'idée est d'automatiser le process qui jusque-là 
+est manuel, pas assez précis, ne permet pas d'avoir un historique clair.
 
 ## Table des matières
 
