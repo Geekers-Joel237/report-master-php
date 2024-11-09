@@ -8,22 +8,28 @@ use App\Core\Report\Domain\Entities\Report;
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
 use App\Core\User\Domain\WriteUserRepository;
 
-readonly class SaveReportHandler
+final readonly class SaveReportHandler
 {
     public function __construct(
         private WriteProjectRepository $projectRepository,
-        private IdGenerator $idGenerator,
-        private WriteReportRepository $reportRepository,
-        private WriteUserRepository $participantRepository,
+        private IdGenerator            $idGenerator,
+        private WriteReportRepository  $reportRepository,
+        private WriteUserRepository    $participantRepository,
 
-    ) {}
+    )
+    {
+    }
 
     /**
+     * @param SaveReportCommand $command
+     * @return SaveReportResponse
      * @throws NotFoundProjectException
      * @throws NotFoundReportException
+     * @throws InvalidCommandException
      */
     public function handle(SaveReportCommand $command): SaveReportResponse
     {
@@ -60,13 +66,23 @@ readonly class SaveReportHandler
      */
     private function checkIfProjectExistOrThrowNotFoundException(string $projectId): void
     {
-        if (! $this->projectRepository->exists($projectId)) {
+        if (!$this->projectRepository->exists($projectId)) {
             throw new NotFoundProjectException;
         }
     }
 
+    private function getExistsParticipants(array $participantIds): array
+    {
+        if (empty($participantIds)) {
+            return [];
+        }
+
+        return $this->participantRepository->allExists($participantIds);
+    }
+
     /**
      * @throws NotFoundReportException
+     * @throws InvalidCommandException
      */
     private function updateExistingReport(SaveReportCommand $command, array $participantIds): Report
     {
@@ -79,14 +95,5 @@ readonly class SaveReportHandler
             $command->tasks,
             $participantIds,
         );
-    }
-
-    private function getExistsParticipants(array $participantIds): array
-    {
-        if (empty($participantIds)) {
-            return [];
-        }
-
-        return $this->participantRepository->allExists($participantIds);
     }
 }
