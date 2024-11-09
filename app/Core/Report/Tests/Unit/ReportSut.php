@@ -9,6 +9,8 @@ class ReportSut
 {
     public Project $project;
 
+    public array $participants;
+
     public static function asSUT(): static
     {
         return new static;
@@ -27,6 +29,13 @@ class ReportSut
 
     public function build(): static
     {
+        return $this;
+    }
+
+    public function withParticipants(array $participantIds): static
+    {
+        $this->participants = $participantIds;
+
         return $this;
     }
 }

@@ -9,13 +9,15 @@ use App\Core\Report\Domain\Enums\ReportMessageEnum;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Shared\Domain\IdGenerator;
+use App\Core\User\Domain\WriteUserRepository;
 
 readonly class SaveReportHandler
 {
     public function __construct(
         private WriteProjectRepository $projectRepository,
         private IdGenerator $idGenerator,
-        private WriteReportRepository $reportRepository
+        private WriteReportRepository $reportRepository,
+        private WriteUserRepository $participantRepository,
 
     ) {}
 
@@ -28,16 +30,18 @@ readonly class SaveReportHandler
         $response = new SaveReportResponse;
 
         $this->checkIfProjectExistOrThrowNotFoundException($command->projectId);
+        $participantIds = $this->getExistsParticipants($command->participantIds);
+
         if (is_null($command->reportId)) {
             $report = Report::create(
                 $command->projectId,
                 $command->tasks,
-                $command->participantIds,
+                $participantIds,
                 $this->idGenerator->generate(),
             );
             $msg = ReportMessageEnum::SAVE;
         } else {
-            $report = $this->updateExistingReport($command);
+            $report = $this->updateExistingReport($command, $participantIds);
             $msg = ReportMessageEnum::UPDATED;
 
         }
@@ -64,7 +68,7 @@ readonly class SaveReportHandler
     /**
      * @throws NotFoundReportException
      */
-    private function updateExistingReport(SaveReportCommand $command): Report
+    private function updateExistingReport(SaveReportCommand $command, array $participantIds): Report
     {
         $eReport = $this->reportRepository->ofId($command->reportId);
         if (is_null($eReport)) {
@@ -73,7 +77,12 @@ readonly class SaveReportHandler
 
         return $eReport->update(
             $command->tasks,
-            $command->participantIds,
+            $participantIds,
         );
+    }
+
+    private function getExistsParticipants(array $participantIds): array
+    {
+        return $this->participantRepository->allExists($participantIds);
     }
 }
