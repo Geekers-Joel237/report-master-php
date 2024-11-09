@@ -32,7 +32,7 @@ readonly class SaveReportHandler
             $report = Report::create(
                 $command->projectId,
                 $command->tasks,
-                $command->participants,
+                $command->participantIds,
                 $this->idGenerator->generate(),
             );
             $msg = ReportMessageEnum::SAVE;
@@ -73,7 +73,7 @@ readonly class SaveReportHandler
 
         return $eReport->update(
             $command->tasks,
-            $command->participants,
+            $command->participantIds,
         );
     }
 }

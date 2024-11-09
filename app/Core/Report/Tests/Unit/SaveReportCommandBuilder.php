@@ -47,7 +47,7 @@ class SaveReportCommandBuilder
     {
         return new SaveReportCommand(
             tasks: $this->tasks,
-            participants: $this->participants,
+            participantIds: $this->participants,
             projectId: $this->projectId
         );
     }
