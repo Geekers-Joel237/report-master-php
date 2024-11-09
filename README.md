@@ -31,6 +31,7 @@ Ceci est la partie API
 - Importation des rapports existants de Discord vers la plateforme
 - Suivi des tâches et envoie automatique en fin de journée (ia ++ pour la redaction)
 - Rappels / Changement de langue en fonction de la journée (Tous les mercredi)
+- Generation rapports de fin de semaine
 - API REST 
 ## Technologies Utilisées
 
