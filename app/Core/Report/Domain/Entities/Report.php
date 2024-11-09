@@ -3,9 +3,9 @@
 namespace App\Core\Report\Domain\Entities;
 
 use App\Core\Report\Domain\Snapshots\ReportSnapshot;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use DateTimeImmutable;
 use Exception;
-use InvalidArgumentException;
 
 class Report
 {
@@ -23,6 +23,9 @@ class Report
         $this->updatedAt = null;
     }
 
+    /**
+     * @throws InvalidCommandException
+     */
     public static function create(
         string $projectId,
         array $tasks,
@@ -30,7 +33,7 @@ class Report
         string $reportId
     ): static {
         if (empty($tasks)) {
-            throw new InvalidArgumentException('Tasks  should not be empty', 400);
+            throw new InvalidCommandException('Tasks  should not be empty', 400);
         }
         $report = new static(
             reportId: $reportId,
@@ -76,10 +79,13 @@ class Report
         );
     }
 
+    /**
+     * @throws InvalidCommandException
+     */
     public function update(array $tasks, array $participants): Report|static
     {
         if (empty($tasks)) {
-            throw new InvalidArgumentException('Tasks  should not be empty', 400);
+            throw new InvalidCommandException('Tasks  should not be empty', 400);
         }
 
         $report = clone $this;

@@ -83,6 +83,10 @@ readonly class SaveReportHandler
 
     private function getExistsParticipants(array $participantIds): array
     {
+        if (empty($participantIds)) {
+            return [];
+        }
+
         return $this->participantRepository->allExists($participantIds);
     }
 }

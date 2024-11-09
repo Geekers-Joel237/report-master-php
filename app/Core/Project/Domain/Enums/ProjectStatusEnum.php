@@ -2,7 +2,7 @@
 
 namespace App\Core\Project\Domain\Enums;
 
-use InvalidArgumentException;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 
 enum ProjectStatusEnum: string
 {
@@ -13,13 +13,13 @@ enum ProjectStatusEnum: string
     case Archived = 'Archivé';
 
     /**
-     * @throws InvalidArgumentException
+     * @throws InvalidCommandException
      */
     public static function in(string $status): self
     {
         $self = self::tryFrom($status);
         if (is_null($self)) {
-            throw new InvalidArgumentException('Ce status n\'est pas pris en compte !');
+            throw new InvalidCommandException('Ce status n\'est pas pris en compte !');
         }
 
         return $self;

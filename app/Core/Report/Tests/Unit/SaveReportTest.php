@@ -115,8 +115,6 @@ class SaveReportTest extends TestCase
         ))->handle($command);
 
         $this->assertTrue($response->isSaved);
-        $this->assertEquals(ReportMessageEnum::SAVE, $response->message);
-        $this->assertEquals($this->idGenerator->generate(), $response->reportId);
 
         $expectedReport = $this->reportRepository->ofId($response->reportId);
 

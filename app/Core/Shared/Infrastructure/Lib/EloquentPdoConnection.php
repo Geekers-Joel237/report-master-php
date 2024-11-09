@@ -8,9 +8,8 @@ use PDO;
 
 class EloquentPdoConnection implements PdoConnection
 {
-
     public function getPdo(): PDO
     {
-       return DB::connection('mysql')->getPdo();
+        return DB::connection('mysql')->getPdo();
     }
 }
