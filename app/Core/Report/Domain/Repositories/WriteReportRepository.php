@@ -10,4 +10,8 @@ interface WriteReportRepository
     public function ofId(string $reportId): ?Report;
 
     public function save(ReportSnapshot $report): void;
+
+    public function exists(string $reportId): bool;
+
+    public function delete(string $reportId): void;
 }

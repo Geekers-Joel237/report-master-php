@@ -10,6 +10,7 @@ use App\Core\Report\Application\Command\Save\SaveReportHandler;
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
 use App\Core\User\Domain\WriteUserRepository;
 use DateTimeImmutable;
@@ -36,8 +37,9 @@ class SaveReportTest extends TestCase
     }
 
     /**
-     * @throws NotFoundProjectException
      * @throws ErrorOnSaveProjectException
+     * @throws InvalidCommandException
+     * @throws NotFoundProjectException
      * @throws NotFoundReportException
      */
     public function test_can_save_report(): void
@@ -84,6 +86,7 @@ class SaveReportTest extends TestCase
      * @throws ErrorOnSaveProjectException
      * @throws NotFoundProjectException
      * @throws NotFoundReportException
+     * @throws InvalidCommandException
      */
     public function test_can_save_report_with_participants(): void
     {

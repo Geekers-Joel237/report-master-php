@@ -16,17 +16,13 @@ final readonly class SaveReportHandler
 {
     public function __construct(
         private WriteProjectRepository $projectRepository,
-        private IdGenerator            $idGenerator,
-        private WriteReportRepository  $reportRepository,
-        private WriteUserRepository    $participantRepository,
+        private IdGenerator $idGenerator,
+        private WriteReportRepository $reportRepository,
+        private WriteUserRepository $participantRepository,
 
-    )
-    {
-    }
+    ) {}
 
     /**
-     * @param SaveReportCommand $command
-     * @return SaveReportResponse
      * @throws NotFoundProjectException
      * @throws NotFoundReportException
      * @throws InvalidCommandException
@@ -66,7 +62,7 @@ final readonly class SaveReportHandler
      */
     private function checkIfProjectExistOrThrowNotFoundException(string $projectId): void
     {
-        if (!$this->projectRepository->exists($projectId)) {
+        if (! $this->projectRepository->exists($projectId)) {
             throw new NotFoundProjectException;
         }
     }

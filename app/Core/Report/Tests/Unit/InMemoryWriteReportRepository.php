@@ -13,6 +13,9 @@ class InMemoryWriteReportRepository implements WriteReportRepository
 
     public function __construct() {}
 
+    /**
+     * @throws Exception
+     */
     public function ofId(string $reportId): ?Report
     {
         return array_key_exists($reportId, $this->reportSnapshots) ? $this->toDomain($this->reportSnapshots[$reportId]) : null;
@@ -36,5 +39,15 @@ class InMemoryWriteReportRepository implements WriteReportRepository
     {
         $this->reportSnapshots[$report->id] = $report;
 
+    }
+
+    public function exists(string $reportId): bool
+    {
+        return array_key_exists($reportId, $this->reportSnapshots);
+    }
+
+    public function delete(string $reportId): void
+    {
+        unset($this->reportSnapshots[$reportId]);
     }
 }
