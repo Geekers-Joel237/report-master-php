@@ -4,7 +4,7 @@ namespace App\Core\Report\Tests\Unit;
 
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Vo\NameVo;
-use App\Core\Report\Domain\Entities\Report;
+use App\Core\Report\Domain\Entities\DailyReport;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 
 class ReportSut
@@ -13,7 +13,7 @@ class ReportSut
 
     public array $participants;
 
-    public Report $report;
+    public DailyReport $report;
 
     public static function asSUT(): static
     {
@@ -48,7 +48,7 @@ class ReportSut
      */
     public function withReport(): static
     {
-        $this->report = Report::create(
+        $this->report = DailyReport::create(
             projectId: $this->project->snapshot()->id,
             tasks: [
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry.

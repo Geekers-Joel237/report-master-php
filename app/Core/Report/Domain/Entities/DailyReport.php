@@ -7,7 +7,7 @@ use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use DateTimeImmutable;
 use Exception;
 
-class Report
+class DailyReport
 {
     private ?DateTimeImmutable $createdAt;
 
@@ -82,7 +82,7 @@ class Report
     /**
      * @throws InvalidCommandException
      */
-    public function update(array $tasks, array $participants): Report|static
+    public function update(array $tasks, array $participants): DailyReport|static
     {
         if (empty($tasks)) {
             throw new InvalidCommandException('Tasks  should not be empty', 400);

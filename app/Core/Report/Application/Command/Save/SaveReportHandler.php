@@ -4,7 +4,7 @@ namespace App\Core\Report\Application\Command\Save;
 
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
-use App\Core\Report\Domain\Entities\Report;
+use App\Core\Report\Domain\Entities\DailyReport;
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
@@ -35,7 +35,7 @@ final readonly class SaveReportHandler
         $participantIds = $this->getExistsParticipants($command->participantIds);
 
         if (is_null($command->reportId)) {
-            $report = Report::create(
+            $report = DailyReport::create(
                 $command->projectId,
                 $command->tasks,
                 $participantIds,
@@ -80,7 +80,7 @@ final readonly class SaveReportHandler
      * @throws NotFoundReportException
      * @throws InvalidCommandException
      */
-    private function updateExistingReport(SaveReportCommand $command, array $participantIds): Report
+    private function updateExistingReport(SaveReportCommand $command, array $participantIds): DailyReport
     {
         $eReport = $this->reportRepository->ofId($command->reportId);
         if (is_null($eReport)) {
