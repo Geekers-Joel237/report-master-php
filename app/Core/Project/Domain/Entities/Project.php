@@ -5,9 +5,9 @@ namespace App\Core\Project\Domain\Entities;
 use App\Core\Project\Domain\Enums\ProjectStatusEnum;
 use App\Core\Project\Domain\Snapshot\ProjectSnapshot;
 use App\Core\Project\Domain\Vo\NameVo;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use DateTimeImmutable;
 use Exception;
-use InvalidArgumentException;
 
 class Project
 {
@@ -60,7 +60,7 @@ class Project
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws InvalidCommandException
      */
     public function updateStatus(string $status): void
     {

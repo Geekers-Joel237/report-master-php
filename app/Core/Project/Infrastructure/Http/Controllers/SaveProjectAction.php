@@ -7,7 +7,7 @@ use App\Core\Project\Application\Command\Save\SaveProjectHandler;
 use App\Core\Project\Infrastructure\Http\Requests\SaveProjectRequest;
 use Illuminate\Http\JsonResponse;
 
-class SaveProjectsAction
+class SaveProjectAction
 {
     public function __invoke(
         SaveProjectHandler $handler,
@@ -24,6 +24,7 @@ class SaveProjectsAction
             'status' => true,
             'isSaved' => $response->isSaved,
             'projectId' => $response->projectId,
+            'message' => $response->message,
         ]);
     }
 }

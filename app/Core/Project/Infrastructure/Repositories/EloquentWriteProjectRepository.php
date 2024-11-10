@@ -48,7 +48,7 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
         try {
             ProjectModel::updateOrCreate(
                 ['id' => $project->id],
-                array_merge($project->toArray(), ['years_id' => $this->getActiveYearsIdentifier()])
+                array_merge($project->toArray(), ['year_id' => $this->getActiveYearsIdentifier()])
             );
         } catch (Throwable|Exception $exception) {
             throw new ErrorOnSaveProjectException($exception->getMessage());

@@ -2,7 +2,7 @@
 
 namespace App\Core\Project\Domain\Vo;
 
-use InvalidArgumentException;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 
 readonly class NameVo
 {
@@ -17,7 +17,7 @@ readonly class NameVo
     private static function validate(string $name): void
     {
         if (empty(trim($name))) {
-            throw new InvalidArgumentException('Cette chaîne ne peut être vide !');
+            throw new InvalidCommandException('Cette chaîne ne peut être vide !');
         }
     }
 

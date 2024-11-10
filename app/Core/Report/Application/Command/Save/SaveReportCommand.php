@@ -6,7 +6,7 @@ readonly class SaveReportCommand
 {
     public function __construct(
         public array $tasks,
-        public array $participants,
+        public array $participantIds,
         public string $projectId,
         public ?string $reportId = null,
     ) {}

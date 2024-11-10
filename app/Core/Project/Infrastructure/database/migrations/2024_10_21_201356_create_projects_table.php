@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('status');
             $table->softDeletes();
             $table->boolean('is_deleted')->default(false);
-            $table->string('years_id')->index('years_id');
+            $table->string('year_id')->index('year_id');
             $table->timestamps();
         });
     }

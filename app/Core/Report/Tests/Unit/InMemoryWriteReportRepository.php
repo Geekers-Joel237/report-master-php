@@ -2,7 +2,7 @@
 
 namespace App\Core\Report\Tests\Unit;
 
-use App\Core\Report\Domain\Entities\Report;
+use App\Core\Report\Domain\Entities\DailyReport;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Report\Domain\Snapshots\ReportSnapshot;
 use Exception;
@@ -13,7 +13,10 @@ class InMemoryWriteReportRepository implements WriteReportRepository
 
     public function __construct() {}
 
-    public function ofId(string $reportId): ?Report
+    /**
+     * @throws Exception
+     */
+    public function ofId(string $reportId): ?DailyReport
     {
         return array_key_exists($reportId, $this->reportSnapshots) ? $this->toDomain($this->reportSnapshots[$reportId]) : null;
     }
@@ -21,9 +24,9 @@ class InMemoryWriteReportRepository implements WriteReportRepository
     /**
      * @throws Exception
      */
-    private function toDomain(ReportSnapshot $report): Report
+    private function toDomain(ReportSnapshot $report): DailyReport
     {
-        return Report::createFromAdapter(
+        return DailyReport::createFromAdapter(
             reportId: $report->id,
             projectId: $report->projectId,
             tasks: $report->tasks,
@@ -36,5 +39,15 @@ class InMemoryWriteReportRepository implements WriteReportRepository
     {
         $this->reportSnapshots[$report->id] = $report;
 
+    }
+
+    public function exists(string $reportId): bool
+    {
+        return array_key_exists($reportId, $this->reportSnapshots);
+    }
+
+    public function delete(string $reportId): void
+    {
+        unset($this->reportSnapshots[$reportId]);
     }
 }

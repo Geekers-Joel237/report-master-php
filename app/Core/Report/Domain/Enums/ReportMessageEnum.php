@@ -9,4 +9,6 @@ enum ReportMessageEnum
     const NOT_FOUND_REPORT = 'Ce rapport est introuvable !';
 
     const UPDATED = 'Rapport modifié avec succès !';
+
+    const DELETED = 'Rapport supprimé avec succès !';
 }

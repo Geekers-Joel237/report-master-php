@@ -36,7 +36,7 @@ class SaveReportCommandBuilder
         return $this;
     }
 
-    public function withParticipants(array $participants): static
+    public function withParticipantIds(array $participants): static
     {
         $this->participants = $participants;
 
@@ -47,7 +47,7 @@ class SaveReportCommandBuilder
     {
         return new SaveReportCommand(
             tasks: $this->tasks,
-            participants: $this->participants,
+            participantIds: $this->participants,
             projectId: $this->projectId
         );
     }

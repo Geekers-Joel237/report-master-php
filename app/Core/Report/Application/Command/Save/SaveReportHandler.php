@@ -4,40 +4,46 @@ namespace App\Core\Report\Application\Command\Save;
 
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
-use App\Core\Report\Domain\Entities\Report;
+use App\Core\Report\Domain\Entities\DailyReport;
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
+use App\Core\User\Domain\WriteUserRepository;
 
-readonly class SaveReportHandler
+final readonly class SaveReportHandler
 {
     public function __construct(
         private WriteProjectRepository $projectRepository,
         private IdGenerator $idGenerator,
-        private WriteReportRepository $reportRepository
+        private WriteReportRepository $reportRepository,
+        private WriteUserRepository $participantRepository,
 
     ) {}
 
     /**
      * @throws NotFoundProjectException
      * @throws NotFoundReportException
+     * @throws InvalidCommandException
      */
     public function handle(SaveReportCommand $command): SaveReportResponse
     {
         $response = new SaveReportResponse;
 
         $this->checkIfProjectExistOrThrowNotFoundException($command->projectId);
+        $participantIds = $this->getExistsParticipants($command->participantIds);
+
         if (is_null($command->reportId)) {
-            $report = Report::create(
+            $report = DailyReport::create(
                 $command->projectId,
                 $command->tasks,
-                $command->participants,
+                $participantIds,
                 $this->idGenerator->generate(),
             );
             $msg = ReportMessageEnum::SAVE;
         } else {
-            $report = $this->updateExistingReport($command);
+            $report = $this->updateExistingReport($command, $participantIds);
             $msg = ReportMessageEnum::UPDATED;
 
         }
@@ -61,10 +67,20 @@ readonly class SaveReportHandler
         }
     }
 
+    private function getExistsParticipants(array $participantIds): array
+    {
+        if (empty($participantIds)) {
+            return [];
+        }
+
+        return $this->participantRepository->allExists($participantIds);
+    }
+
     /**
      * @throws NotFoundReportException
+     * @throws InvalidCommandException
      */
-    private function updateExistingReport(SaveReportCommand $command): Report
+    private function updateExistingReport(SaveReportCommand $command, array $participantIds): DailyReport
     {
         $eReport = $this->reportRepository->ofId($command->reportId);
         if (is_null($eReport)) {
@@ -73,7 +89,7 @@ readonly class SaveReportHandler
 
         return $eReport->update(
             $command->tasks,
-            $command->participants,
+            $participantIds,
         );
     }
 }

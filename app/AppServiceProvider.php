@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Core\Project\Infrastructure\Provider\ProjectServiceProvider;
+use App\Core\Report\Infrastructure\Provider\ReportServiceProvider;
 use App\Core\Shared\Infrastructure\Provider\ConfigServiceProvider;
 use App\Core\User\Infrastructure\Provider\UserServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -27,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(ConfigServiceProvider::class);
         $this->app->register(UserServiceProvider::class);
         $this->app->register(ProjectServiceProvider::class);
+        $this->app->register(ReportServiceProvider::class);
     }
 }
