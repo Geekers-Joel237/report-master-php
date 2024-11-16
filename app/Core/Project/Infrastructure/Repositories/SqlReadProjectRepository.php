@@ -1,0 +1,3 @@
+class SqlReadProjectRepository implements ReadProjectRepository{
+
+}
