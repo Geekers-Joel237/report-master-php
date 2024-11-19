@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *     title="Project Model",
  *     description="Representation of a project entity.",
  *     required={"id", "name", "status", "slug", "year_id"},
+ *
  *     @OA\Property(
  *         property="id",
  *         type="string",
