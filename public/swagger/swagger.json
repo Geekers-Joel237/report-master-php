@@ -1,0 +1,481 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Report-Master",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://report-master.com/v1",
+            "description": "An Application to manage differents reports"
+        }
+    ],
+    "paths": {
+        "/projects/{projectId}": {
+            "delete": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Delete a project",
+                "description": "Deletes a project by its ID.",
+                "operationId": "deleteProject",
+                "parameters": [
+                    {
+                        "name": "projectId",
+                        "in": "path",
+                        "description": "ID of the project to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project deleted successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "isDeleted": {
+                                            "description": "Indicates if the project was deleted",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "description": "Confirmation message",
+                                            "type": "string",
+                                            "example": "Project successfully deleted."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Project not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Retrieve all projects",
+                "description": "Fetches a list of all projects with optional filters.",
+                "operationId": "getAllProjects",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filter projects by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Project Alpha"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter projects by status",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "active"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of projects retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "projects": {
+                                            "description": "List of projects",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Project ID",
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "description": "Project name",
+                                                        "type": "string",
+                                                        "example": "Project Alpha"
+                                                    },
+                                                    "status": {
+                                                        "description": "Project status",
+                                                        "type": "string",
+                                                        "example": "active"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "Creation date",
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2023-01-01T12:00:00Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input or filter parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Invalid filter parameters."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/save": {
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Save a project",
+                "description": "Creates or updates a project with the provided data.",
+                "operationId": "saveProject",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the project",
+                                        "type": "string",
+                                        "example": "My Project"
+                                    },
+                                    "description": {
+                                        "description": "The project description",
+                                        "type": "string",
+                                        "example": "This is an awesome project."
+                                    },
+                                    "projectId": {
+                                        "description": "ID of the existing project (for updates)",
+                                        "type": "integer",
+                                        "example": 123
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Project successfully saved.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "The status of the save operation",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "isSaved": {
+                                            "description": "Indicates if the project was saved",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "projectId": {
+                                            "description": "ID of the saved project",
+                                            "type": "integer",
+                                            "example": 123
+                                        },
+                                        "message": {
+                                            "description": "Success or error message",
+                                            "type": "string",
+                                            "example": "Project saved successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Error status",
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Required fields are missing."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reports": {
+            "post": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Save a report",
+                "description": "Creates a new report with tasks and participant IDs.",
+                "operationId": "saveReport",
+                "requestBody": {
+                    "description": "Report data to be saved",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "tasks",
+                                    "projectId"
+                                ],
+                                "properties": {
+                                    "tasks": {
+                                        "description": "List of tasks for the report",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "Task 1"
+                                        }
+                                    },
+                                    "participantIds": {
+                                        "description": "List of participant IDs for the report",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "12345"
+                                        }
+                                    },
+                                    "projectId": {
+                                        "description": "The ID of the project associated with the report",
+                                        "type": "string",
+                                        "example": "project-id-123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Report saved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "isSaved": {
+                                            "description": "Indicates if the report was saved",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "reportId": {
+                                            "description": "ID of the saved report",
+                                            "type": "string",
+                                            "example": "report-id-123"
+                                        },
+                                        "message": {
+                                            "description": "Confirmation message",
+                                            "type": "string",
+                                            "example": "Report saved successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input data.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Validation error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Project": {
+                "title": "Project Model",
+                "description": "Representation of a project entity.",
+                "required": [
+                    "id",
+                    "name",
+                    "status",
+                    "slug",
+                    "year_id"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the project",
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "name": {
+                        "description": "Name of the project",
+                        "type": "string",
+                        "example": "Project Alpha"
+                    },
+                    "description": {
+                        "description": "Detailed description of the project",
+                        "type": "string",
+                        "example": "This is a sample project used for testing."
+                    },
+                    "status": {
+                        "description": "Current status of the project",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "slug": {
+                        "description": "Unique slug for the project",
+                        "type": "string",
+                        "example": "project-alpha"
+                    },
+                    "year_id": {
+                        "description": "ID of the associated year",
+                        "type": "string",
+                        "example": "2024"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the project was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the project was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-06-01T15:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Projects",
+            "description": "Projects"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
+        }
+    ]
+}

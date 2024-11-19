@@ -11,14 +11,67 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property string $id
- * @property string $name
- * @property string $description
- * @property string $status
- * @property ?string $created_at
- * @property ?string $updated_at
- * @property string $slug
- * @property string $year_id
+ * Class Project
+ *
+ * Represents a project entity in the application.
+ *
+ * @OA\Schema(
+ *     schema="Project",
+ *     title="Project Model",
+ *     description="Representation of a project entity.",
+ *     required={"id", "name", "status", "slug", "year_id"},
+ *
+ *     @OA\Property(
+ *         property="id",
+ *         type="string",
+ *         description="Unique identifier for the project",
+ *         example="123e4567-e89b-12d3-a456-426614174000"
+ *     ),
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="Name of the project",
+ *         example="Project Alpha"
+ *     ),
+ *     @OA\Property(
+ *         property="description",
+ *         type="string",
+ *         description="Detailed description of the project",
+ *         example="This is a sample project used for testing."
+ *     ),
+ *     @OA\Property(
+ *         property="status",
+ *         type="string",
+ *         description="Current status of the project",
+ *         example="active"
+ *     ),
+ *     @OA\Property(
+ *         property="slug",
+ *         type="string",
+ *         description="Unique slug for the project",
+ *         example="project-alpha"
+ *     ),
+ *     @OA\Property(
+ *         property="year_id",
+ *         type="string",
+ *         description="ID of the associated year",
+ *         example="2024"
+ *     ),
+ *     @OA\Property(
+ *         property="created_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Timestamp when the project was created",
+ *         example="2023-01-01T12:00:00Z"
+ *     ),
+ *     @OA\Property(
+ *         property="updated_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Timestamp when the project was last updated",
+ *         example="2023-06-01T15:00:00Z"
+ *     )
+ * )
  */
 class Project extends BaseModel
 {

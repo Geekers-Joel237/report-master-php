@@ -13,7 +13,7 @@ class SqlReadProjectRepository implements ReadProjectRepository
      */
     public function all(?string $year, ?string $status): array
     {
-        $sql = "
+        $sql = '
             SELECT 
                 projects.id AS projectId,
                 projects.name,
@@ -26,15 +26,15 @@ class SqlReadProjectRepository implements ReadProjectRepository
             FROM projects
             JOIN years ON projects.year_id = years.id
             WHERE 1 = 1
-        ";
+        ';
 
         $tab = [];
         if ($year) {
-            $sql .= " AND years.year = :year";
+            $sql .= ' AND years.year = :year';
             $tab['year'] = $year;
         }
         if ($status) {
-            $sql .= " AND projects.status = :status";
+            $sql .= ' AND projects.status = :status';
             $tab['status'] = $status;
         }
 
