@@ -302,6 +302,110 @@
                     }
                 }
             }
+        },
+        "/reports": {
+            "post": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Save a report",
+                "description": "Creates a new report with tasks and participant IDs.",
+                "operationId": "saveReport",
+                "requestBody": {
+                    "description": "Report data to be saved",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "tasks",
+                                    "projectId"
+                                ],
+                                "properties": {
+                                    "tasks": {
+                                        "description": "List of tasks for the report",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "Task 1"
+                                        }
+                                    },
+                                    "participantIds": {
+                                        "description": "List of participant IDs for the report",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "12345"
+                                        }
+                                    },
+                                    "projectId": {
+                                        "description": "The ID of the project associated with the report",
+                                        "type": "string",
+                                        "example": "project-id-123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Report saved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "isSaved": {
+                                            "description": "Indicates if the report was saved",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "reportId": {
+                                            "description": "ID of the saved report",
+                                            "type": "string",
+                                            "example": "report-id-123"
+                                        },
+                                        "message": {
+                                            "description": "Confirmation message",
+                                            "type": "string",
+                                            "example": "Report saved successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input data.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Operation status",
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Validation error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -368,6 +472,10 @@
         {
             "name": "Projects",
             "description": "Projects"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
         }
     ]
 }
