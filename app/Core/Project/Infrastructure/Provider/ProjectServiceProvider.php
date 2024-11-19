@@ -6,6 +6,7 @@ use App\Core\Project\Domain\Repositories\ReadProjectRepository;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Infrastructure\Repositories\EloquentReadProjectRepository;
 use App\Core\Project\Infrastructure\Repositories\EloquentWriteProjectRepository;
+use App\Core\Project\Infrastructure\Repositories\SqlReadProjectRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +28,8 @@ class ProjectServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ReadProjectRepository::class, EloquentReadProjectRepository::class);
         $this->app->singleton(WriteProjectRepository::class, EloquentWriteProjectRepository::class);
+        $this->app->singleton(ReadProjectRepository::class, SqlReadProjectRepository::class);
+
     }
 
     private function registerRoutes(): void
