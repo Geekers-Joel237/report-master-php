@@ -3,6 +3,7 @@
 namespace App\Core\Report\Application\Command\Delete;
 
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
+use App\Core\Report\Domain\Exceptions\ErrorOnSaveReportException;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 
@@ -12,6 +13,7 @@ final readonly class DeleteReportHandler
 
     /**
      * @throws NotFoundReportException
+     * @throws ErrorOnSaveReportException
      */
     public function handle(string $reportId): DeleteReportResponse
     {

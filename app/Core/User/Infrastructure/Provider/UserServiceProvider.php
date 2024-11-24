@@ -2,8 +2,8 @@
 
 namespace App\Core\User\Infrastructure\Provider;
 
+use App\Core\Shared\Infrastructure\Repository\EloquentWriteParticipantRepository;
 use App\Core\User\Domain\WriteUserRepository;
-use App\Core\User\Infrastructure\Repositories\EloquentWriteUserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class UserServiceProvider extends ServiceProvider
@@ -21,6 +21,6 @@ class UserServiceProvider extends ServiceProvider
 
     private function bindRepositories(): void
     {
-        $this->app->singleton(WriteUserRepository::class, EloquentWriteUserRepository::class);
+        $this->app->singleton(WriteUserRepository::class, EloquentWriteParticipantRepository::class);
     }
 }

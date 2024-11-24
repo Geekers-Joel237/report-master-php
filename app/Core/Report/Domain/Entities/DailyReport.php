@@ -67,13 +67,36 @@ class DailyReport
         return $report;
     }
 
+    /**
+     * @throws Exception
+     */
+    public static function createFromDb(
+        string $id,
+        string $projectId,
+        array $tasks,
+        array $participantIds,
+        string $createdAt,
+        ?string $updatedAt
+    ): static {
+        $report = new static(
+            reportId: $id,
+            projectId: $projectId,
+            tasks: $tasks,
+            participants: $participantIds,
+        );
+        $report->createdAt = $createdAt ? new DateTimeImmutable($createdAt) : null;
+        $report->updatedAt = $updatedAt ? new DateTimeImmutable($updatedAt) : null;
+
+        return $report;
+    }
+
     public function snapshot(): ReportSnapshot
     {
         return new ReportSnapshot(
             id: $this->reportId,
             projectId: $this->projectId,
             tasks: $this->tasks,
-            participants: $this->participants,
+            participantIds: $this->participants,
             createdAt: $this->createdAt?->format('Y-m-d H:i:s'),
             updatedAt: $this->updatedAt?->format('Y-m-d H:i:s')
         );

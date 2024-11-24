@@ -12,6 +12,7 @@ use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
+use App\Core\Shared\InMemoryParticipantRepository;
 use App\Core\User\Domain\WriteUserRepository;
 use DateTimeImmutable;
 use Tests\TestCase;
@@ -78,7 +79,7 @@ class SaveReportTest extends TestCase
 
         $this->assertNotNull($expectedReport);
         $this->assertEquals((new DateTimeImmutable)->format('Y-m-d H:i:s'), $expectedReport->snapshot()->createdAt);
-        $this->assertCount(0, $expectedReport->snapshot()->participants);
+        $this->assertCount(0, $expectedReport->snapshot()->participantIds);
         $this->assertCount(1, $expectedReport->snapshot()->tasks);
     }
 
@@ -123,7 +124,7 @@ class SaveReportTest extends TestCase
 
         $this->assertNotNull($expectedReport);
         $this->assertEquals((new DateTimeImmutable)->format('Y-m-d H:i:s'), $expectedReport->snapshot()->createdAt);
-        $this->assertCount(2, $expectedReport->snapshot()->participants);
+        $this->assertCount(2, $expectedReport->snapshot()->participantIds);
         $this->assertCount(1, $expectedReport->snapshot()->tasks);
     }
 }

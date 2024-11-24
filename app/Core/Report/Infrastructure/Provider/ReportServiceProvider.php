@@ -11,7 +11,7 @@ class ReportServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //        $this->loadMigrations();
+        $this->loadMigrations();
         $this->registerRoutes();
         $this->bindRepositories();
     }
@@ -33,5 +33,11 @@ class ReportServiceProvider extends ServiceProvider
     private function bindRepositories(): void
     {
         $this->app->singleton(WriteReportRepository::class, EloquentWriteReportRepository::class);
+    }
+
+    private function loadMigrations(): void
+    {
+        $this->loadMigrationsFrom(base_path('app/Core/Report/Infrastructure/database/migrations'));
+
     }
 }

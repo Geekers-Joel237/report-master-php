@@ -2,13 +2,12 @@
 
 namespace App\Core\Report\Domain\Exceptions;
 
-class ErrorOnSaveReportException
-{
+use Exception;
 
-    /**
-     * @param string $getMessage
-     */
-    public function __construct(string $getMessage)
+class ErrorOnSaveReportException extends Exception
+{
+    public function __construct(string $message = '', int $code = 500, ?Throwable $previous = null)
     {
+        parent::__construct($message, $code, $previous);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Report\Tests\Unit;
+namespace App\Core\Shared;
 
 use App\Core\User\Domain\WriteUserRepository;
 

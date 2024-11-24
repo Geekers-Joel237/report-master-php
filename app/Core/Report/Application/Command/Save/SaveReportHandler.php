@@ -6,6 +6,7 @@ use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Report\Domain\Entities\DailyReport;
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
+use App\Core\Report\Domain\Exceptions\ErrorOnSaveReportException;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
@@ -26,6 +27,7 @@ final readonly class SaveReportHandler
      * @throws NotFoundProjectException
      * @throws NotFoundReportException
      * @throws InvalidCommandException
+     * @throws ErrorOnSaveReportException
      */
     public function handle(SaveReportCommand $command): SaveReportResponse
     {

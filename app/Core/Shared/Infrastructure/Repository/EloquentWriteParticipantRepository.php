@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\User\Infrastructure\Repositories;
+namespace App\Core\Shared\Infrastructure\Repository;
 
 use App\Core\User\Domain\WriteUserRepository;
 use App\Core\User\Infrastructure\Models\User;
 
-class EloquentWriteUserRepository implements WriteUserRepository
+class EloquentWriteParticipantRepository implements WriteUserRepository
 {
     public function allExists(array $participantIds): array
     {

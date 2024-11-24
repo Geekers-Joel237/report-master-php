@@ -66,6 +66,8 @@ php artisan serve
 
 ## Configuration
 - ``$ composer lint app``
+- generate swagger file
+- ``vendor/bin/openai --format json --output ./public/swagger/swagger.json app``
 
 ## Structure du Projet
 

@@ -30,7 +30,7 @@ class InMemoryWriteReportRepository implements WriteReportRepository
             reportId: $report->id,
             projectId: $report->projectId,
             tasks: $report->tasks,
-            participants: $report->participants,
+            participants: $report->participantIds,
             createdAt: $report->createdAt
         );
     }

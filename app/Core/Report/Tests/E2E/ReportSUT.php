@@ -3,6 +3,7 @@
 namespace App\Core\Report\Tests\E2E;
 
 use App\Core\Project\Infrastructure\Models\Project;
+use App\Core\Report\Infrastructure\Models\Report;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Random\RandomException;
@@ -67,6 +68,12 @@ class ReportSUT
             $this->participants[] = strval(rand(1, 100));
         }
 
+        return $this;
+    }
+
+    public function withReports(int $nbReports): static
+    {
+        Report::factory()->count($nbReports)->create();
         return $this;
     }
 }

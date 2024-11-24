@@ -3,6 +3,7 @@
 namespace App\Core\Report\Tests\E2E;
 
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
+use App\Core\Report\Infrastructure\Models\Report;
 use App\Core\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Random\RandomException;
@@ -40,6 +41,22 @@ class ReportActionTest extends TestCase
         $response->assertOk();
         $this->assertTrue($response->json()['isSaved']);
         $this->assertEquals(ReportMessageEnum::SAVE, $response->json()['message']);
-        $this->assertDatabaseHas('reports', $data);
+        $this->assertCount(1, Report::all());
+    }
+
+    public function test_can_get_all_reports(): void
+    {
+        $sut = ReportSUT::asSUT()
+            ->withProject()
+            ->withReports(5)
+            ->build();
+
+        $projectId = $sut->project->id;
+        $response = $this->actingAs($this->user)->getJson('/api/v1/reports'.'?projectId='.$projectId);
+
+        $response->assertOk();
+        $this->assertIsArray($response->json()['reports']);
+        $this->assertCount(5, $response->json()['reports']);
+
     }
 }

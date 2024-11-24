@@ -2,7 +2,9 @@
 
 namespace App\Core\Objective\Infrastructure\Provider;
 
-class ObjectiveServiceProvider
-{
+use Illuminate\Support\ServiceProvider;
 
+class ObjectiveServiceProvider extends ServiceProvider
+{
+    public function register(): void {}
 }
