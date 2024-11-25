@@ -4,7 +4,6 @@ namespace App\Core\Project\Infrastructure\Provider;
 
 use App\Core\Project\Domain\Repositories\ReadProjectRepository;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
-use App\Core\Project\Infrastructure\Repositories\EloquentReadProjectRepository;
 use App\Core\Project\Infrastructure\Repositories\EloquentWriteProjectRepository;
 use App\Core\Project\Infrastructure\Repositories\SqlReadProjectRepository;
 use Illuminate\Support\Facades\Route;
@@ -24,14 +23,6 @@ class ProjectServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(base_path('app/Core/Project/Infrastructure/database/migrations'));
     }
 
-    private function registerRepositories(): void
-    {
-        $this->app->singleton(ReadProjectRepository::class, EloquentReadProjectRepository::class);
-        $this->app->singleton(WriteProjectRepository::class, EloquentWriteProjectRepository::class);
-        $this->app->singleton(ReadProjectRepository::class, SqlReadProjectRepository::class);
-
-    }
-
     private function registerRoutes(): void
     {
         Route::group($this->routeConfig(), function () {
@@ -47,5 +38,12 @@ class ProjectServiceProvider extends ServiceProvider
         return [
             'prefix' => 'api/v1',
         ];
+    }
+
+    private function registerRepositories(): void
+    {
+        $this->app->singleton(WriteProjectRepository::class, EloquentWriteProjectRepository::class);
+        $this->app->singleton(ReadProjectRepository::class, SqlReadProjectRepository::class);
+
     }
 }

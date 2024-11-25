@@ -4,44 +4,48 @@ namespace App\Core\Project\Infrastructure\Repositories;
 
 use App\Core\Project\Application\Query\All\ProjectDto;
 use App\Core\Project\Domain\Repositories\ReadProjectRepository;
-use Illuminate\Support\Facades\DB;
+use App\Core\Shared\Lib\PdoConnection;
+use PDO;
 
-class SqlReadProjectRepository implements ReadProjectRepository
+readonly class SqlReadProjectRepository implements ReadProjectRepository
 {
+    public function __construct(
+        private PdoConnection $connection
+    ) {}
+
     /**
      * @return ProjectDto[]
      */
     public function all(?string $year, ?string $status): array
     {
-        $sql = '
-            SELECT 
-                projects.id AS projectId,
-                projects.name,
-                projects.description,
-                projects.status,
-                projects.created_at AS createdAt,
-                projects.updated_at AS updatedAt,
-                projects.year_id AS yearId,
-                years.year AS year
-            FROM projects
-            JOIN years ON projects.year_id = years.id
-            WHERE 1 = 1
-        ';
-
-        $tab = [];
+        $params = [];
+        $clause = 'p.is_deleted = 0';
         if ($year) {
-            $sql .= ' AND years.year = :year';
-            $tab['year'] = $year;
+            $clause .= ' AND y.year = :year';
+            $params['year'] = $year;
         }
         if ($status) {
-            $sql .= ' AND projects.status = :status';
-            $tab['status'] = $status;
+            $clause .= ' AND p.status = :status';
+            $params['status'] = $status;
         }
+        $sql = "
+            SELECT
+                p.id AS projectId,
+                p.name,
+                p.description,
+                p.status,
+                p.created_at AS createdAt,
+                p.updated_at AS updatedAt,
+                y.id AS yearId,
+                y.year
+            FROM projects p
+            INNER JOIN years y ON p.year_id = y.id
+            WHERE $clause
+        ";
 
-        $results = DB::select($sql, $tab);
+        $st = $this->connection->getPdo()->prepare($sql);
+        $st->execute($params);
 
-        return array_map(function ($row) {
-            return (array) $row;
-        }, $results);
+        return $st->fetchAll(PDO::FETCH_CLASS, ProjectDto::class);
     }
 }
