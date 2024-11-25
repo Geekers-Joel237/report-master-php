@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Core\Project\Infrastructure\Models\Project;
+use App\Core\Report\Infrastructure\Models\Report;
+use App\Core\Shared\Infrastructure\Models\Years;
 use App\Core\User\Infrastructure\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -16,9 +19,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $eUser = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+        $eProjects = Project::factory(3)->create([
+            'year_id' => Years::query()->where('is_active', true)->first()->id,
+        ]);
+        Report::factory(20)->create([
+            'owner_id' => $eUser->id,
+            'project_id' => $eProjects->random()->id,
         ]);
     }
 }
