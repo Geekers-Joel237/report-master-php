@@ -42,6 +42,7 @@ final readonly class SaveReportHandler
                 $command->tasks,
                 $participantIds,
                 $this->idGenerator->generate(),
+                $command->ownerId
             );
             $msg = ReportMessageEnum::SAVE;
         } else {

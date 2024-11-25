@@ -7,6 +7,7 @@ readonly class ReportSnapshot
     public function __construct(
         public string $id,
         public string $projectId,
+        public string $ownerId,
         public array $tasks,
         public array $participantIds,
         public ?string $createdAt,
@@ -18,6 +19,7 @@ readonly class ReportSnapshot
         return [
             'id' => $this->id,
             'project_id' => $this->projectId,
+            'owner_id' => $this->ownerId,
             'tasks' => json_encode($this->tasks),
             'created_at' => $this->createdAt,
             'updated_at' => $this->updatedAt,

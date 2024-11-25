@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('project_id')->index('project_id');
+            $table->string('owner_id')->index('owner_id');
             $table->json('tasks');
             $table->softDeletes();
             $table->boolean('is_deleted')->default(false);

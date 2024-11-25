@@ -5,6 +5,8 @@ namespace App\Core\Report\Infrastructure\Factory;
 use App\Core\Report\Application\Command\Save\SaveReportCommand;
 use App\Core\Report\Infrastructure\Http\Requests\SaveReportRequest;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
+use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Uuid;
 
 class SaveReportCommandFactory
 {
@@ -19,6 +21,7 @@ class SaveReportCommandFactory
             tasks: $request->get('tasks'),
             participantIds: $request->get('participantIds'),
             projectId: $request->get('projectId'),
+            ownerId: Auth::user()?->id ?? Uuid::uuid4()->toString(),
             reportId: $request->get('reportId')
         );
     }

@@ -29,6 +29,7 @@ class InMemoryWriteReportRepository implements WriteReportRepository
         return DailyReport::createFromAdapter(
             reportId: $report->id,
             projectId: $report->projectId,
+            ownerId: $report->ownerId,
             tasks: $report->tasks,
             participants: $report->participantIds,
             createdAt: $report->createdAt

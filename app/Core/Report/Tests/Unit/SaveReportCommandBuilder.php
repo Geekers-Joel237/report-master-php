@@ -6,6 +6,8 @@ use App\Core\Report\Application\Command\Save\SaveReportCommand;
 
 class SaveReportCommandBuilder
 {
+    private string $ownerId = '001';
+
     private ?string $projectId;
 
     private array $tasks;
@@ -48,7 +50,8 @@ class SaveReportCommandBuilder
         return new SaveReportCommand(
             tasks: $this->tasks,
             participantIds: $this->participants,
-            projectId: $this->projectId
+            projectId: $this->projectId,
+            ownerId: $this->ownerId
         );
     }
 }

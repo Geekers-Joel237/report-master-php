@@ -58,7 +58,8 @@ class ReportSut
             remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
             containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
              PageMaker including versions of Lorem Ipsum.",
-            ], participants: [], reportId: '001'
+            ],
+            participants: [], reportId: '001', ownerId: '001'
         );
 
         return $this;

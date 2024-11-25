@@ -2,6 +2,7 @@
 
 namespace App\Core\Report\Infrastructure\Http\Controllers;
 
+use App\Core\Report\Application\Query\All\GetAllReportsQueryHandler;
 use App\Core\Report\Infrastructure\Factory\FilterReportCommandFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

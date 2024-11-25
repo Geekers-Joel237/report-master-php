@@ -16,6 +16,7 @@ class DailyReport
     final private function __construct(
         private readonly string $reportId,
         private readonly string $projectId,
+        private readonly string $ownerId,
         private array $tasks,
         private array $participants,
     ) {
@@ -30,7 +31,8 @@ class DailyReport
         string $projectId,
         array $tasks,
         array $participants,
-        string $reportId
+        string $reportId,
+        string $ownerId
     ): static {
         if (empty($tasks)) {
             throw new InvalidCommandException('Tasks  should not be empty', 400);
@@ -38,8 +40,9 @@ class DailyReport
         $report = new static(
             reportId: $reportId,
             projectId: $projectId,
+            ownerId: $ownerId,
             tasks: $tasks,
-            participants: $participants,
+            participants: $participants
         );
         $report->createdAt = new DateTimeImmutable;
 
@@ -52,6 +55,7 @@ class DailyReport
     public static function createFromAdapter(
         string $reportId,
         string $projectId,
+        string $ownerId,
         array $tasks,
         array $participants,
         string $createdAt
@@ -59,6 +63,7 @@ class DailyReport
         $report = new static(
             reportId: $reportId,
             projectId: $projectId,
+            ownerId: $ownerId,
             tasks: $tasks,
             participants: $participants,
         );
@@ -73,6 +78,7 @@ class DailyReport
     public static function createFromDb(
         string $id,
         string $projectId,
+        string $ownerId,
         array $tasks,
         array $participantIds,
         string $createdAt,
@@ -81,6 +87,7 @@ class DailyReport
         $report = new static(
             reportId: $id,
             projectId: $projectId,
+            ownerId: $ownerId,
             tasks: $tasks,
             participants: $participantIds,
         );
@@ -95,6 +102,7 @@ class DailyReport
         return new ReportSnapshot(
             id: $this->reportId,
             projectId: $this->projectId,
+            ownerId: $this->ownerId,
             tasks: $this->tasks,
             participantIds: $this->participants,
             createdAt: $this->createdAt?->format('Y-m-d H:i:s'),

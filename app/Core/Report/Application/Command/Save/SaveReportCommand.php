@@ -8,6 +8,7 @@ readonly class SaveReportCommand
         public array $tasks,
         public array $participantIds,
         public string $projectId,
+        public string $ownerId,
         public ?string $reportId = null,
     ) {}
 }
