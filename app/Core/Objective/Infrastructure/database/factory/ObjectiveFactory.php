@@ -14,6 +14,8 @@ class ObjectiveFactory extends Factory
         return [
             'id' => $this->faker->uuid(),
             'project_id' => $this->faker->uuid(),
+            'tasks' => $this->faker->text(),
+            'owner_id' => $this->faker->uuid(),
         ];
     }
 }

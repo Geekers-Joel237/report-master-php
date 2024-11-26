@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Core\Objective\Infrastructure\Model\Objective;
 use App\Core\Project\Infrastructure\Models\Project;
 use App\Core\Report\Infrastructure\Models\Report;
 use App\Core\Shared\Infrastructure\Models\Years;
@@ -27,6 +28,10 @@ class DatabaseSeeder extends Seeder
             'year_id' => Years::query()->where('is_active', true)->first()->id,
         ]);
         Report::factory(20)->create([
+            'owner_id' => $eUser->id,
+            'project_id' => $eProjects->random()->id,
+        ]);
+        Objective::factory(20)->create([
             'owner_id' => $eUser->id,
             'project_id' => $eProjects->random()->id,
         ]);

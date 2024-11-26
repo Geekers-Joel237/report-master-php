@@ -10,5 +10,7 @@ class Objective extends BaseModel
 {
     use HasFactory;
 
-    public static function newFactory(): ObjectiveFactory {}
+    public static function newFactory(): ObjectiveFactory {
+        return ObjectiveFactory::new();
+    }
 }
