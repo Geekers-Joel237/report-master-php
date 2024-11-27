@@ -7,6 +7,7 @@ use App\Core\Project\Domain\Enums\ProjectMessageEnum;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 
 final readonly class UpdateProjectStatusHandler
 {
@@ -23,7 +24,13 @@ final readonly class UpdateProjectStatusHandler
         $response = new UpdateProjectStatusResponse;
 
         $existingProject = $this->getProjectIfExistOrThrowNotFoundException($command->projectId);
-        $existingProject->updateStatus($command->status);
+        try {
+            $existingProject->updateStatus($command->status);
+        } catch (InvalidCommandException $e) {
+            $response->message = $e->getMessage();
+
+            return $response;
+        }
 
         $this->repository->save($existingProject->snapshot());
         $response->isSaved = true;

@@ -2,6 +2,8 @@
 
 namespace App\Core\Objective\Infrastructure\Provider;
 
+use App\Core\Objective\Domain\Repository\WriteObjectiveRepository;
+use App\Core\Objective\Infrastructure\Repository\EloquentWriteObjectiveRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -11,6 +13,7 @@ class ObjectiveServiceProvider extends ServiceProvider
     {
         $this->loadMigrations();
         $this->registerRoutes();
+        $this->bindRepositories();
 
     }
 
@@ -32,5 +35,10 @@ class ObjectiveServiceProvider extends ServiceProvider
         return [
             'prefix' => 'api/v1',
         ];
+    }
+
+    private function bindRepositories(): void
+    {
+        $this->app->singleton(WriteObjectiveRepository::class, EloquentWriteObjectiveRepository::class);
     }
 }

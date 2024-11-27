@@ -15,6 +15,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * Represents a project entity in the application.
  *
+ * @property string $id
+ * @property string $name
+ * @property string $status
+ * @property string $slug
+ * @property ?string $description
+ * @property ?string $created_at
+ * @property ?string $updated_at
+ *
  * @OA\Schema(
  *     schema="Project",
  *     title="Project Model",
@@ -101,5 +109,11 @@ class Project extends BaseModel
             createdAt: $this->created_at,
             updatedAt: $this->updated_at
         );
+    }
+
+    public function softDelete(): void
+    {
+        $this->slug = 'deleted_'.$this->slug.'_'.microtime(true);
+        parent::softDelete();
     }
 }

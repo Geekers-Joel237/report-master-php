@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('participant_objective', function (Blueprint $table) {
             $table->string('participant_id')->index('participant_id');
-            $table->string('report_id')->index('report_id');
+            $table->string('objective_id')->index('objective_id');
             $table->timestamps();
         });
     }

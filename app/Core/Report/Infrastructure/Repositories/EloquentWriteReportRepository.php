@@ -26,11 +26,16 @@ class EloquentWriteReportRepository implements WriteReportRepository
     public function save(ReportSnapshot $report): void
     {
         try {
-            $dbReport = Report::query()->updateOrCreate(
-                ['id' => $report->id],
-                $report->toArray()
-            );
+            if ($report->updatedAt) {
+                $dbReport = Report::query()->find($report->id);
+                $dbReport->update($report->toArray());
+                $dbReport->participants()->sync($report->participantIds);
+
+                return;
+            }
+            $dbReport = Report::query()->create($report->toArray());
             $dbReport->participants()->attach($report->participantIds);
+
         } catch (Throwable|Exception $e) {
             throw new ErrorOnSaveReportException($e->getMessage());
         }

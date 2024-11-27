@@ -1,53 +1,52 @@
 <?php
 
-namespace App\Core\Report\Application\Command\Save;
+namespace App\Core\Objective\Application\Command\Save;
 
+use App\Core\Objective\Domain\Entities\Objective;
+use App\Core\Objective\Domain\Enums\ObjectiveMessageEnum;
+use App\Core\Objective\Domain\Exceptions\NotFoundObjectiveException;
+use App\Core\Objective\Domain\Repository\WriteObjectiveRepository;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
-use App\Core\Report\Domain\Entities\DailyReport;
-use App\Core\Report\Domain\Enums\ReportMessageEnum;
-use App\Core\Report\Domain\Exceptions\ErrorOnSaveReportException;
-use App\Core\Report\Domain\Exceptions\NotFoundReportException;
-use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
 use App\Core\User\Domain\WriteUserRepository;
 
-final readonly class SaveReportHandler
+final readonly class SaveObjectiveHandler
 {
     public function __construct(
         private WriteProjectRepository $projectRepository,
         private IdGenerator $idGenerator,
-        private WriteReportRepository $reportRepository,
+        private WriteObjectiveRepository $objectiveRepository,
         private WriteUserRepository $participantRepository,
 
     ) {}
 
     /**
-     * @throws ErrorOnSaveReportException
+     * @throws NotFoundObjectiveException
      * @throws NotFoundProjectException
-     * @throws NotFoundReportException
      */
-    public function handle(SaveReportCommand $command): SaveReportResponse
+    public function handle(SaveObjectiveCommand $command): SaveObjectiveResponse
     {
-        $response = new SaveReportResponse;
+        $response = new SaveObjectiveResponse;
 
         $this->checkIfProjectExistOrThrowNotFoundException($command->projectId);
         $participantIds = $this->getExistsParticipants($command->participantIds);
         try {
 
-            if (is_null($command->reportId)) {
-                $report = DailyReport::create(
+            if (is_null($command->objectiveId)) {
+                $objective = Objective::create(
                     $command->projectId,
                     $command->tasks,
                     $participantIds,
                     $this->idGenerator->generate(),
                     $command->ownerId
                 );
-                $msg = ReportMessageEnum::SAVE;
+                $msg = ObjectiveMessageEnum::SAVE;
             } else {
-                $report = $this->updateExistingReport($command, $participantIds);
-                $msg = ReportMessageEnum::UPDATED;
+                $objective = $this->updateExistingObjective($command, $participantIds);
+
+                $msg = ObjectiveMessageEnum::UPDATED;
 
             }
         } catch (InvalidCommandException $e) {
@@ -55,11 +54,11 @@ final readonly class SaveReportHandler
 
             return $response;
         }
-        $this->reportRepository->save($report->snapshot());
+        $this->objectiveRepository->save($objective->snapshot());
 
         $response->isSaved = true;
         $response->message = $msg;
-        $response->reportId = $report->snapshot()->id;
+        $response->objectiveId = $objective->snapshot()->id;
 
         return $response;
     }
@@ -84,17 +83,17 @@ final readonly class SaveReportHandler
     }
 
     /**
-     * @throws NotFoundReportException
      * @throws InvalidCommandException
+     * @throws NotFoundObjectiveException
      */
-    private function updateExistingReport(SaveReportCommand $command, array $participantIds): DailyReport
+    private function updateExistingObjective(SaveObjectiveCommand $command, array $participantIds): Objective
     {
-        $eReport = $this->reportRepository->ofId($command->reportId);
-        if (is_null($eReport)) {
-            throw new NotFoundReportException;
+        $eObjective = $this->objectiveRepository->ofId($command->objectiveId);
+        if (is_null($eObjective)) {
+            throw new NotFoundObjectiveException;
         }
 
-        return $eReport->update(
+        return $eObjective->update(
             $command->tasks,
             $participantIds,
         );

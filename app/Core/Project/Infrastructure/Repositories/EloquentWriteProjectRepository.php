@@ -14,14 +14,20 @@ use Throwable;
 
 class EloquentWriteProjectRepository implements WriteProjectRepository
 {
+    /**
+     * @throws Exception
+     */
     public function ofId(string $projectId): ?Project
     {
-        return ProjectModel::find($projectId)?->createFromModel();
+        return ProjectModel::query()->find($projectId)?->createFromModel();
     }
 
+    /**
+     * @throws Exception
+     */
     public function ofSlug(string $value): ?Project
     {
-        return ProjectModel::where(['slug' => Str::slug($value)])->first()
+        return ProjectModel::query()->where(['slug' => Str::slug($value)])->first()
             ?->createFromModel();
 
     }
@@ -29,7 +35,7 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
     public function delete(string $existingProjectId): void
     {
         try {
-            ProjectModel::findOrFail($existingProjectId)?->softDelete();
+            ProjectModel::query()->find($existingProjectId)->softDelete();
         } catch (Throwable|Exception $exception) {
             throw new ErrorOnSaveProjectException($exception->getMessage());
         }
@@ -37,7 +43,7 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
 
     public function exists(string $projectId): bool
     {
-        return ProjectModel::where('id', $projectId)->exists();
+        return ProjectModel::query()->where('id', $projectId)->exists();
     }
 
     /**
@@ -46,7 +52,7 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
     public function save(ProjectSnapshot $project): void
     {
         try {
-            ProjectModel::updateOrCreate(
+            ProjectModel::query()->updateOrCreate(
                 ['id' => $project->id],
                 array_merge($project->toArray(), ['year_id' => $this->getActiveYearsIdentifier()])
             );
@@ -57,6 +63,6 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
 
     private function getActiveYearsIdentifier(): string
     {
-        return Years::select(['id'])->whereIsActive(true)->first()->id;
+        return Years::query()->select(['id'])->where(['is_active' => true])->first()->id;
     }
 }

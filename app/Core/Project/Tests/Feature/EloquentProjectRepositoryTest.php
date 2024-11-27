@@ -5,8 +5,10 @@ namespace App\Core\Project\Tests\Feature;
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
+use App\Core\Project\Infrastructure\Models\Project as ProjectModel;
 use App\Core\Project\Infrastructure\Repositories\EloquentWriteProjectRepository;
 use App\Core\Project\Tests\Feature\Builder\ProjectSUT;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,6 +26,8 @@ class EloquentProjectRepositoryTest extends TestCase
 
     /**
      * @return void
+     *
+     * @throws Exception
      */
     public function test_can_get_existing_project()
     {
@@ -31,7 +35,7 @@ class EloquentProjectRepositoryTest extends TestCase
             ->withDbExistingProject()
             ->build();
 
-        $this->assertInstanceOf(\App\Core\Project\Infrastructure\Models\Project::class, $sut->dbProject);
+        $this->assertInstanceOf(expected: ProjectModel::class, actual: $sut->dbProject);
         $dbProject = $this->repository->ofId($sut->dbProject->id);
 
         $this->assertNotNull($dbProject);
@@ -40,6 +44,7 @@ class EloquentProjectRepositoryTest extends TestCase
 
     /**
      * @throws ErrorOnSaveProjectException
+     * @throws Exception
      */
     public function test_can_save_project()
     {
@@ -56,6 +61,7 @@ class EloquentProjectRepositoryTest extends TestCase
 
     /**
      * @throws ErrorOnSaveProjectException
+     * @throws Exception
      */
     public function test_can_delete_project()
     {
