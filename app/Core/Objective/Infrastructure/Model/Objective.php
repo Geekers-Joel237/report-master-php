@@ -11,12 +11,34 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
+ *  Class Objectives
+ *
+ *  Represents a Objective entity in the application.
+ *
+ *
  * @property string $id
  * @property string $project_id
  * @property array $tasks
  * @property string $created_at
  * @property string $updated_at
  * @property string $owner_id
+ *
+ * @OA\Schema(
+ *      schema="Objective",
+ *      description="Objective model representation",
+ *      type="object",
+ *
+ *      @OA\Property(property="id", type="string", description="The ID of the objective"),
+ *      @OA\Property(property="project_id", type="string", description="The ID of the associated project"),
+ *      @OA\Property(property="tasks", type="array", description="The list of tasks",
+ *
+ *          @OA\Items(type="string")
+ *      ),
+ *
+ *      @OA\Property(property="owner_id", type="string", description="The ID of the owner of the objective"),
+ *      @OA\Property(property="created_at", type="string", format="date-time", description="Creation timestamp"),
+ *      @OA\Property(property="updated_at", type="string", format="date-time", description="Last update timestamp")
+ *  )
  */
 class Objective extends BaseModel
 {
