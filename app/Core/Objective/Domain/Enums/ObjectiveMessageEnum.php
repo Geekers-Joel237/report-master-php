@@ -2,7 +2,8 @@
 
 namespace App\Core\Objective\Domain\Enums;
 
-enum ObjectiveMessageEnum: string
+
+class ObjectiveMessageEnum
 {
     const SAVE = 'Nouvel objectif ajouté avec succès !';
 
