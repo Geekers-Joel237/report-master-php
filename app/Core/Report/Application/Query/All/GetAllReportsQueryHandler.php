@@ -9,8 +9,7 @@ class GetAllReportsQueryHandler
     public function handle(FilterReportCommand $command)
     {
         $query = Report::query()
-            ->with(['owner', 'participants'])
-            ->whereNull('deleted_at');
+            ->with(['owner', 'participants']);
 
         if (! empty($command->projectId)) {
             $query->where('project_id', $command->projectId);
@@ -34,6 +33,32 @@ class GetAllReportsQueryHandler
             });
         }
 
-        return $query->get();
+
+        $reports = $query->paginate(10);
+
+
+        $formattedReports = $reports->getCollection()->map(function ($report) {
+            return [
+                'report_id' => $report->id,
+                'project_id' => $report->project_id,
+                'project_name' => optional($report->project)->name ?? 'Unknown',
+                'project_year' => optional($report->project)->created_at?->format('Y') ?? 'Unknown',
+                'participants' => $report->participants->pluck('name')->toArray(), 
+                'tasks' => $report->tasks,
+            ];
+        });
+
+
+        return [
+            'status' => true,
+            'reports' => [
+                'current_page' => $reports->currentPage(),
+                'data' => $formattedReports,
+                'total' => $reports->total(),
+                'last_page' => $reports->lastPage(),
+                'per_page' => $reports->perPage(),
+            ],
+        ];
     }
+
 }
