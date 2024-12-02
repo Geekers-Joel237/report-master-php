@@ -2,6 +2,7 @@
 
 namespace App\Core\Report\Infrastructure\Models;
 
+use App\Core\Project\Infrastructure\Models\Project;
 use App\Core\Report\Domain\Entities\DailyReport;
 use App\Core\Report\Infrastructure\database\factory\ReportFactory;
 use App\Core\Shared\Infrastructure\Models\BaseModel;
@@ -76,7 +77,11 @@ class Report extends BaseModel
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsTo(User::class, 'owner_id','id');
+    }
+
+    public function project(): BelongsTo{
+        return $this->belongsTo(Project::class);
     }
 
     protected static function newFactory(): ReportFactory
