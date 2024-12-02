@@ -10,14 +10,40 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
+ *  Class Report
+ *
+ *  Represents a Report entity in the application.
+ *
+ *
  * @property string $id
  * @property string $project_id
  * @property array $tasks
  * @property string $created_at
  * @property string $updated_at
  * @property string $owner_id
+ *
+ * @OA\Schema(
+ *      schema="Report",
+ *      description="Report model",
+ *      type="object",
+ *
+ *      @OA\Property(property="id", type="string", description="ID of the report"),
+ *      @OA\Property(property="project_id", type="string", description="ID of the associated project"),
+ *      @OA\Property(
+ *          property="tasks",
+ *          type="array",
+ *          description="List of tasks in the report",
+ *
+ *          @OA\Items(type="string")
+ *      ),
+ *
+ *      @OA\Property(property="owner_id", type="string", description="ID of the user who owns the report"),
+ *      @OA\Property(property="created_at", type="string", format="date-time", description="Creation timestamp"),
+ *      @OA\Property(property="updated_at", type="string", format="date-time", description="Last update timestamp")
+ *  )
  */
 class Report extends BaseModel
 {

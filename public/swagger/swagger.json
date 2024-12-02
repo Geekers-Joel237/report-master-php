@@ -11,6 +11,147 @@
         }
     ],
     "paths": {
+        "/objectives/{objectiveId}": {
+            "delete": {
+                "tags": [
+                    "Objectives"
+                ],
+                "summary": "Delete an objective",
+                "description": "Delete a specific objective by ID",
+                "operationId": "8d5a266894ea3a665396e51572a9eb85",
+                "parameters": [
+                    {
+                        "name": "objectiveId",
+                        "in": "path",
+                        "description": "The ID of the objective to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Objective deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Status of the operation",
+                                            "type": "boolean"
+                                        },
+                                        "isDeleted": {
+                                            "description": "Whether the objective was deleted",
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "description": "Operation message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/objectives": {
+            "get": {
+                "tags": [
+                    "Objectives"
+                ],
+                "summary": "Get all objectives",
+                "description": "Retrieve a list of all objectives based on filter criteria",
+                "operationId": "5761a55cde6c6cf0c72ed537cacfd1ab",
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter to apply on objectives",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of objectives",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Status of the operation",
+                                            "type": "boolean"
+                                        },
+                                        "objectives": {
+                                            "description": "List of objectives",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Objective"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Objectives"
+                ],
+                "summary": "Create or save an objective",
+                "description": "Save a new objective or update an existing one",
+                "operationId": "b7b4355915e8d857681b5081d69a78b6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SaveObjectiveRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Objective saved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Status of the operation",
+                                            "type": "boolean"
+                                        },
+                                        "isSaved": {
+                                            "description": "Whether the objective was saved",
+                                            "type": "boolean"
+                                        },
+                                        "objectiveId": {
+                                            "description": "The ID of the saved objective",
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "description": "Operation message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/projects/{projectId}": {
             "delete": {
                 "tags": [
@@ -26,7 +167,7 @@
                         "description": "ID of the project to delete",
                         "required": true,
                         "schema": {
-                            "type": "integer",
+                            "type": "string",
                             "example": 1
                         }
                     }
@@ -153,7 +294,7 @@
                                                 "properties": {
                                                     "id": {
                                                         "description": "Project ID",
-                                                        "type": "integer",
+                                                        "type": "string",
                                                         "example": 1
                                                     },
                                                     "name": {
@@ -246,7 +387,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Project successfully saved.",
                         "content": {
                             "application/json": {
@@ -303,7 +444,91 @@
                 }
             }
         },
+        "/reports/{reportId}": {
+            "delete": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Delete a report",
+                "operationId": "50b7779b852faf1ffebcc7b15fbe457d",
+                "parameters": [
+                    {
+                        "name": "reportId",
+                        "in": "path",
+                        "description": "ID of the report to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Report deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "isDeleted": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/reports": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Retrieve all reports",
+                "operationId": "d8e9652b78d0ce4ffc1e760ef455eebb",
+                "parameters": [
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Optional filters to apply",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of all reports",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "reports": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Report"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Reports"
@@ -410,6 +635,65 @@
     },
     "components": {
         "schemas": {
+            "SaveObjectiveRequest": {
+                "description": "Request body for saving an objective",
+                "properties": {
+                    "tasks": {
+                        "description": "List of tasks associated with the objective",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "participantIds": {
+                        "description": "IDs of participants involved in the objective",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "projectId": {
+                        "description": "The ID of the associated project",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Objective": {
+                "description": "Objective model representation",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the objective",
+                        "type": "string"
+                    },
+                    "project_id": {
+                        "description": "The ID of the associated project",
+                        "type": "string"
+                    },
+                    "tasks": {
+                        "description": "The list of tasks",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "owner_id": {
+                        "description": "The ID of the owner of the objective",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Creation timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Last update timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Project": {
                 "title": "Project Model",
                 "description": "Representation of a project entity.",
@@ -465,10 +749,49 @@
                     }
                 },
                 "type": "object"
+            },
+            "Report": {
+                "description": "Report model",
+                "properties": {
+                    "id": {
+                        "description": "ID of the report",
+                        "type": "string"
+                    },
+                    "project_id": {
+                        "description": "ID of the associated project",
+                        "type": "string"
+                    },
+                    "tasks": {
+                        "description": "List of tasks in the report",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "owner_id": {
+                        "description": "ID of the user who owns the report",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Creation timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Last update timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
             }
         }
     },
     "tags": [
+        {
+            "name": "Objectives",
+            "description": "Objectives"
+        },
         {
             "name": "Projects",
             "description": "Projects"
