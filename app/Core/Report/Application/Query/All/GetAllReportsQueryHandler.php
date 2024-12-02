@@ -6,36 +6,37 @@ use App\Core\Report\Infrastructure\Models\Report;
 
 class GetAllReportsQueryHandler
 {
-    public function handle(FilterReportCommand $command)
+    public function handle(FilterReportCommand $command): array
     {
         $query = Report::query()
-            ->with(['owner', 'participants']);
+            ->with(['owner', 'participants', 'project']);
 
-        if (! empty($command->projectId)) {
+        if ($command->projectId) {
             $query->where('project_id', $command->projectId);
         }
 
-        if (! empty($command->userId)) {
-            $query->where('owner_id', $command->userId);
+        if ($command->ownerId) {
+            $query->where('owner_id', $command->ownerId);
         }
 
-        if (! empty($command->year)) {
+        if ($command->year) {
+            //TODO: query avec year
             $query->whereYear('created_at', $command->year);
         }
 
-        if (! empty($command->startDate) && ! empty($command->endDate)) {
+        if ($command->startDate && $command->endDate) {
             $query->whereBetween('created_at', [$command->startDate, $command->endDate]);
         }
 
-        if (! empty($command->participantId)) {
+        if (! empty($command->participantIds)) {
+            //TODO: utiliser un whereIn ici, c'est un tableau
             $query->whereHas('participants', function ($q) use ($command) {
-                $q->where('participant_id', $command->participantId);
+                $q->where('participant_id', $command->participantIds);
             });
         }
 
-
+        //TODO: La pagination c'est avec limit et offset, Tu ne les utilises tout simplement pas
         $reports = $query->paginate(10);
-
 
         $formattedReports = $reports->getCollection()->map(function ($report) {
             return [
@@ -43,11 +44,10 @@ class GetAllReportsQueryHandler
                 'project_id' => $report->project_id,
                 'project_name' => optional($report->project)->name ?? 'Unknown',
                 'project_year' => optional($report->project)->created_at?->format('Y') ?? 'Unknown',
-                'participants' => $report->participants->pluck('name')->toArray(), 
+                'participants' => $report->participants->pluck('name')->toArray(),
                 'tasks' => $report->tasks,
             ];
         });
-
 
         return [
             'status' => true,
@@ -60,5 +60,4 @@ class GetAllReportsQueryHandler
             ],
         ];
     }
-
 }

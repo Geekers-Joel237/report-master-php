@@ -2,6 +2,7 @@
 
 namespace App\Core\Report\Infrastructure\Models;
 
+use App\Core\Project\Infrastructure\Models\Project;
 use App\Core\Report\Domain\Entities\DailyReport;
 use App\Core\Report\Infrastructure\database\factory\ReportFactory;
 use App\Core\Shared\Infrastructure\Models\BaseModel;
@@ -10,7 +11,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  *  Class Report
@@ -77,6 +77,11 @@ class Report extends BaseModel
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
     }
 
     protected static function newFactory(): ReportFactory
