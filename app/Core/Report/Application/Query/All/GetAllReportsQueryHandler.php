@@ -9,8 +9,7 @@ class GetAllReportsQueryHandler
     public function handle(FilterReportCommand $command): array
     {
 
-        $query = Report::query()->with(['participants','owner','project']);
-
+        $query = Report::query()->with(['participants', 'owner', 'project']);
 
         if ($command->projectId) {
             $query->where('project_id', $command->projectId);
@@ -21,8 +20,8 @@ class GetAllReportsQueryHandler
         }
 
         if ($command->year) {
-            $query->whereHas('project', function ($q) use ($command){
-                $q->where('years',$command->year);
+            $query->whereHas('project', function ($q) use ($command) {
+                $q->where('years', $command->year);
             });
         }
 
@@ -46,7 +45,6 @@ class GetAllReportsQueryHandler
             $query->skip($command->offset)->take($command->limit);
         }
 
-
         $reports = $query->get()->map(function ($report) {
             return [
                 'reportId' => $report->id,
@@ -57,7 +55,6 @@ class GetAllReportsQueryHandler
                 'tasks' => $report->tasks,
             ];
         });
-
 
         return [
             'status' => true,

@@ -5,13 +5,13 @@ namespace App\Core\Objective\Infrastructure\Repository;
 use App\Core\Shared\Lib\PdoConnection;
 use PDO;
 
-class SqlReadObjectiveRepository 
+class SqlReadObjectiveRepository
 {
     public function __construct(
         private PdoConnection $connection
     ) {}
 
-    public function all(?string $projetId, ?string $startDate, ?string $endDate, ?string $year, ?string $ownerId, ?array $participantIds ): array
+    public function all(?string $projetId, ?string $startDate, ?string $endDate, ?string $year, ?string $ownerId, ?array $participantIds): array
     {
         $params = [];
         $clause = 'o.is_deleted = 0';
@@ -24,7 +24,7 @@ class SqlReadObjectiveRepository
             $params['startDate'] = $startDate;
         }
         if ($endDate) {
-            $clause .= ' AND o.created_at <= :endDate'; 
+            $clause .= ' AND o.created_at <= :endDate';
             $params['endDate'] = $endDate;
         }
         if ($projetId) {
@@ -43,7 +43,7 @@ class SqlReadObjectiveRepository
                     WHERE op.participant_id = :participant_$index
                 ";
                 $params["participant_$index"] = $participantId;
-        
+
                 if ($index < count($participantIds) - 1) {
                     $clause .= ' INTERSECT ';
                 }

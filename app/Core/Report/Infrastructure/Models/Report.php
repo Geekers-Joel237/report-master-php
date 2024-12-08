@@ -76,10 +76,11 @@ class Report extends BaseModel
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id','id');
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 
-    public function project(): BelongsTo{
+    public function project(): BelongsTo
+    {
         return $this->belongsTo(Project::class);
     }
 
