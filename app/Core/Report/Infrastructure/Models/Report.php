@@ -11,7 +11,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  *  Class Report
@@ -81,6 +80,11 @@ class Report extends BaseModel
     }
 
     public function project(): BelongsTo{
+        return $this->belongsTo(Project::class);
+    }
+
+    public function project(): BelongsTo
+    {
         return $this->belongsTo(Project::class);
     }
 
