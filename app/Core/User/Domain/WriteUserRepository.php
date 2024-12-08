@@ -19,5 +19,5 @@ interface WriteUserRepository
 
     public function ofId(?string $userId): ?User;
 
-    public function update(UserSnapshot $snapshot): void;
+    public function update(UserSnapshot $user): void;
 }

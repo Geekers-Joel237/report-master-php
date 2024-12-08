@@ -32,8 +32,8 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
         return User::query()->find($userId)?->toDomain();
     }
 
-    public function update(UserSnapshot $snapshot): void
+    public function update(UserSnapshot $user): void
     {
-        User::query()->update($snapshot->toArray());
+        User::query()->update($user->toArray());
     }
 }

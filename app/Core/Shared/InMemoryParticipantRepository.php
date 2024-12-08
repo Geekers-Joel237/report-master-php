@@ -10,6 +10,8 @@ class InMemoryParticipantRepository implements WriteUserRepository
 {
     public array $participantIds = [];
 
+    private array $users = [];
+
     public function __construct() {}
 
     public function allExists(array $participantIds): array
@@ -19,21 +21,22 @@ class InMemoryParticipantRepository implements WriteUserRepository
 
     public function emailExists(string $email, ?string $userId): bool
     {
-        // TODO: Implement emailExists() method.
+        return false;
     }
 
     public function save(UserSnapshot $user): void
     {
-        // TODO: Implement save() method.
+        $this->users[$user->id] = $user;
     }
 
     public function ofId(?string $userId): ?User
     {
-        // TODO: Implement ofId() method.
+        return array_key_exists($userId, $this->users) ? $this->users[$userId] : null;
     }
 
-    public function update(UserSnapshot $snapshot): void
+    public function update(UserSnapshot $user): void
     {
-        // TODO: Implement update() method.
+        $this->users[$user->id] = $user;
+
     }
 }
