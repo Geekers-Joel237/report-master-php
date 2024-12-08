@@ -2,6 +2,8 @@
 
 namespace App\Core\User\Application\Command\Save;
 
+use App\Core\ACL\Domain\Enums\RoleEnum;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
 use App\Core\User\Domain\Entities\User;
 use App\Core\User\Domain\Exceptions\AlreadyEmailExistException;
@@ -20,18 +22,21 @@ final readonly class SaveUserHandler
     /**
      * @throws AlreadyEmailExistException
      * @throws NotEmptyException
+     * @throws InvalidCommandException
      */
     public function handle(SaveUserCommand $command): SaveUserResponse
     {
         $response = new SaveUserResponse;
 
+        $role = RoleEnum::in($command->role);
         $this->checkIfEmailAlreadyExistOrThrowException($command);
         $user = User::create(
             name: $command->name,
             email: $command->email,
             password: $command->password,
             userId: $this->idGenerator->generate(),
-            hasher: $this->hasher
+            hasher: $this->hasher,
+            role: $role
         );
         $this->repository->save($user->snapshot());
 
@@ -46,7 +51,7 @@ final readonly class SaveUserHandler
      */
     private function checkIfEmailAlreadyExistOrThrowException(SaveUserCommand $command): void
     {
-        if ($this->repository->emailExists($command->email, $command->userId)) {
+        if ($this->repository->emailExists($command->email, null)) {
             throw new AlreadyEmailExistException;
         }
     }

@@ -2,6 +2,7 @@
 
 namespace App\Core\User\Domain\Entities;
 
+use App\Core\ACL\Domain\Enums\RoleEnum;
 use App\Core\User\Domain\Exceptions\NotEmptyException;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
 use App\Core\User\Domain\Vo\Hasher;
@@ -9,11 +10,15 @@ use App\Core\User\Domain\Vo\Password;
 
 class User
 {
+    /**
+     * @param  RoleEnum[]|array  $roles
+     */
     private function __construct(
         private readonly string $id,
         private string $name,
         private string $email,
         private readonly Password $password,
+        private array $roles,
     ) {}
 
     public static function create(
@@ -21,13 +26,15 @@ class User
         string $email,
         string $password,
         string $userId,
-        Hasher $hasher
+        Hasher $hasher,
+        RoleEnum $role
     ): self {
         return new self(
             id: $userId,
             name: $name,
             email: $email,
-            password: new Password($password, $hasher)
+            password: new Password($password, $hasher),
+            roles: [$role]
         );
     }
 
@@ -35,13 +42,15 @@ class User
         string $id,
         string $name,
         string $email,
-        string $password
-    ) {
+        string $password,
+        array $roles
+    ): User {
         return new self(
             id: $id,
             name: $name,
             email: $email,
-            password: Password::fromAdapter($password)
+            password: Password::fromAdapter($password),
+            roles: array_map(fn ($r) => RoleEnum::in($r), $roles)
         );
     }
 
@@ -55,6 +64,7 @@ class User
             name: $this->name,
             email: $this->email,
             password: $this->password->hash(),
+            roles: array_map(fn ($r) => $r->value, $this->roles)
         );
     }
 

@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Core\Objective\Infrastructure\Model\Objective;
-use App\Core\Project\Infrastructure\Models\Project;
-use App\Core\Report\Infrastructure\Models\Report;
-use App\Core\Shared\Infrastructure\Models\Years;
 use App\Core\User\Infrastructure\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -19,21 +15,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        $this->call([
+            YearsSeeder::class,
+            RoleSeeder::class,
+        ]);
 
-        $eUser = User::factory()->create([
+        User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-        ]);
-        $eProjects = Project::factory(3)->create([
-            'year_id' => Years::query()->where('is_active', true)->first()->id,
-        ]);
-        Report::factory(20)->create([
-            'owner_id' => $eUser->id,
-            'project_id' => $eProjects->random()->id,
-        ]);
-        Objective::factory(20)->create([
-            'owner_id' => $eUser->id,
-            'project_id' => $eProjects->random()->id,
         ]);
     }
 }

@@ -12,6 +12,7 @@ class SaveUserRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|email:rfc,dns',
             'password' => 'required|string|min:8',
+            'role' => 'required|string',
         ];
     }
 }

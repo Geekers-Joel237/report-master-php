@@ -11,21 +11,19 @@ class SaveUserCommandFactory
 {
     public static function createFromRequest(SaveUserRequest $request): SaveUserCommand
     {
-        $command = new SaveUserCommand(
+        return new SaveUserCommand(
             name: $request->get('name'),
             email: $request->get('email'),
             password: $request->get('password'),
+            role: $request->get('role')
         );
-        $command->userId = $request->get('userId');
-
-        return $command;
     }
 
     public static function updateFromRequest(UpdateUserRequest $request): UpdateUserCommand
     {
 
         return new UpdateUserCommand(
-            userId: $request->get('userId'),
+            userId: $request->route('userId'),
             name: $request->get('name'),
             email: $request->get('email'),
         );

@@ -2,6 +2,7 @@
 
 namespace App\Core\Shared\Infrastructure\Repository;
 
+use App\Core\ACL\Infrastructure\Models\Role;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
 use App\Core\User\Domain\WriteUserRepository;
 use App\Core\User\Infrastructure\Models\User;
@@ -24,7 +25,8 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
 
     public function save(UserSnapshot $user): void
     {
-        User::query()->create($user->toArray());
+        $eUser = User::query()->create($user->toArray());
+        $eUser->roles()->sync(Role::query()->whereIn('name', $user->roles)->pluck('id')->toArray());
     }
 
     public function ofId(?string $userId): ?\App\Core\User\Domain\Entities\User

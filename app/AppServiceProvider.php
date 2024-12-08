@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Core\ACL\Infrastructure\Provider\AclServiceProvider;
 use App\Core\Objective\Infrastructure\Provider\ObjectiveServiceProvider;
 use App\Core\Project\Infrastructure\Provider\ProjectServiceProvider;
 use App\Core\Report\Infrastructure\Provider\ReportServiceProvider;
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     private function registerModules(): void
     {
         $this->app->register(ConfigServiceProvider::class);
+        $this->app->register(AclServiceProvider::class);
         $this->app->register(UserServiceProvider::class);
         $this->app->register(ProjectServiceProvider::class);
         $this->app->register(ReportServiceProvider::class);
