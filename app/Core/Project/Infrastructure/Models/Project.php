@@ -92,7 +92,7 @@ class Project extends BaseModel
 
     public function year(): HasOne
     {
-        return $this->hasOne(Years::class);
+        return $this->hasOne(Years::class,'project_id');
     }
 
     /**
