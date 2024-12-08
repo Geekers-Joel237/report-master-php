@@ -17,6 +17,7 @@ class ReportSUT
     public array $tasks;
 
     public array $participants;
+
     private Collection|Model $year;
 
     public static function asSUT(): static
@@ -24,6 +25,7 @@ class ReportSUT
 
         $static = new static;
         $static->year = Years::factory()->create();
+
         return $static;
     }
 

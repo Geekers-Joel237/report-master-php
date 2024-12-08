@@ -48,11 +48,12 @@ class GetAllReportsAction
     ): JsonResponse {
         $command = FilterReportCommandFactory::fromRequest($request);
 
-        list($reports, $total) = $handler->handle($command);
+        [$reports, $total] = $handler->handle($command);
+
         return response()->json([
             'status' => true,
             'reports' => $reports,
-            'total' => $total
+            'total' => $total,
         ]);
     }
 }

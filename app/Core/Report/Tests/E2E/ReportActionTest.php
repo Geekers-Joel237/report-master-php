@@ -59,6 +59,5 @@ class ReportActionTest extends TestCase
         $this->assertEquals(5, $response->json()['total']);
         $this->assertCount(5, $response->json()['reports']);
 
-        dd($response->json());
     }
 }

@@ -113,7 +113,7 @@ class Project extends BaseModel
 
     public function softDelete(): void
     {
-        $this->slug = 'deleted_' . $this->slug . '_' . microtime(true);
+        $this->slug = 'deleted_'.$this->slug.'_'.microtime(true);
         parent::softDelete();
     }
 }
