@@ -6,6 +6,8 @@ use App\Core\Project\Domain\Repositories\ReadProjectRepository;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Infrastructure\Repositories\EloquentWriteProjectRepository;
 use App\Core\Project\Infrastructure\Repositories\SqlReadProjectRepository;
+use App\Core\Shared\Infrastructure\Lib\LaravelHasher;
+use App\Core\User\Domain\Vo\Hasher;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +44,7 @@ class ProjectServiceProvider extends ServiceProvider
 
     private function registerRepositories(): void
     {
+        $this->app->singleton(Hasher::class, LaravelHasher::class);
         $this->app->singleton(WriteProjectRepository::class, EloquentWriteProjectRepository::class);
         $this->app->singleton(ReadProjectRepository::class, SqlReadProjectRepository::class);
 

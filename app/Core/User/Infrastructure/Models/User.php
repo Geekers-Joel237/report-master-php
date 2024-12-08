@@ -12,20 +12,16 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $keyType = 'string';
-
     public $incrementing = false;
+
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -40,6 +36,16 @@ class User extends Authenticatable
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
+    }
+
+    public function toDomain(): \App\Core\User\Domain\Entities\User
+    {
+        return \App\Core\User\Domain\Entities\User::createFromAdapter(
+            id: $this->id,
+            name: $this->name,
+            email: $this->email,
+            password: $this->password,
+        );
     }
 
     /**

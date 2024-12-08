@@ -2,6 +2,9 @@
 
 namespace App\Core\User\Domain;
 
+use App\Core\User\Domain\Entities\User;
+use App\Core\User\Domain\Snapshot\UserSnapshot;
+
 interface WriteUserRepository
 {
     /**
@@ -9,4 +12,12 @@ interface WriteUserRepository
      * @return string[]
      */
     public function allExists(array $participantIds): array;
+
+    public function emailExists(string $email, ?string $userId): bool;
+
+    public function save(UserSnapshot $user): void;
+
+    public function ofId(?string $userId): ?User;
+
+    public function update(UserSnapshot $snapshot): void;
 }
