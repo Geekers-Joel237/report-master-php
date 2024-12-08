@@ -44,7 +44,7 @@ class ReportActionTest extends TestCase
         $this->assertCount(1, Report::all());
     }
 
-    public function test_can_get_all_reports(): void
+    public function test_can_get_all_reports_filter_by_project(): void
     {
         $sut = ReportSUT::asSUT()
             ->withProject()
@@ -56,7 +56,9 @@ class ReportActionTest extends TestCase
 
         $response->assertOk();
         $this->assertIsArray($response->json()['reports']);
+        $this->assertEquals(5, $response->json()['total']);
         $this->assertCount(5, $response->json()['reports']);
 
+        dd($response->json());
     }
 }

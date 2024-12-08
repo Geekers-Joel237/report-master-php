@@ -4,6 +4,7 @@ namespace App\Core\Report\Tests\E2E;
 
 use App\Core\Project\Infrastructure\Models\Project;
 use App\Core\Report\Infrastructure\Models\Report;
+use App\Core\Shared\Infrastructure\Models\Years;
 use App\Core\User\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -16,15 +17,19 @@ class ReportSUT
     public array $tasks;
 
     public array $participants;
+    private Collection|Model $year;
 
     public static function asSUT(): static
     {
-        return new static;
+
+        $static = new static;
+        $static->year = Years::factory()->create();
+        return $static;
     }
 
     public function withProject(): static
     {
-        $this->project = Project::factory()->create();
+        $this->project = Project::factory()->create(['year_id' => $this->year->id]);
 
         return $this;
     }
@@ -74,7 +79,9 @@ class ReportSUT
 
     public function withReports(int $nbReports): static
     {
-        Report::factory()->count($nbReports)->create();
+        Report::factory()->count($nbReports)->create([
+            'project_id' => $this->project->id,
+        ]);
 
         return $this;
     }

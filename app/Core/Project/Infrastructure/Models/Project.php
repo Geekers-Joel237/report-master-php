@@ -8,7 +8,7 @@ use App\Core\Shared\Infrastructure\Models\BaseModel;
 use App\Core\Shared\Infrastructure\Models\Years;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Project
@@ -90,9 +90,9 @@ class Project extends BaseModel
         return ProjectFactory::new();
     }
 
-    public function year(): HasOne
+    public function year(): BelongsTo
     {
-        return $this->hasOne(Years::class, 'project_id');
+        return $this->belongsTo(Years::class);
     }
 
     /**
@@ -113,7 +113,7 @@ class Project extends BaseModel
 
     public function softDelete(): void
     {
-        $this->slug = 'deleted_'.$this->slug.'_'.microtime(true);
+        $this->slug = 'deleted_' . $this->slug . '_' . microtime(true);
         parent::softDelete();
     }
 }
