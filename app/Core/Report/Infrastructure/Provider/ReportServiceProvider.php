@@ -2,7 +2,9 @@
 
 namespace App\Core\Report\Infrastructure\Provider;
 
+use App\Core\Report\Domain\Repositories\ReadReportRepository;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
+use App\Core\Report\Infrastructure\Repositories\EloquentReadReportRepository;
 use App\Core\Report\Infrastructure\Repositories\EloquentWriteReportRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +35,7 @@ class ReportServiceProvider extends ServiceProvider
     private function bindRepositories(): void
     {
         $this->app->singleton(WriteReportRepository::class, EloquentWriteReportRepository::class);
+        $this->app->singleton(ReadReportRepository::class, EloquentReadReportRepository::class);
     }
 
     private function loadMigrations(): void
