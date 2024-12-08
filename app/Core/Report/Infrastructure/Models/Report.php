@@ -84,10 +84,6 @@ class Report extends BaseModel
         return $this->belongsTo(Project::class);
     }
 
-    public function project(): BelongsTo
-    {
-        return $this->belongsTo(Project::class);
-    }
 
     protected static function newFactory(): ReportFactory
     {
