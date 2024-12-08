@@ -3,6 +3,7 @@
 namespace App\Core\User\Domain\Entities;
 
 use App\Core\ACL\Domain\Enums\RoleEnum;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\User\Domain\Exceptions\NotEmptyException;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
 use App\Core\User\Domain\Vo\Hasher;
@@ -18,7 +19,7 @@ class User
         private string $name,
         private string $email,
         private readonly Password $password,
-        private array $roles,
+        private readonly array $roles,
     ) {}
 
     public static function create(
@@ -38,6 +39,9 @@ class User
         );
     }
 
+    /**
+     * @throws InvalidCommandException
+     */
     public static function createFromAdapter(
         string $id,
         string $name,
