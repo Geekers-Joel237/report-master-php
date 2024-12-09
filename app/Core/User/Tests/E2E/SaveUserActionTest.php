@@ -45,9 +45,10 @@ class SaveUserActionTest extends TestCase
             'email' => $data['email'],
             'id' => $response->json()['data']['userId'],
         ]);
-        $this->assertDatabaseHas('role_user', [
+        $this->assertDatabaseHas('model_has_roles', [
             'role_id' => $this->role->id,
-            'user_id' => $response->json()['data']['userId'],
+            'model_id' => $response->json()['data']['userId'],
+            'model_type' => User::class,
         ]);
         $this->assertTrue($this->hasher->check(
             $data['password'],
