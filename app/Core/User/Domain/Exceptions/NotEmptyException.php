@@ -2,6 +2,6 @@
 
 namespace App\Core\User\Domain\Exceptions;
 
-use Exception;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 
-class NotEmptyException extends Exception {}
+class NotEmptyException extends ApiErrorException {}

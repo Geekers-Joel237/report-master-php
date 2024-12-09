@@ -2,9 +2,10 @@
 
 namespace App\Core\Report\Domain\Exceptions;
 
-use Exception;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use Throwable;
 
-class ErrorOnSaveReportException extends Exception
+class ErrorOnSaveReportException extends ApiErrorException
 {
     public function __construct(string $message = '', int $code = 500, ?Throwable $previous = null)
     {

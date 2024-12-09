@@ -7,6 +7,7 @@ use App\Core\Project\Tests\Feature\Builder\ProjectSUT;
 use App\Core\Shared\Infrastructure\Models\Years;
 use App\Core\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Tests\TestCase;
 
 class ProjectActionTest extends TestCase
@@ -31,9 +32,9 @@ class ProjectActionTest extends TestCase
 
         $response = $this->actingAs($this->user)->postJson('api/v1/projects', $data);
 
-        $response->assertOk();
-        $this->assertTrue($response->json()['isSaved']);
-        $this->assertEquals(ProjectMessageEnum::SAVE, $response->json()['message']);
+        $response->assertStatus(ResponseAlias::HTTP_CREATED);
+        $this->assertTrue($response->json()['data']['isSaved']);
+        $this->assertEquals(ProjectMessageEnum::SAVE, $response->json()['data']['message']);
         $this->assertDatabaseHas('projects', $data);
 
     }
@@ -48,7 +49,7 @@ class ProjectActionTest extends TestCase
         $response = $this->actingAs($this->user)->deleteJson('/api/v1/projects/'.$projectId);
 
         $response->assertOk();
-        $this->assertTrue($response->json()['isDeleted']);
-        $this->assertEquals(ProjectMessageEnum::DELETED, $response->json()['message']);
+        $this->assertTrue($response->json()['data']['isDeleted']);
+        $this->assertEquals(ProjectMessageEnum::DELETED, $response->json()['data']['message']);
     }
 }

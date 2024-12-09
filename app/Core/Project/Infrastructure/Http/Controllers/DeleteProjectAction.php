@@ -3,8 +3,12 @@
 namespace App\Core\Project\Infrastructure\Http\Controllers;
 
 use App\Core\Project\Application\Command\Delete\DeleteProjectHandler;
-use Illuminate\Http\JsonResponse;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Throwable;
 
 /**
  * @OA\Delete(
@@ -52,14 +56,26 @@ class DeleteProjectAction
     public function __invoke(
         DeleteProjectHandler $handler,
         Request $request
-    ): JsonResponse {
-        $response = $handler->handle($request->route('projectId'));
+    ): Responsable {
+        try {
 
-        return response()->json([
-            'status' => true,
-            'isDeleted' => $response->isDeleted,
-            'message' => $response->message,
-        ]);
+            $response = $handler->handle($request->route('projectId'));
+
+            return new ApiSuccessResponse(
+                data: [
+                    'isDeleted' => $response->isDeleted,
+                    'message' => $response->message,
+                ],
+                code: $response->code
+            );
+
+        } catch (ApiErrorException|Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
 
     }
 }

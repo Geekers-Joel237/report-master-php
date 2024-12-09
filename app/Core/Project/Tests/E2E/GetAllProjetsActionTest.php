@@ -29,8 +29,8 @@ class GetAllProjetsActionTest extends TestCase
         $response = $this->actingAs($this->user)->getJson('/api/v1/projects');
 
         $response->assertOk();
-        $this->assertIsArray($response->json()['projects']);
-        $this->assertCount(5, $response->json()['projects']);
+        $this->assertIsArray($response->json()['data']['projects']);
+        $this->assertCount(5, $response->json()['data']['projects']);
     }
 
     public function test_can_get_all_projects_by_year()
@@ -44,8 +44,8 @@ class GetAllProjetsActionTest extends TestCase
         $response = $this->actingAs($this->user)->getJson('/api/v1/projects'.'?year='.$year);
 
         $response->assertOk();
-        $this->assertIsArray($response->json()['projects']);
-        $this->assertCount(5, $response->json()['projects']);
+        $this->assertIsArray($response->json()['data']['projects']);
+        $this->assertCount(5, $response->json()['data']['projects']);
         $this->assertCount(6, Project::all()->toArray());
     }
 }

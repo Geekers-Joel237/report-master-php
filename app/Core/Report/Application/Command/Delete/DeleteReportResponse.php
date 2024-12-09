@@ -8,5 +8,7 @@ class DeleteReportResponse
 
     public string $message = '';
 
+    public int $code = 500;
+
     public function __construct() {}
 }

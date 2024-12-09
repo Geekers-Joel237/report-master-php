@@ -7,6 +7,7 @@ use App\Core\Report\Infrastructure\Models\Report;
 use App\Core\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Random\RandomException;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Tests\TestCase;
 
 class ReportActionTest extends TestCase
@@ -38,9 +39,9 @@ class ReportActionTest extends TestCase
         ];
         $response = $this->actingAs($this->user)->postJson('api/v1/reports', $data);
 
-        $response->assertOk();
-        $this->assertTrue($response->json()['isSaved']);
-        $this->assertEquals(ReportMessageEnum::SAVE, $response->json()['message']);
+        $response->assertStatus(ResponseAlias::HTTP_CREATED);
+        $this->assertTrue($response->json()['data']['isSaved']);
+        $this->assertEquals(ReportMessageEnum::SAVE, $response->json()['data']['message']);
         $this->assertCount(1, Report::all());
     }
 
@@ -55,9 +56,9 @@ class ReportActionTest extends TestCase
         $response = $this->actingAs($this->user)->getJson('/api/v1/reports'.'?projectId='.$projectId);
 
         $response->assertOk();
-        $this->assertIsArray($response->json()['reports']);
-        $this->assertEquals(5, $response->json()['total']);
-        $this->assertCount(5, $response->json()['reports']);
+        $this->assertIsArray($response->json()['data']['reports']);
+        $this->assertEquals(5, $response->json()['data']['total']);
+        $this->assertCount(5, $response->json()['data']['reports']);
 
     }
 }

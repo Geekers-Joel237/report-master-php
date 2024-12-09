@@ -60,6 +60,7 @@ final readonly class SaveReportHandler
         $response->isSaved = true;
         $response->message = $msg;
         $response->reportId = $report->snapshot()->id;
+        $response->code = 201;
 
         return $response;
     }

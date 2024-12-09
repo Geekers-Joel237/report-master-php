@@ -2,10 +2,10 @@
 
 namespace App\Core\User\Domain\Exceptions;
 
-use Exception;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 use Throwable;
 
-class NotFoundUserException extends Exception
+class NotFoundUserException extends ApiErrorException
 {
     public function __construct(string $message = 'Cet utilisateur est introuvable !', int $code = 404, ?Throwable $previous = null)
     {

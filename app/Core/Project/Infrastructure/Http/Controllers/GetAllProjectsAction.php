@@ -4,8 +4,12 @@ namespace App\Core\Project\Infrastructure\Http\Controllers;
 
 use App\Core\Project\Application\Query\All\GetAllProjectsQueryHandler;
 use App\Core\Project\Infrastructure\Factory\FilterProjectCommandFactory;
-use Illuminate\Http\JsonResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Throwable;
 
 /**
  * @OA\Get(
@@ -92,13 +96,25 @@ class GetAllProjectsAction
     public function __invoke(
         Request $request,
         GetAllProjectsQueryHandler $queryHandler
-    ): JsonResponse {
-        $command = FilterProjectCommandFactory::fromRequest($request);
-        $response = $queryHandler->handle($command);
+    ): Responsable {
 
-        return response()->json([
-            'status' => true,
-            'projects' => $response,
-        ]);
+        try {
+            $command = FilterProjectCommandFactory::fromRequest($request);
+            $response = $queryHandler->handle($command);
+
+            return new ApiSuccessResponse(
+                data: [
+                    'projects' => $response,
+                ],
+                code: ResponseAlias::HTTP_OK
+            );
+
+        } catch (Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
     }
 }

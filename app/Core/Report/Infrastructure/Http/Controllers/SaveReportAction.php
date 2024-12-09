@@ -5,7 +5,11 @@ namespace App\Core\Report\Infrastructure\Http\Controllers;
 use App\Core\Report\Application\Command\Save\SaveReportHandler;
 use App\Core\Report\Infrastructure\Factory\SaveReportCommandFactory;
 use App\Core\Report\Infrastructure\Http\Requests\SaveReportRequest;
-use Illuminate\Http\JsonResponse;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
+use Throwable;
 
 /**
  * @OA\Post(
@@ -77,15 +81,27 @@ class SaveReportAction
     public function __invoke(
         SaveReportRequest $request,
         SaveReportHandler $handler
-    ): JsonResponse {
-        $command = SaveReportCommandFactory::fromRequest($request);
-        $response = $handler->handle($command);
+    ): Responsable {
+        try {
 
-        return response()->json([
-            'status' => true,
-            'isSaved' => $response->isSaved,
-            'reportId' => $response->reportId,
-            'message' => $response->message,
-        ]);
+            $command = SaveReportCommandFactory::fromRequest($request);
+            $response = $handler->handle($command);
+
+            return new ApiSuccessResponse(
+                data: [
+                    'isSaved' => $response->isSaved,
+                    'reportId' => $response->reportId,
+                    'message' => $response->message,
+                ],
+                code: $response->code
+            );
+
+        } catch (ApiErrorException|Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
     }
 }

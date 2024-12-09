@@ -26,6 +26,7 @@ final readonly class DeleteProjectHandler
 
         $response->isDeleted = true;
         $response->message = ProjectMessageEnum::DELETED;
+        $response->code = 200;
 
         return $response;
     }

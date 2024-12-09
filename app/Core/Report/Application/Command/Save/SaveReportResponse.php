@@ -9,4 +9,6 @@ class SaveReportResponse
     public string $message = '';
 
     public string $reportId = '';
+
+    public int $code = 500;
 }

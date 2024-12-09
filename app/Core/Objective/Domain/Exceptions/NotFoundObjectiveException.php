@@ -3,10 +3,10 @@
 namespace App\Core\Objective\Domain\Exceptions;
 
 use App\Core\Objective\Domain\Enums\ObjectiveMessageEnum;
-use Exception;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 use Throwable;
 
-class NotFoundObjectiveException extends Exception
+class NotFoundObjectiveException extends ApiErrorException
 {
     public function __construct(string $message = ObjectiveMessageEnum::NOT_FOUND_OBJECTIVE, int $code = 400, ?Throwable $previous = null)
     {

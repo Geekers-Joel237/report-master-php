@@ -39,19 +39,19 @@ class SaveUserActionTest extends TestCase
             'role' => RoleEnum::DEVELOPER->value,
         ];
         $response = $this->postJson('/api/v1/users', $data);
-        $response->assertOk();
+        $response->assertStatus(201);
         $this->assertDatabaseHas('users', [
             'name' => $data['name'],
             'email' => $data['email'],
-            'id' => $response->json()['userId'],
+            'id' => $response->json()['data']['userId'],
         ]);
         $this->assertDatabaseHas('role_user', [
             'role_id' => $this->role->id,
-            'user_id' => $response->json()['userId'],
+            'user_id' => $response->json()['data']['userId'],
         ]);
         $this->assertTrue($this->hasher->check(
             $data['password'],
-            User::query()->find($response->json()['userId'])->password)
+            User::query()->find($response->json()['data']['userId'])->password)
         );
     }
 
@@ -64,17 +64,17 @@ class SaveUserActionTest extends TestCase
             'role' => RoleEnum::DEVELOPER->value,
         ];
         $response1 = $this->postJson('/api/v1/users', $data);
-        $this->assertTrue($response1->json()['isSaved']);
+        $this->assertTrue($response1->json()['data']['isSaved']);
 
         $updatedData = [
             'name' => 'Jane Doe',
             'email' => 'john@doe.com',
-            'userId' => $userId = $response1->json()['userId'],
+            'userId' => $userId = $response1->json()['data']['userId'],
         ];
         $response = $this->putJson('/api/v1/users/'.$userId, $updatedData);
 
-        $response->assertOk();
-        $this->assertEquals($response1->json()['userId'], $updatedData['userId']);
+        $response->assertStatus(201);
+        $this->assertEquals($response1->json()['data']['userId'], $updatedData['userId']);
 
         $dbUser = User::query()->find($updatedData['userId']);
         $this->assertEquals($dbUser->name, $updatedData['name']);

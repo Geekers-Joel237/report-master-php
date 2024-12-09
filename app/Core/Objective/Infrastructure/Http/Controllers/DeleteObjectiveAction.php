@@ -3,8 +3,12 @@
 namespace App\Core\Objective\Infrastructure\Http\Controllers;
 
 use App\Core\Objective\Application\Command\Delete\DeleteObjectiveHandler;
-use Illuminate\Http\JsonResponse;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Throwable;
 
 /**
  * @OA\Delete(
@@ -41,14 +45,26 @@ class DeleteObjectiveAction
     public function __invoke(
         DeleteObjectiveHandler $handler,
         Request $request
-    ): JsonResponse {
-        $response = $handler->handle($request->route('objectiveId'));
+    ): Responsable {
+        try {
 
-        return response()->json([
-            'status' => true,
-            'isDeleted' => $response->isDeleted,
-            'message' => $response->message,
-        ]);
+            $response = $handler->handle($request->route('objectiveId'));
+
+            return new ApiSuccessResponse(
+                data: [
+                    'isDeleted' => $response->isDeleted,
+                    'message' => $response->message,
+                ],
+                code: 200
+            );
+
+        } catch (ApiErrorException|Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
 
     }
 }

@@ -9,4 +9,6 @@ class SaveProjectResponse
     public string $projectId = '';
 
     public string $message = '';
+
+    public int $code = 500;
 }

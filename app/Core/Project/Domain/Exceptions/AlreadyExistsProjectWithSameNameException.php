@@ -2,10 +2,10 @@
 
 namespace App\Core\Project\Domain\Exceptions;
 
-use Exception;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 use Throwable;
 
-class AlreadyExistsProjectWithSameNameException extends Exception
+class AlreadyExistsProjectWithSameNameException extends ApiErrorException
 {
     public function __construct(string $message = '', int $code = 200, ?Throwable $previous = null)
     {

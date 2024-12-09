@@ -4,8 +4,11 @@ namespace App\Core\Report\Infrastructure\Http\Controllers;
 
 use App\Core\Report\Application\Query\All\GetAllReportsQueryHandler;
 use App\Core\Report\Infrastructure\Factory\FilterReportCommandFactory;
-use Illuminate\Http\JsonResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Throwable;
 
 /**
  * @OA\Get(
@@ -45,15 +48,26 @@ class GetAllReportsAction
     public function __invoke(
         Request $request,
         GetAllReportsQueryHandler $handler
-    ): JsonResponse {
-        $command = FilterReportCommandFactory::fromRequest($request);
+    ): Responsable {
+        try {
 
-        [$reports, $total] = $handler->handle($command);
+            $command = FilterReportCommandFactory::fromRequest($request);
 
-        return response()->json([
-            'status' => true,
-            'reports' => $reports,
-            'total' => $total,
-        ]);
+            [$reports, $total] = $handler->handle($command);
+
+            return new ApiSuccessResponse(
+                data: [
+                    'reports' => $reports,
+                    'total' => $total,
+                ],
+            );
+
+        } catch (Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
     }
 }

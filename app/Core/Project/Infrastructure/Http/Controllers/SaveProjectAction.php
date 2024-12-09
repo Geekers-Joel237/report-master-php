@@ -5,13 +5,16 @@ namespace App\Core\Project\Infrastructure\Http\Controllers;
 use App\Core\Project\Application\Command\Save\SaveProjectCommand;
 use App\Core\Project\Application\Command\Save\SaveProjectHandler;
 use App\Core\Project\Infrastructure\Http\Requests\SaveProjectRequest;
-use Illuminate\Http\JsonResponse;
-use OpenApi\Annotations as OA;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
+use Throwable;
 
 /**
  * @OA\Info(title="Report-Master", version="0.1")
  *
- * @OA\Server(url ="http://report-master.com/v1",description="An Application to manage differents reports")
+ * @OA\Server(url ="https://report-master.com/v1",description="An Application to manage differents reports")
  *
  * @OA\Post(
  *     path="/projects/save",
@@ -62,19 +65,31 @@ class SaveProjectAction
     public function __invoke(
         SaveProjectHandler $handler,
         SaveProjectRequest $request
-    ): JsonResponse {
-        $command = new SaveProjectCommand(
-            name: $request->get('name'),
-            description: $request->get('description'),
-            projectId: $request->get('projectId')
-        );
-        $response = $handler->handle($command);
+    ): Responsable {
+        try {
 
-        return response()->json([
-            'status' => true,
-            'isSaved' => $response->isSaved,
-            'projectId' => $response->projectId,
-            'message' => $response->message,
-        ]);
+            $command = new SaveProjectCommand(
+                name: $request->get('name'),
+                description: $request->get('description'),
+                projectId: $request->get('projectId')
+            );
+            $response = $handler->handle($command);
+
+            return new ApiSuccessResponse(
+                data: [
+                    'isSaved' => $response->isSaved,
+                    'projectId' => $response->projectId,
+                    'message' => $response->message,
+                ],
+                code: $response->code
+            );
+
+        } catch (ApiErrorException|Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
     }
 }

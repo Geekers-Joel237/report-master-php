@@ -22,6 +22,7 @@ final readonly class DeleteReportHandler
         $this->repository->delete($reportId);
         $res->isDeleted = true;
         $res->message = ReportMessageEnum::DELETED;
+        $res->code = 200;
 
         return $res;
     }

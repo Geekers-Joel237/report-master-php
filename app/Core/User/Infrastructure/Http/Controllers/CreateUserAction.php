@@ -2,24 +2,39 @@
 
 namespace App\Core\User\Infrastructure\Http\Controllers;
 
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
 use App\Core\User\Application\Command\Save\SaveUserHandler;
 use App\Core\User\Infrastructure\Factory\SaveUserCommandFactory;
 use App\Core\User\Infrastructure\Http\Request\SaveUserRequest;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Support\Responsable;
+use Throwable;
 
 class CreateUserAction
 {
     public function __invoke(
         SaveUserRequest $request,
         SaveUserHandler $handler
-    ): JsonResponse {
-        $command = SaveUserCommandFactory::createFromRequest($request);
-        $response = $handler->handle($command);
+    ): Responsable {
+        try {
 
-        return new JsonResponse([
-            'status' => 201,
-            'userId' => $response->userId,
-            'isSaved' => $response->isSaved,
-        ]);
+            $command = SaveUserCommandFactory::createFromRequest($request);
+            $response = $handler->handle($command);
+
+            return new ApiSuccessResponse(
+                data: [
+                    'userId' => $response->userId,
+                    'isSaved' => $response->isSaved,
+                ],
+                code: $response->code
+            );
+        } catch (ApiErrorException|Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
     }
 }

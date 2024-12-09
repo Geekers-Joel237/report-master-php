@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Objective\Domain\Exceptions;
+namespace App\Core\Shared\Domain\Exceptions;
 
-use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use Exception;
 use Throwable;
 
-class ErrorOnSaveObjectiveException extends ApiErrorException
+class ApiErrorException extends Exception
 {
     public function __construct(string $message = '', int $code = 500, ?Throwable $previous = null)
     {

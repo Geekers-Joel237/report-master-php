@@ -57,6 +57,7 @@ final readonly class SaveProjectHandler
         $response->isSaved = true;
         $response->projectId = $project->snapshot()->id;
         $response->message = $message;
+        $response->code = 201;
 
         return $response;
     }

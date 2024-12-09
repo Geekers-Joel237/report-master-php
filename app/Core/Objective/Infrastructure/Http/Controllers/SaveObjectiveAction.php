@@ -5,7 +5,11 @@ namespace App\Core\Objective\Infrastructure\Http\Controllers;
 use App\Core\Objective\Application\Command\Save\SaveObjectiveHandler;
 use App\Core\Objective\Infrastructure\Factories\SaveObjectiveCommandFactory;
 use App\Core\Objective\Infrastructure\Http\Requests\SaveObjectiveRequest;
-use Illuminate\Http\JsonResponse;
+use App\Core\Shared\Domain\Exceptions\ApiErrorException;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
+use Throwable;
 
 /**
  * @OA\Post(
@@ -40,15 +44,26 @@ class SaveObjectiveAction
     public function __invoke(
         SaveObjectiveRequest $request,
         SaveObjectiveHandler $handler
-    ): JsonResponse {
-        $command = SaveObjectiveCommandFactory::fromRequest($request);
-        $response = $handler->handle($command);
+    ): Responsable {
+        try {
 
-        return response()->json([
-            'status' => true,
-            'isSaved' => $response->isSaved,
-            'reportId' => $response->objectiveId,
-            'message' => $response->message,
-        ]);
+            $command = SaveObjectiveCommandFactory::fromRequest($request);
+            $response = $handler->handle($command);
+
+            return new ApiSuccessResponse(
+                data: [
+                    'isSaved' => $response->isSaved,
+                    'reportId' => $response->objectiveId,
+                    'message' => $response->message,
+                ],
+                code: 201
+            );
+        } catch (ApiErrorException|Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+                code: $e->getCode()
+            );
+        }
     }
 }

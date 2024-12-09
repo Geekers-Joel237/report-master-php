@@ -35,6 +35,7 @@ final readonly class UpdateUserHandler
 
         $response->isSaved = true;
         $response->userId = $user->snapshot()->id;
+        $response->code = 201;
 
         return $response;
     }
