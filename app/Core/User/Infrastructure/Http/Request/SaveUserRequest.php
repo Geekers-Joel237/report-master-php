@@ -15,6 +15,4 @@ class SaveUserRequest extends HttpDataRequest
             'role' => 'required|string',
         ];
     }
-
-
 }
