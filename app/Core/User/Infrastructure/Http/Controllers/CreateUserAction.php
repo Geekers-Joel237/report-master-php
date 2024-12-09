@@ -16,8 +16,7 @@ class CreateUserAction
     public function __invoke(
         SaveUserRequest $request,
         SaveUserHandler $handler
-    ): Responsable
-    {
+    ): Responsable {
         try {
 
             $command = SaveUserCommandFactory::createFromRequest($request);
@@ -38,6 +37,7 @@ class CreateUserAction
                     code: $e->getCode()
                 );
             }
+
             return new ApiErrorResponse(
                 message: $e->getMessage(),
                 exception: $e,

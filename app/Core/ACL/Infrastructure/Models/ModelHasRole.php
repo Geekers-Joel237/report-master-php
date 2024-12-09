@@ -16,7 +16,7 @@ class ModelHasRole extends Pivot
     protected static function booted(): void
     {
         static::creating(function ($pivot) {
-            if (!$pivot->model_type) {
+            if (! $pivot->model_type) {
                 $pivot->model_type = User::class;
             }
         });
