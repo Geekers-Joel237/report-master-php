@@ -2,9 +2,9 @@
 
 namespace App\Core\Project\Infrastructure\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Core\Shared\Infrastructure\Http\Request\HttpDataRequest;
 
-class SaveProjectRequest extends FormRequest
+class SaveProjectRequest extends HttpDataRequest
 {
     /**
      * @return string[]

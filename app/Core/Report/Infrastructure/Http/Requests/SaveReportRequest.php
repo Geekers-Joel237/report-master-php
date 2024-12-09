@@ -2,9 +2,9 @@
 
 namespace App\Core\Report\Infrastructure\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Core\Shared\Infrastructure\Http\Request\HttpDataRequest;
 
-class SaveReportRequest extends FormRequest
+class SaveReportRequest extends HttpDataRequest
 {
     public function rules(): array
     {

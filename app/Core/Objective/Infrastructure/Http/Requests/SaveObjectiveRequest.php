@@ -2,7 +2,7 @@
 
 namespace App\Core\Objective\Infrastructure\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Core\Shared\Infrastructure\Http\Request\HttpDataRequest;
 
 /**
  * @OA\Schema(
@@ -23,7 +23,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     @OA\Property(property="projectId", type="string", description="The ID of the associated project")
  * )
  */
-class SaveObjectiveRequest extends FormRequest
+class SaveObjectiveRequest extends HttpDataRequest
 {
     public function rules(): array
     {

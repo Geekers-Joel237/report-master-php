@@ -2,9 +2,9 @@
 
 namespace App\Core\User\Infrastructure\Http\Request;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Core\Shared\Infrastructure\Http\Request\HttpDataRequest;
 
-class SaveUserRequest extends FormRequest
+class SaveUserRequest extends HttpDataRequest
 {
     public function rules(): array
     {
@@ -15,4 +15,6 @@ class SaveUserRequest extends FormRequest
             'role' => 'required|string',
         ];
     }
+
+
 }

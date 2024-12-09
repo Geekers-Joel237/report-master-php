@@ -2,9 +2,9 @@
 
 namespace App\Core\User\Infrastructure\Http\Request;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Core\Shared\Infrastructure\Http\Request\HttpDataRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateUserRequest extends HttpDataRequest
 {
     public function rules(): array
     {
