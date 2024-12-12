@@ -38,4 +38,14 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
     {
         User::query()->update($user->toArray());
     }
+
+    public function exists(string $userId): bool
+    {
+        // TODO: Implement exists() method.
+    }
+
+    public function delete(string $userId): void
+    {
+        // TODO: Implement delete() method. Softdelete sur users et suppression du role associe model_has_roles
+    }
 }

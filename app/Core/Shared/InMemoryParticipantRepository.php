@@ -39,4 +39,14 @@ class InMemoryParticipantRepository implements WriteUserRepository
         $this->users[$user->id] = $user;
 
     }
+
+    public function exists(string $userId): bool
+    {
+        // TODO: Implement exists() method.
+    }
+
+    public function delete(string $userId): void
+    {
+        // TODO: Implement delete() method.
+    }
 }
