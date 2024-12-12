@@ -2,7 +2,9 @@
 
 namespace App\Core\Objective\Infrastructure\Provider;
 
+use App\Core\Objective\Domain\Repository\ReadObjectiveRepository;
 use App\Core\Objective\Domain\Repository\WriteObjectiveRepository;
+use App\Core\Objective\Infrastructure\Repository\EloquentReadObjectiveRepository;
 use App\Core\Objective\Infrastructure\Repository\EloquentWriteObjectiveRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -40,5 +42,6 @@ class ObjectiveServiceProvider extends ServiceProvider
     private function bindRepositories(): void
     {
         $this->app->singleton(WriteObjectiveRepository::class, EloquentWriteObjectiveRepository::class);
+        $this->app->singleton(ReadObjectiveRepository::class, EloquentReadObjectiveRepository::class);
     }
 }

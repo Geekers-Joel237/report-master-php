@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Core\Report\Infrastructure\Repositories;
+namespace App\Core\Objective\Infrastructure\Repository;
 
-use App\Core\Report\Domain\Dto\FilterReportParams;
-use App\Core\Report\Domain\Repositories\ReadReportRepository;
-use App\Core\Report\Infrastructure\Models\Report;
+use App\Core\Objective\Domain\Dto\FilterObjectiveParams;
+use App\Core\Objective\Domain\Repository\ReadObjectiveRepository;
+use App\Core\Objective\Infrastructure\Model\Objective;
 
-class EloquentReadReportRepository implements ReadReportRepository
+class EloquentReadObjectiveRepository implements ReadObjectiveRepository
 {
-    public function filter(FilterReportParams $params): array
+    public function filter(FilterObjectiveParams $params): array
     {
-
-        $query = Report::query()->with([
+        $query = Objective::query()->with([
             'participants' => function ($q) {
                 $q->select('id', 'report_id', 'name');
             },
@@ -58,20 +57,20 @@ class EloquentReadReportRepository implements ReadReportRepository
             $query->skip($params->offset)->take($params->limit);
         }
 
-        $reports = $query->get()->map(function ($report) {
+        $objectives = $query->get()->map(function ($objective) {
             return [
-                'reportId' => $report->id,
-                'projectId' => $report->project->id,
-                'projectName' => $report->project->name,
-                'year' => $report->project->year->year,
-                'participants' => $report->participants->pluck('name')->toArray(),
-                'tasks' => $report->tasks,
-                'owner' => $report->owner?->name,
+                'objectiveId' => $objective->id,
+                'projectId' => $objective->project->id,
+                'projectName' => $objective->project->name,
+                'year' => $objective->project->year->year,
+                'participants' => $objective->participants->pluck('name')->toArray(),
+                'tasks' => $objective->tasks,
+                'owner' => $objective->owner?->name,
             ];
         });
 
         return [
-            $reports,
+            $objectives,
             $total,
         ];
     }

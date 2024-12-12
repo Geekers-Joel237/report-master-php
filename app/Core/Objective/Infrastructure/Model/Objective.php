@@ -4,10 +4,12 @@ namespace App\Core\Objective\Infrastructure\Model;
 
 use App\Core\Objective\Domain\Entities\Objective as ObjectiveDomain;
 use App\Core\Objective\Infrastructure\database\factory\ObjectiveFactory;
+use App\Core\Project\Infrastructure\Models\Project;
 use App\Core\Shared\Infrastructure\Models\BaseModel;
 use App\Core\User\Infrastructure\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -68,5 +70,15 @@ class Objective extends BaseModel
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'participant_objective', 'objective_id', 'participant_id');
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
     }
 }

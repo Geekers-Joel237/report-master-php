@@ -4,8 +4,11 @@ namespace App\Core\Objective\Infrastructure\Http\Controllers;
 
 use App\Core\Objective\Application\Query\All\GetAllObjectivesQueryHandler;
 use App\Core\Objective\Infrastructure\Factories\FilterObjectivesCommandFactory;
-use Illuminate\Http\JsonResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
+use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Throwable;
 
 /**
  * @OA\Get(
@@ -44,12 +47,24 @@ class GetAllObjectivesAction
     public function __invoke(
         Request $request,
         GetAllObjectivesQueryHandler $handler
-    ): JsonResponse {
-        $command = FilterObjectivesCommandFactory::fromRequest($request);
+    ): Responsable {
+        try {
+            $command = FilterObjectivesCommandFactory::fromRequest($request);
 
-        return response()->json([
-            'status' => true,
-            'objectives' => $handler->handle($command),
-        ]);
+            [$objectives, $total] = $handler->handle($command);
+
+            return new ApiSuccessResponse(
+                data: [
+                    'objectives' => $objectives,
+                    'total' => $total,
+                ],
+            );
+
+        } catch (Throwable $e) {
+            return new ApiErrorResponse(
+                message: $e->getMessage(),
+                exception: $e,
+            );
+        }
     }
 }
