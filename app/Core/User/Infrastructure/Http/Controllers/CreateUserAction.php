@@ -40,8 +40,7 @@ class CreateUserAction
 
             return new ApiErrorResponse(
                 message: $e->getMessage(),
-                exception: $e,
-                code: 500
+                exception: $e
             );
         }
     }

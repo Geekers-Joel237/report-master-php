@@ -85,10 +85,17 @@ class SaveProjectAction
             );
 
         } catch (ApiErrorException|Throwable $e) {
+            if ($e instanceof ApiErrorException) {
+                return new ApiErrorResponse(
+                    message: $e->getMessage(),
+                    exception: $e,
+                    code: $e->getCode()
+                );
+            }
+
             return new ApiErrorResponse(
                 message: $e->getMessage(),
-                exception: $e,
-                code: $e->getCode()
+                exception: $e
             );
         }
     }
