@@ -3,8 +3,8 @@
 namespace App\Core\Shared;
 
 use App\Core\User\Domain\Entities\User;
+use App\Core\User\Domain\Repository\WriteUserRepository;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
-use App\Core\User\Domain\WriteUserRepository;
 
 class InMemoryParticipantRepository implements WriteUserRepository
 {

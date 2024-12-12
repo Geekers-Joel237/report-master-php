@@ -66,7 +66,6 @@ class GetAllReportsAction
             return new ApiErrorResponse(
                 message: $e->getMessage(),
                 exception: $e,
-                code: $e->getCode()
             );
         }
     }

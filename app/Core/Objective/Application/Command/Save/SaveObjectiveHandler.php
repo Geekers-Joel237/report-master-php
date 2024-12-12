@@ -10,7 +10,7 @@ use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
-use App\Core\User\Domain\WriteUserRepository;
+use App\Core\User\Domain\Repository\WriteUserRepository;
 
 final readonly class SaveObjectiveHandler
 {

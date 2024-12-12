@@ -8,7 +8,7 @@ use App\Core\User\Domain\Entities\User;
 use App\Core\User\Domain\Exceptions\AlreadyEmailExistException;
 use App\Core\User\Domain\Exceptions\NotEmptyException;
 use App\Core\User\Domain\Exceptions\NotFoundUserException;
-use App\Core\User\Domain\WriteUserRepository;
+use App\Core\User\Domain\Repository\WriteUserRepository;
 
 final readonly class UpdateUserHandler
 {

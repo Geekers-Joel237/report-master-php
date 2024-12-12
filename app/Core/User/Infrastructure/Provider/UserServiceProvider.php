@@ -3,7 +3,9 @@
 namespace App\Core\User\Infrastructure\Provider;
 
 use App\Core\Shared\Infrastructure\Repository\EloquentWriteParticipantRepository;
-use App\Core\User\Domain\WriteUserRepository;
+use App\Core\User\Domain\Repository\ReadUserRepository;
+use App\Core\User\Domain\Repository\WriteUserRepository;
+use App\Core\User\Infrastructure\Repository\SqlReadUserRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +26,7 @@ class UserServiceProvider extends ServiceProvider
     private function bindRepositories(): void
     {
         $this->app->singleton(WriteUserRepository::class, EloquentWriteParticipantRepository::class);
+        $this->app->singleton(ReadUserRepository::class, SqlReadUserRepository::class);
     }
 
     private function registerRoutes(): void

@@ -11,7 +11,7 @@ use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
-use App\Core\User\Domain\WriteUserRepository;
+use App\Core\User\Domain\Repository\WriteUserRepository;
 
 final readonly class SaveReportHandler
 {

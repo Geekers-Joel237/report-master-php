@@ -8,8 +8,8 @@ use App\Core\Shared\Domain\IdGenerator;
 use App\Core\User\Domain\Entities\User;
 use App\Core\User\Domain\Exceptions\AlreadyEmailExistException;
 use App\Core\User\Domain\Exceptions\NotEmptyException;
+use App\Core\User\Domain\Repository\WriteUserRepository;
 use App\Core\User\Domain\Vo\Hasher;
-use App\Core\User\Domain\WriteUserRepository;
 
 final readonly class SaveUserHandler
 {

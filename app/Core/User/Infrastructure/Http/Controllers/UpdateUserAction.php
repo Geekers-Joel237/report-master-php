@@ -33,7 +33,7 @@ class UpdateUserAction
             return new ApiErrorResponse(
                 message: $e->getMessage(),
                 exception: $e,
-                code: $e->getCode()
+                code: is_int($e->getCode()) ? $e->getCode() : 500
             );
         }
     }

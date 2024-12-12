@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
-class SaveUserActionTest extends TestCase
+class UserActionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -80,5 +80,27 @@ class SaveUserActionTest extends TestCase
         $dbUser = User::query()->find($updatedData['userId']);
         $this->assertEquals($dbUser->name, $updatedData['name']);
         $this->assertEquals($dbUser->email, $updatedData['email']);
+    }
+
+    public function test_can_get_user_profile(): void
+    {
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john@doe.com',
+            'password' => 'password',
+            'role' => RoleEnum::DEVELOPER->value,
+        ];
+        $res = $this->postJson('/api/v1/users', $data);
+
+        $response = $this->getJson('/api/v1/users/'.$res->json()['data']['userId']);
+        $response->assertStatus(200);
+        $this->assertEquals([
+            'userId' => $res->json()['data']['userId'],
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'roleName' => $data['role'],
+            'roleId' => $this->role->id,
+        ], $response->json()['data']);
+
     }
 }

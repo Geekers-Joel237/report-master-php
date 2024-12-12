@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\User\Domain;
+namespace App\Core\User\Domain\Repository;
 
 use App\Core\User\Domain\Entities\User;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
