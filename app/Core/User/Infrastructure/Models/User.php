@@ -5,15 +5,17 @@ namespace App\Core\User\Infrastructure\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Core\ACL\Infrastructure\Models\ModelHasRole;
 use App\Core\ACL\Infrastructure\Models\Role;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\User\Infrastructure\database\factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public $incrementing = false;
 
@@ -48,6 +50,9 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    /**
+     * @throws InvalidCommandException
+     */
     public function toDomain(): \App\Core\User\Domain\Entities\User
     {
         return \App\Core\User\Domain\Entities\User::createFromAdapter(
