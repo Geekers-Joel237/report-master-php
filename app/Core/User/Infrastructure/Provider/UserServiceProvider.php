@@ -43,6 +43,7 @@ class UserServiceProvider extends ServiceProvider
     {
         return [
             'prefix' => 'api/v1',
+            'middleware' => 'api',
         ];
     }
 }

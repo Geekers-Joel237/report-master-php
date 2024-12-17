@@ -3,9 +3,12 @@
 namespace App\Core\Shared\Infrastructure\Repository;
 
 use App\Core\ACL\Infrastructure\Models\Role;
+use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
+use App\Core\User\Domain\Exceptions\ErrorOnSaveUserException;
 use App\Core\User\Domain\Repository\WriteUserRepository;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
 use App\Core\User\Infrastructure\Models\User;
+use Throwable;
 
 class EloquentWriteParticipantRepository implements WriteUserRepository
 {
@@ -23,12 +26,28 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
             ->exists();
     }
 
-    public function save(UserSnapshot $user): void
+    public function exists(string $userId): bool
     {
-        $eUser = User::query()->create($user->toArray());
-        $eUser->roles()->sync(Role::query()->whereIn('name', $user->roles)->pluck('id')->toArray());
+        // TODO: Implement exists() method.
     }
 
+    /**
+     * @throws ErrorOnSaveUserException
+     */
+    public function save(UserSnapshot $user): void
+    {
+        try {
+            $eUser = User::query()->create($user->toArray());
+            $eUser->roles()->sync(Role::query()->whereIn('name', $user->roles)->pluck('id')->toArray());
+
+        } catch (Throwable $e) {
+            throw new ErrorOnSaveUserException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws InvalidCommandException
+     */
     public function ofId(?string $userId): ?\App\Core\User\Domain\Entities\User
     {
         return User::query()->find($userId)?->toDomain();
@@ -37,11 +56,6 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
     public function update(UserSnapshot $user): void
     {
         User::query()->update($user->toArray());
-    }
-
-    public function exists(string $userId): bool
-    {
-        // TODO: Implement exists() method.
     }
 
     public function delete(string $userId): void

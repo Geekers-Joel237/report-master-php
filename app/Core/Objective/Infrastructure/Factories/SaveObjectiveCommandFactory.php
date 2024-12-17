@@ -5,7 +5,6 @@ namespace App\Core\Objective\Infrastructure\Factories;
 use App\Core\Objective\Application\Command\Save\SaveObjectiveCommand;
 use App\Core\Objective\Infrastructure\Http\Requests\SaveObjectiveRequest;
 use Illuminate\Support\Facades\Auth;
-use Ramsey\Uuid\Uuid;
 
 class SaveObjectiveCommandFactory
 {
@@ -16,7 +15,7 @@ class SaveObjectiveCommandFactory
             tasks: $request->get('tasks'),
             participantIds: $request->get('participantIds'),
             projectId: $request->get('projectId'),
-            ownerId: Auth::user()?->id ?? Uuid::uuid4()->toString(),
+            ownerId: Auth::user()->getAuthIdentifier(),
             objectiveId: $request->get('objectiveId'),
         );
     }
