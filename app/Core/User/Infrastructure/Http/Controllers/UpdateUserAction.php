@@ -6,7 +6,7 @@ use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
 use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
 use App\Core\User\Application\Command\Update\UpdateUserHandler;
-use App\Core\User\Infrastructure\Factory\SaveUserCommandFactory;
+use App\Core\User\Infrastructure\Factory\UserCommandFactory;
 use App\Core\User\Infrastructure\Http\Request\UpdateUserRequest;
 use Illuminate\Contracts\Support\Responsable;
 use Throwable;
@@ -19,7 +19,7 @@ class UpdateUserAction
     ): Responsable {
         try {
 
-            $command = SaveUserCommandFactory::updateFromRequest($request);
+            $command = UserCommandFactory::updateFromRequest($request);
             $response = $handler->handle($command);
 
             return new ApiSuccessResponse(

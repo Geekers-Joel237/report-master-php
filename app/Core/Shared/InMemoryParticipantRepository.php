@@ -2,7 +2,6 @@
 
 namespace App\Core\Shared;
 
-use App\Core\ACL\Infrastructure\Models\ModelHasRole;
 use App\Core\User\Domain\Entities\User;
 use App\Core\User\Domain\Repository\WriteUserRepository;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
@@ -43,18 +42,12 @@ class InMemoryParticipantRepository implements WriteUserRepository
 
     public function exists(string $userId): bool
     {
-        return User::query()->find($userId);
+        return array_key_exists($userId, $this->users);
+
     }
 
     public function delete(string $userId): void
     {
-        $user = \App\Core\User\Infrastructure\Models\User::query()->findOrFail($userId);
-
-        $user->update(['is_deleted' => 1]);
-
-        $userhasdelete= ModelHasRole::query()->findOrFail($userId);
-
-        $userhasdelete->delete();
-
+        unset($this->users[$userId]);
     }
 }

@@ -42,18 +42,17 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
 
     public function exists(string $userId): bool
     {
-        return User::query()->find($userId);
+
+        return User::query()->where('id', $userId)->exists();
+
     }
 
     public function delete(string $userId): void
     {
+        User::query()->find($userId)->softDelete();
 
-        $user = User::query()->findOrFail($userId);
+        ModelHasRole::query()->where('model_id', $userId)
+            ->where('model_type', User::class)->delete();
 
-        $user->update(['is_deleted' => 1]);
-
-        $userhasdelete= ModelHasRole::query()->findOrFail($userId);
-
-        $userhasdelete->delete();
     }
 }

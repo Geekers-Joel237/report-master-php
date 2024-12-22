@@ -3,14 +3,13 @@
 namespace App\Core\User\Infrastructure\Factory;
 
 use App\Core\User\Application\Command\Delete\DeleteUserCommand;
-use App\Core\User\Application\Command\Delete\DeleteUserResponse;
 use App\Core\User\Application\Command\Save\SaveUserCommand;
 use App\Core\User\Application\Command\Save\UpdateUserCommand;
 use App\Core\User\Infrastructure\Http\Request\DeleteUserRequest;
 use App\Core\User\Infrastructure\Http\Request\SaveUserRequest;
 use App\Core\User\Infrastructure\Http\Request\UpdateUserRequest;
 
-class SaveUserCommandFactory
+class UserCommandFactory
 {
     public static function createFromRequest(SaveUserRequest $request): SaveUserCommand
     {
@@ -32,7 +31,7 @@ class SaveUserCommandFactory
         );
     }
 
-    public static function deleteFromRequest(DeleteUserRequest $request) : DeleteUserCommand
+    public static function deleteFromRequest(DeleteUserRequest $request): DeleteUserCommand
     {
         return new DeleteUserCommand(
             userId: $request->route('userId')
