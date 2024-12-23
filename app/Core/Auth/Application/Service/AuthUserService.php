@@ -7,6 +7,7 @@ use App\Core\Auth\Application\Command\Login\LoginUserResponse;
 use App\Core\Auth\Infrastructure\ViewModels\AuthUserViewModel;
 use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 use App\Core\User\Infrastructure\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
@@ -26,6 +27,8 @@ class AuthUserService
 
         // Révocation des tokens existants (optionnel)
         $user->tokens()->delete();
+
+        Auth::login($user);
 
         $authUser = new AuthUserViewModel(
             userId: $user->id,
