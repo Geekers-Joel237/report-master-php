@@ -7,6 +7,9 @@ use App\Core\User\Infrastructure\Http\Controllers\UpdateUserAction;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/users', CreateUserAction::class);
-Route::put('/users/{userId}', UpdateUserAction::class);
-Route::get('/users/{userId}', GetUserProfileAction::class);
-Route::delete('/user/{userId}', DeleteUserAction::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/users/{userId}', UpdateUserAction::class);
+    Route::get('/users/{userId}', GetUserProfileAction::class);
+    Route::delete('/user/{userId}', DeleteUserAction::class);
+
+});

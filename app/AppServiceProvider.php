@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Core\ACL\Infrastructure\Provider\AclServiceProvider;
+use App\Core\Auth\Infrastructure\Provider\AuthServiceProvider;
 use App\Core\Objective\Infrastructure\Provider\ObjectiveServiceProvider;
 use App\Core\Project\Infrastructure\Provider\ProjectServiceProvider;
 use App\Core\Report\Infrastructure\Provider\ReportServiceProvider;
@@ -33,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(ProjectServiceProvider::class);
         $this->app->register(ReportServiceProvider::class);
         $this->app->register(ObjectiveServiceProvider::class);
+        $this->app->register(AuthServiceProvider::class);
     }
 }

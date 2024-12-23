@@ -4,9 +4,11 @@ namespace App\Core\Shared\Infrastructure\Repository;
 
 use App\Core\ACL\Infrastructure\Models\ModelHasRole;
 use App\Core\ACL\Infrastructure\Models\Role;
+use App\Core\User\Domain\Exceptions\ErrorOnSaveUserException;
 use App\Core\User\Domain\Repository\WriteUserRepository;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
 use App\Core\User\Infrastructure\Models\User;
+use Throwable;
 
 class EloquentWriteParticipantRepository implements WriteUserRepository
 {
@@ -26,8 +28,13 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
 
     public function save(UserSnapshot $user): void
     {
-        $eUser = User::query()->create($user->toArray());
-        $eUser->roles()->sync(Role::query()->whereIn('name', $user->roles)->pluck('id')->toArray());
+        try {
+            $eUser = User::query()->create($user->toArray());
+            $eUser->roles()->sync(Role::query()->whereIn('name', $user->roles)->pluck('id')->toArray());
+
+        } catch (Throwable $e) {
+            throw new ErrorOnSaveUserException($e->getMessage());
+        }
     }
 
     public function ofId(?string $userId): ?\App\Core\User\Domain\Entities\User

@@ -7,6 +7,7 @@ use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\Shared\Domain\IdGenerator;
 use App\Core\User\Domain\Entities\User;
 use App\Core\User\Domain\Exceptions\AlreadyEmailExistException;
+use App\Core\User\Domain\Exceptions\ErrorOnSaveUserException;
 use App\Core\User\Domain\Exceptions\NotEmptyException;
 use App\Core\User\Domain\Repository\WriteUserRepository;
 use App\Core\User\Domain\Vo\Hasher;
@@ -16,13 +17,14 @@ final readonly class SaveUserHandler
     public function __construct(
         private WriteUserRepository $repository,
         private IdGenerator $idGenerator,
-        private Hasher $hasher
+        private Hasher $hasher,
     ) {}
 
     /**
      * @throws AlreadyEmailExistException
-     * @throws NotEmptyException
      * @throws InvalidCommandException
+     * @throws NotEmptyException
+     * @throws ErrorOnSaveUserException
      */
     public function handle(SaveUserCommand $command): SaveUserResponse
     {

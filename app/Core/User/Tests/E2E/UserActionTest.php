@@ -19,6 +19,8 @@ class UserActionTest extends TestCase
 
     private Role $role;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -54,6 +56,7 @@ class UserActionTest extends TestCase
             $data['password'],
             User::query()->find($response->json()['data']['userId'])->password)
         );
+        $this->assertNotNull($response->json()['data']['token']);
     }
 
     public function test_can_update_user(): void
@@ -66,13 +69,14 @@ class UserActionTest extends TestCase
         ];
         $response1 = $this->postJson('/api/v1/users', $data);
         $this->assertTrue($response1->json()['data']['isSaved']);
+        $this->user = User::query()->find($response1->json()['data']['userId']);
 
         $updatedData = [
             'name' => 'Jane Doe',
             'email' => 'john@doe.com',
             'userId' => $userId = $response1->json()['data']['userId'],
         ];
-        $response = $this->putJson('/api/v1/users/'.$userId, $updatedData);
+        $response = $this->actingAs($this->user)->putJson('/api/v1/users/'.$userId, $updatedData);
 
         $response->assertStatus(201);
         $this->assertEquals($response1->json()['data']['userId'], $updatedData['userId']);
@@ -94,8 +98,8 @@ class UserActionTest extends TestCase
         $this->assertTrue($response1->json()['data']['isSaved']);
 
         $userId = $response1->json()['data']['userId'];
-
-        $response = $this->deleteJson('/api/v1/user/'.$userId);
+        $this->user = User::factory()->create();
+        $response = $this->actingAs($this->user)->deleteJson('/api/v1/user/'.$userId);
         $response->assertStatus(200);
         $this->assertTrue($response->json()['data']['isDeleted']);
 
@@ -116,8 +120,9 @@ class UserActionTest extends TestCase
             'role' => RoleEnum::DEVELOPER->value,
         ];
         $res = $this->postJson('/api/v1/users', $data);
+        $this->user = User::query()->find($res->json()['data']['userId']);
 
-        $response = $this->getJson('/api/v1/users/'.$res->json()['data']['userId']);
+        $response = $this->actingAs($this->user)->getJson('/api/v1/users/'.$res->json()['data']['userId']);
         $response->assertStatus(200);
         $this->assertEquals([
             'userId' => $res->json()['data']['userId'],

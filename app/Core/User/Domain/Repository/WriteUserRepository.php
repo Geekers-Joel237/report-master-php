@@ -3,6 +3,7 @@
 namespace App\Core\User\Domain\Repository;
 
 use App\Core\User\Domain\Entities\User;
+use App\Core\User\Domain\Exceptions\ErrorOnSaveUserException;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
 
 interface WriteUserRepository
@@ -15,6 +16,9 @@ interface WriteUserRepository
 
     public function emailExists(string $email, ?string $userId): bool;
 
+    /**
+     * @throws ErrorOnSaveUserException
+     */
     public function save(UserSnapshot $user): void;
 
     public function ofId(?string $userId): ?User;

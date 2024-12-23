@@ -2,6 +2,7 @@
 
 namespace App\Core\User\Infrastructure\Http\Controllers;
 
+use App\Core\Auth\Application\Service\AuthUserService;
 use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 use App\Core\Shared\Infrastructure\Http\Response\ApiErrorResponse;
 use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
@@ -15,7 +16,8 @@ class CreateUserAction
 {
     public function __invoke(
         SaveUserRequest $request,
-        SaveUserHandler $handler
+        SaveUserHandler $handler,
+        AuthUserService $authUserService
     ): Responsable {
         try {
 
@@ -26,6 +28,7 @@ class CreateUserAction
                 data: [
                     'userId' => $response->userId,
                     'isSaved' => $response->isSaved,
+                    'token' => $authUserService->token($response->userId),
                 ],
                 code: $response->code
             );
