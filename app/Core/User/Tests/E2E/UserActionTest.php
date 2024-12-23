@@ -86,6 +86,31 @@ class UserActionTest extends TestCase
         $this->assertEquals($dbUser->email, $updatedData['email']);
     }
 
+    public function test_can_delete_user(): void
+    {
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john@doe.com',
+            'password' => 'password',
+            'role' => RoleEnum::DEVELOPER->value,
+        ];
+        $response1 = $this->postJson('/api/v1/users', $data);
+        $this->assertTrue($response1->json()['data']['isSaved']);
+
+        $userId = $response1->json()['data']['userId'];
+
+        $response = $this->deleteJson('/api/v1/user/'.$userId);
+        $response->assertStatus(200);
+        $this->assertTrue($response->json()['data']['isDeleted']);
+
+        $dbUser = User::query()->where(['id' => $userId])
+            ->whereNotNull(['deleted_at'])
+            ->where(['is_deleted' => true])
+            ->first();
+        $this->assertSoftDeleted('users', $dbUser->toArray());
+
+    }
+
     public function test_can_get_user_profile(): void
     {
         $data = [

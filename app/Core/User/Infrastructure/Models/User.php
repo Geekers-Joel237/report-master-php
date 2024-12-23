@@ -64,6 +64,14 @@ class User extends Authenticatable
         );
     }
 
+    public function softDelete(): void
+    {
+        $this->fill([
+            'is_deleted' => 1,
+            'deleted_at' => date('Y-m-d H:i:s'),
+        ])->save();
+    }
+
     /**
      * Get the attributes that should be cast.
      *

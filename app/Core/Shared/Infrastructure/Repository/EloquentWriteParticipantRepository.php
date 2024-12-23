@@ -2,8 +2,8 @@
 
 namespace App\Core\Shared\Infrastructure\Repository;
 
+use App\Core\ACL\Infrastructure\Models\ModelHasRole;
 use App\Core\ACL\Infrastructure\Models\Role;
-use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
 use App\Core\User\Domain\Exceptions\ErrorOnSaveUserException;
 use App\Core\User\Domain\Repository\WriteUserRepository;
 use App\Core\User\Domain\Snapshot\UserSnapshot;
@@ -26,14 +26,6 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
             ->exists();
     }
 
-    public function exists(string $userId): bool
-    {
-        // TODO: Implement exists() method.
-    }
-
-    /**
-     * @throws ErrorOnSaveUserException
-     */
     public function save(UserSnapshot $user): void
     {
         try {
@@ -45,9 +37,6 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
         }
     }
 
-    /**
-     * @throws InvalidCommandException
-     */
     public function ofId(?string $userId): ?\App\Core\User\Domain\Entities\User
     {
         return User::query()->find($userId)?->toDomain();
@@ -58,8 +47,19 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
         User::query()->update($user->toArray());
     }
 
+    public function exists(string $userId): bool
+    {
+
+        return User::query()->where('id', $userId)->exists();
+
+    }
+
     public function delete(string $userId): void
     {
-        // TODO: Implement delete() method. Softdelete sur users et suppression du role associe model_has_roles
+        ModelHasRole::query()->where('model_id', $userId)
+            ->where('model_type', User::class)->delete();
+
+        User::query()->find($userId)->softDelete();
+
     }
 }
