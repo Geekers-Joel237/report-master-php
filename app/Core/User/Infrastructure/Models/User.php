@@ -8,13 +8,12 @@ use App\Core\ACL\Infrastructure\Models\Role;
 use App\Core\User\Infrastructure\database\factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable;
 
     public $incrementing = false;
 
@@ -60,6 +59,14 @@ class User extends Authenticatable
         );
     }
 
+    public function softDelete(): void
+    {
+        $this->fill([
+            'is_deleted' => 1,
+            'deleted_at' => date('Y-m-d H:i:s'),
+        ])->save();
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -71,11 +78,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function softDelete(): void
-    {
-        $this->is_deleted = true;
-        $this->runSoftDelete();
     }
 }

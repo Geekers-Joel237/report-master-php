@@ -49,10 +49,10 @@ class EloquentWriteParticipantRepository implements WriteUserRepository
 
     public function delete(string $userId): void
     {
-        User::query()->find($userId)->softDelete();
-
         ModelHasRole::query()->where('model_id', $userId)
             ->where('model_type', User::class)->delete();
+
+        User::query()->find($userId)->softDelete();
 
     }
 }
