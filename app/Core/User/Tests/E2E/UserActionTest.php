@@ -98,8 +98,8 @@ class UserActionTest extends TestCase
         $this->assertTrue($response1->json()['data']['isSaved']);
 
         $userId = $response1->json()['data']['userId'];
-
-        $response = $this->deleteJson('/api/v1/user/'.$userId);
+        $this->user = User::factory()->create();
+        $response = $this->actingAs($this->user)->deleteJson('/api/v1/user/'.$userId);
         $response->assertStatus(200);
         $this->assertTrue($response->json()['data']['isDeleted']);
 
