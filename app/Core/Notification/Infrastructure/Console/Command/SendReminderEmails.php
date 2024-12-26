@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Command;
+namespace App\Core\Notification\Infrastructure\Console\Command;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +22,6 @@ class SendReminderEmails extends Command
      */
     protected $description = 'Send reminder emails to project participants who are not admins';
 
-
     public function handle(): void
     {
 
@@ -35,13 +34,12 @@ class SendReminderEmails extends Command
             ->select('users.email', 'projects.name as project_name')
             ->get();
 
-
         foreach ($participants as $participant) {
             Mail::raw(
-                "Bonjour,\n\nCeci est un rappel pour votre participation au projet \"{$participant->project_name}\".\n\nMerci !",
+                "Bonjour,\n\nCeci est un rappel pour votre participation au projet \"$participant->project_name\".\n\nMerci !",
                 function ($message) use ($participant) {
                     $message->to($participant->email)
-                        ->subject("Rappel de participation au projet");
+                        ->subject('Rappel de participation au projet');
                 }
             );
         }

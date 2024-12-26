@@ -2,14 +2,12 @@
 
 namespace App\Core\Shared\Infrastructure\Console;
 
-
-use App\Console\Command\SendReminderEmails;
+use App\Core\Notification\Infrastructure\Console\Command\SendReminderEmails;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-
     protected $commands = [
         SendReminderEmails::class,
     ];
