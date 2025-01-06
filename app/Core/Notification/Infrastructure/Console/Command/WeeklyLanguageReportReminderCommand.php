@@ -67,22 +67,22 @@ class WeeklyLanguageReportReminderCommand extends Command
     {
         // Message générique
         $message = "Hello,\n\n"
-            . "This is a friendly reminder to submit your weekly report for the ongoing projects.\n\n"
-            . "If you are a French speaker, please ensure that your report is written in **English**.\n"
-            . "If you are an English speaker, please ensure that your report is written in **French**.\n\n"
-            . "Timely submission of your report helps us maintain smooth communication and project progress.\n\n"
-            . "Thank you for your cooperation!\n\n"
-            . "Best regards,\n"
-            . "The Project Management Team\n\n"
-            . "---\n\n"
-            . "Bonjour,\n\n"
-            . "Ceci est un rappel amical pour soumettre votre rapport hebdomadaire pour les projets en cours.\n\n"
-            . "Si vous êtes francophone, veuillez vous assurer que votre rapport est rédigé en **anglais**.\n"
-            . "Si vous êtes anglophone, veuillez vous assurer que votre rapport est rédigé en **français**.\n\n"
-            . "La soumission en temps voulu de votre rapport nous aide à maintenir une communication fluide et une bonne progression des projets.\n\n"
-            . "Merci pour votre coopération !\n\n"
-            . "Cordialement,\n"
-            . "L'équipe de gestion de projet";
+            ."This is a friendly reminder to submit your weekly report for the ongoing projects.\n\n"
+            ."If you are a French speaker, please ensure that your report is written in **English**.\n"
+            ."If you are an English speaker, please ensure that your report is written in **French**.\n\n"
+            ."Timely submission of your report helps us maintain smooth communication and project progress.\n\n"
+            ."Thank you for your cooperation!\n\n"
+            ."Best regards,\n"
+            ."The Project Management Team\n\n"
+            ."---\n\n"
+            ."Bonjour,\n\n"
+            ."Ceci est un rappel amical pour soumettre votre rapport hebdomadaire pour les projets en cours.\n\n"
+            ."Si vous êtes francophone, veuillez vous assurer que votre rapport est rédigé en **anglais**.\n"
+            ."Si vous êtes anglophone, veuillez vous assurer que votre rapport est rédigé en **français**.\n\n"
+            ."La soumission en temps voulu de votre rapport nous aide à maintenir une communication fluide et une bonne progression des projets.\n\n"
+            ."Merci pour votre coopération !\n\n"
+            ."Cordialement,\n"
+            ."L'équipe de gestion de projet";
 
         return new SendEmailForLanguageDto(
             object: 'Weekly Report Reminder - '.date('Y-m-d'),
