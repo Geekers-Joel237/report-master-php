@@ -35,14 +35,13 @@ class WeeklyLanguageReportReminderCommand extends Command
             $pdo = DB::connection()->getPdo();
 
             $roles = [RoleEnum::ADMIN->value, RoleEnum::SUPER_ADMIN->value];
-            $placeholders = str_repeat('?,', count($roles) - 1).'?';
 
             $sql = '
                 SELECT u.email, u.name
                 FROM users u
                     INNER JOIN model_has_roles mhr ON (u.id = mhr.model_id AND mhr.model_type = ?)
                     INNER JOIN roles r ON mhr.role_id = r.id
-                WHERE u.is_deleted = 0 AND r.name NOT IN ('.$placeholders.')
+                WHERE u.is_deleted = 0 AND r.name NOT IN (?, ?)
                 ';
 
             $st = $pdo->prepare($sql);

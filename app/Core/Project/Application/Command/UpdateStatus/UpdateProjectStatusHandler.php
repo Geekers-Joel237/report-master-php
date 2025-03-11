@@ -32,7 +32,7 @@ final readonly class UpdateProjectStatusHandler
             return $response;
         }
 
-        $this->repository->save($existingProject->snapshot());
+        $this->repository->update($existingProject->snapshot());
         $response->isSaved = true;
         $response->projectId = $existingProject->snapshot()->id;
         $response->message = ProjectMessageEnum::UPDATED;

@@ -25,7 +25,7 @@ class UpdateProjectStatusTest extends TestCase
 
     private IdGenerator $idGenerator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->repository = new InMemoryWriteProjectRepository;
@@ -39,7 +39,7 @@ class UpdateProjectStatusTest extends TestCase
     public function test_can_update_project_status(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
-        $this->repository->save($existingProject->snapshot());
+        $this->repository->create($existingProject->snapshot());
 
         $command = new UpdateProjectStatusCommand(
             projectId: $existingProject->snapshot()->id,

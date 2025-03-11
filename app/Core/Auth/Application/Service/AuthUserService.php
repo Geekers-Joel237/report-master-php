@@ -4,7 +4,7 @@ namespace App\Core\Auth\Application\Service;
 
 use App\Core\Auth\Application\Command\Login\LoginUserCommand;
 use App\Core\Auth\Application\Command\Login\LoginUserResponse;
-use App\Core\Auth\Infrastructure\ViewModels\AuthUserViewModel;
+use App\Core\Auth\Domain\ViewModels\AuthUserViewModel;
 use App\Core\Shared\Domain\Exceptions\ApiErrorException;
 use App\Core\User\Infrastructure\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -58,8 +58,8 @@ class AuthUserService
     public function token(string $tokenableId): string
     {
         try {
-            return User::query()->find($tokenableId)->createToken(config('auth.api_token'))->plainTextToken;
-        } catch (Throwable $th) {
+            return User::query()->findOrFail($tokenableId)->createToken(config('auth.api_token'))->plainTextToken;
+        } catch (Throwable) {
             throw new ApiErrorException('Error occurred while trying to create token');
         }
 

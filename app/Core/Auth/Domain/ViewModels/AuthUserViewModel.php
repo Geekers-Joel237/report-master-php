@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Auth\Infrastructure\ViewModels;
+namespace App\Core\Auth\Domain\ViewModels;
 
-class AuthUserViewModel
+readonly class AuthUserViewModel
 {
     public function __construct(
         public string $userId,

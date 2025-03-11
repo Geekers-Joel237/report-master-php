@@ -11,6 +11,8 @@ enum RoleEnum: string
     case RH = 'rh';
     case ADMIN = 'admin';
     case SUPER_ADMIN = 'super_admin';
+    case PROJECT_MANAGER = 'project_manager';
+    case COMMUNICATION = 'community';
 
     /**
      * @throws InvalidCommandException
@@ -25,6 +27,9 @@ enum RoleEnum: string
         return $role;
     }
 
+    /**
+     * @return string[]
+     */
     public static function values(): array
     {
         return array_map(fn ($e) => $e->value, self::cases());

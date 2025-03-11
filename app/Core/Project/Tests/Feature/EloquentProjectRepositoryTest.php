@@ -18,7 +18,7 @@ class EloquentProjectRepositoryTest extends TestCase
 
     private WriteProjectRepository $repository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->repository = new EloquentWriteProjectRepository;
@@ -52,7 +52,7 @@ class EloquentProjectRepositoryTest extends TestCase
             ->withExistingProject()
             ->build();
         $this->assertInstanceOf(Project::class, $sut->project);
-        $this->repository->save($sut->project->snapshot());
+        $this->repository->create($sut->project->snapshot());
 
         $dbProject = $this->repository->ofId($sut->project->snapshot()->id);
         $this->assertNotNull($dbProject);
@@ -69,7 +69,7 @@ class EloquentProjectRepositoryTest extends TestCase
             ->withExistingProject()
             ->build();
         $this->assertNotNull($sut->project);
-        $this->repository->save($sut->project->snapshot());
+        $this->repository->create($sut->project->snapshot());
         $dbProject = $this->repository->ofId($sut->project->snapshot()->id);
         $this->assertNotNull($dbProject);
 

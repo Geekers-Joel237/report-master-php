@@ -29,7 +29,7 @@ class SaveProjectTest extends TestCase
 
     private SlugHelper $slugHelper;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->repository = new InMemoryWriteProjectRepository;
@@ -42,16 +42,16 @@ class SaveProjectTest extends TestCase
      */
     public function test_can_create_project(): void
     {
-        //Given
+        // Given
         $command = new SaveProjectCommand(
             name: 'my-project-name',
             description: 'my-project-description',
         );
 
-        //when
+        // when
         $response = $this->saveProject($command);
 
-        //then
+        // then
         $this->assertTrue($response->isSaved);
         $this->assertEquals(ProjectMessageEnum::SAVE, $response->message);
         $this->assertEquals($this->idGenerator->generate(), $response->projectId);
@@ -82,7 +82,7 @@ class SaveProjectTest extends TestCase
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
 
-        $this->repository->save($existingProject->snapshot());
+        $this->repository->create($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
             name: 'my-project-name-modified', description: 'my-project-description', projectId: $existingProject->snapshot()->id
@@ -107,7 +107,7 @@ class SaveProjectTest extends TestCase
     public function test_save_project_with_existing_name_like_when_create(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
-        $this->repository->save($existingProject->snapshot());
+        $this->repository->create($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
             name: ' My-Project-Name ', description: 'my-project-description'
@@ -132,11 +132,13 @@ class SaveProjectTest extends TestCase
      */
     public function test_can_not_save_project_with_existing_name_like_when_update(): void
     {
-        $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
-        $this->repository->save($existingProject->snapshot());
+        $existingProject1 = Project::create(id: '001', name: new NameVo('my-project-name1'), slug: 'my-project-name-1');
+        $existingProject2 = Project::create(id: '002', name: new NameVo('my-project-name2'), slug: 'my-project-name-2');
+        $this->repository->create($existingProject1->snapshot());
+        $this->repository->create($existingProject2->snapshot());
 
         $command = new SaveProjectCommand(
-            name: ' My-Project-Name ', description: 'my-project-description', projectId: $existingProject->snapshot()->id
+            name: ' My-Project-Name 1', description: 'my-project-description', projectId: '002'
         );
 
         $this->expectException(AlreadyExistsProjectWithSameNameException::class);
@@ -152,7 +154,7 @@ class SaveProjectTest extends TestCase
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
 
-        $this->repository->save($existingProject->snapshot());
+        $this->repository->create($existingProject->snapshot());
 
         $command = new SaveProjectCommand(
             name: ' My-Project-Name ', description: 'my-project-description', projectId: 'not-existing-project'

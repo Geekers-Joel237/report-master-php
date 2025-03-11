@@ -21,7 +21,7 @@ class DeleteProjectTest extends TestCase
 
     private IdGenerator $idGenerator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->writeProjectRepository = new InMemoryWriteProjectRepository;
@@ -36,7 +36,7 @@ class DeleteProjectTest extends TestCase
     public function test_can_delete_project(): void
     {
         $existingProject = Project::create(id: $this->idGenerator->generate(), name: new NameVo('my-project-name'), slug: 'my-project-name');
-        $this->writeProjectRepository->save($existingProject->snapshot());
+        $this->writeProjectRepository->create($existingProject->snapshot());
 
         $response = $this->deleteProject($existingProject->snapshot()->id);
 

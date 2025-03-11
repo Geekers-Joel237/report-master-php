@@ -19,7 +19,7 @@ class DeleteReportTest extends TestCase
 
     private WriteReportRepository $reportRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->reportRepository = new InMemoryWriteReportRepository;
@@ -39,7 +39,7 @@ class DeleteReportTest extends TestCase
             ->withProject()
             ->withReport()
             ->build();
-        $this->projectRepository->save($sut->project->snapshot());
+        $this->projectRepository->create($sut->project->snapshot());
         $this->reportRepository->save($sut->report->snapshot());
 
         $response = (new DeleteReportHandler(

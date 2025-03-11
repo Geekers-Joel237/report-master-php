@@ -10,15 +10,11 @@ use App\Core\Shared\Infrastructure\Http\Response\ApiSuccessResponse;
 use Illuminate\Contracts\Support\Responsable;
 use Throwable;
 
-class AuthUserAction
+readonly class AuthUserAction
 {
-    private AuthUserService $authUserService;
-
     public function __construct(
-        AuthUserService $service
-    ) {
-        $this->authUserService = $service;
-    }
+        private AuthUserService $authUserService
+    ) {}
 
     public function login(LoginUserRequest $request): Responsable
     {

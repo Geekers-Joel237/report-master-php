@@ -20,6 +20,9 @@ class AuthServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * @return string[]
+     */
     private function routeConfig(): array
     {
         return [

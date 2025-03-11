@@ -11,11 +11,11 @@ interface WriteProjectRepository
     /**
      * @throws ErrorOnSaveProjectException
      */
-    public function save(ProjectSnapshot $project): void;
+    public function create(ProjectSnapshot $project): void;
 
     public function ofId(string $projectId): ?Project;
 
-    public function ofSlug(string $value): ?Project;
+    public function ofSlug(string $slug): ?Project;
 
     /**
      * @throws ErrorOnSaveProjectException
@@ -23,4 +23,6 @@ interface WriteProjectRepository
     public function delete(string $existingProjectId): void;
 
     public function exists(string $projectId): bool;
+
+    public function update(ProjectSnapshot $project): void;
 }
