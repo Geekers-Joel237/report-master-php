@@ -30,7 +30,11 @@ Ceci est la partie API
 - Importation des rapports existants de Discord vers la plateforme
 - Suivi des tâches et envoie automatique en fin de journée (ia ++ pour la redaction)
 - Rappels / Changement de langue en fonction de la journée (Tous les mercredi)
-- API REST 
+- API REST
+- Rappel des jours feries du calendrier (integration google calendar)
+- Redaction automatique des rapports via l'ia,  l'idee est simple, tu selectionnes un projet, tu ajoutes progressivement ta liste de taches de la journee, ok pas ok
+  puis en fin de journee un rapport est produit et envoye a ta place 
+
 ## Technologies Utilisées
 
 - Backend: PHP 8.3, Laravel
