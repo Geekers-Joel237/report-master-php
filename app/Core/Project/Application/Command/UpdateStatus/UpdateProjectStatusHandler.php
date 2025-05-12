@@ -4,7 +4,6 @@ namespace App\Core\Project\Application\Command\UpdateStatus;
 
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
-use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
@@ -13,10 +12,13 @@ final readonly class UpdateProjectStatusHandler
 {
     public function __construct(
         private WriteProjectRepository $repository
-    ) {}
+    )
+    {
+    }
 
     /**
-     * @throws ErrorOnSaveProjectException
+     * @param UpdateProjectStatusCommand $command
+     * @return UpdateProjectStatusResponse
      * @throws NotFoundProjectException
      */
     public function handle(UpdateProjectStatusCommand $command): UpdateProjectStatusResponse
