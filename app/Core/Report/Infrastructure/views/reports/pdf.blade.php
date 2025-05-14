@@ -62,7 +62,10 @@
 </head>
 <body>
 <h1>Rapport des Projets</h1>
-<h2>Période : {{ request('startDate') }} au {{ request('endDate') }}</h2>
+
+@if( request('startDate')  &&   request('endDate'))
+    <h2>Période : {{ request('startDate') }} au {{ request('endDate') }}</h2>
+@endif
 <table>
     <thead>
     <tr>
