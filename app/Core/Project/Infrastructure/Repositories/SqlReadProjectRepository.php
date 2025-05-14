@@ -41,6 +41,7 @@ readonly class SqlReadProjectRepository implements ReadProjectRepository
             FROM projects p
             INNER JOIN years y ON p.year_id = y.id
             WHERE $clause
+            ORDER BY p.created_at DESC, p.name
         ";
 
         $st = $this->connection->getPdo()->prepare($sql);
