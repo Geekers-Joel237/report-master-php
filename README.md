@@ -33,6 +33,9 @@ Ceci est la partie API
 - Rappels / Changement de langue en fonction de la journée (Tous les mercredi)
 - Generation rapports de fin de semaine
 - API REST 
+- Envoie des rapports sur Discord aussi coe avant en fait pour ne pas provoquer une rupture totale
+- Historique clair de mes rapports
+- Responsive ++
 ## Technologies Utilisées
 
 - Backend: PHP 8.3, Laravel
@@ -48,6 +51,7 @@ Ceci est la partie API
 - Composer
 - Node.js et npm
 - Docker
+- React / Ts / Tailwind Css / Redux
 
 ### Étapes d'installation
 
