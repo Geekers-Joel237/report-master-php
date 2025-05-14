@@ -10,11 +10,11 @@ class FilterReportCommandFactory
     public static function fromRequest(Request $request): FilterReportCommand
     {
         $command = new FilterReportCommand;
-        $command->projectId = $request->query('projectId');
         $command->startDate = $request->query('startDate');
+        $command->projectId = $request->query('projectId');
         $command->endDate = $request->query('endDate');
-        $command->year = $request->query('year');
         $command->ownerId = $request->query('ownerId');
+        $command->year = $request->query('year');
         $command->participantIds = $request->query('participantIds');
         $command->limit = $request->query('limit');
         $command->offset = $request->query('offset');

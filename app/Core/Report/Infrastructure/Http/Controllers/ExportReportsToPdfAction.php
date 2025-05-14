@@ -5,15 +5,17 @@ namespace App\Core\Report\Infrastructure\Http\Controllers;
 use App\Core\Report\Application\Query\All\GetAllReportsQueryHandler;
 use App\Core\Report\Infrastructure\Factory\FilterReportCommandFactory;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class ExportReportsToPdfAction
+readonly class ExportReportsToPdfAction
 {
     public function __construct(private GetAllReportsQueryHandler $handler) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response|JsonResponse
     {
         try {
 

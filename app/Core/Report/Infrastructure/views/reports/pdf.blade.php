@@ -33,6 +33,7 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
+            vertical-align: top;
             text-align: left;
         }
 
@@ -44,6 +45,11 @@
 
         td {
             color: #333;
+        }
+
+        .task-list {
+            margin: 0;
+            padding-left: 15px;
         }
 
         .footer {
@@ -76,7 +82,13 @@
             <td>{{ $report['year'] }}</td>
             <td>{{ $report['owner'] ?? 'N/A' }}</td>
             <td>{{ implode(', ', $report['participants']) }}</td>
-            <td>{{ $report['tasks'] }}</td>
+            <td>
+                <ul class="task-list">
+                    @foreach(json_decode($report['tasks']) as $task)
+                        <li>{{ $task }}</li>
+                    @endforeach
+                </ul>
+            </td>
         </tr>
     @endforeach
     </tbody>
