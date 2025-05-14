@@ -9,7 +9,7 @@ class GenerateIdTest extends TestCase
 {
     private IdGenerator $idGenerator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->idGenerator = new FixedIdGenerator;

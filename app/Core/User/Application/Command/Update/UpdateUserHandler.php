@@ -3,7 +3,6 @@
 namespace App\Core\User\Application\Command\Update;
 
 use App\Core\User\Application\Command\Save\SaveUserResponse;
-use App\Core\User\Application\Command\Save\UpdateUserCommand;
 use App\Core\User\Domain\Entities\User;
 use App\Core\User\Domain\Exceptions\AlreadyEmailExistException;
 use App\Core\User\Domain\Exceptions\NotEmptyException;

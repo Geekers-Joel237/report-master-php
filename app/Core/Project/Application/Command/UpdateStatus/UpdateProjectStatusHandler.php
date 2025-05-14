@@ -12,13 +12,9 @@ final readonly class UpdateProjectStatusHandler
 {
     public function __construct(
         private WriteProjectRepository $repository
-    )
-    {
-    }
+    ) {}
 
     /**
-     * @param UpdateProjectStatusCommand $command
-     * @return UpdateProjectStatusResponse
      * @throws NotFoundProjectException
      */
     public function handle(UpdateProjectStatusCommand $command): UpdateProjectStatusResponse

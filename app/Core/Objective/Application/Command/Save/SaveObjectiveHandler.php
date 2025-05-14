@@ -99,14 +99,12 @@ final readonly class SaveObjectiveHandler
      */
     public function createObjective(SaveObjectiveCommand $command, array $participantIds): Objective
     {
-        $objective = Objective::create(
+        return Objective::create(
             $command->projectId,
             $command->tasks,
             $participantIds,
             $this->idGenerator->generate(),
             $command->ownerId
         );
-
-        return $objective;
     }
 }

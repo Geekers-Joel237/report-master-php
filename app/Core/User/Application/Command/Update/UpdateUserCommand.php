@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\User\Application\Command\Save;
+namespace App\Core\User\Application\Command\Update;
 
 readonly class UpdateUserCommand
 {

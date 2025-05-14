@@ -37,7 +37,7 @@ final readonly class SaveProjectHandler
 
         if ($command->projectId) {
             $project = $this->getProjectIfExistByIdOrThrownNotFoundException($command->projectId);
-            if ($existingProjectByName?->snapshot()->slug === $nameSlug && $existingProjectByName?->snapshot()->id !== $command->projectId) {
+            if ($existingProjectByName && $existingProjectByName->snapshot()->id !== $command->projectId) {
                 throw new AlreadyExistsProjectWithSameNameException(ProjectMessageEnum::ALREADY_EXIST_PROJECT_WITH_SAME_NAME);
             }
             [$project, $message] = $this->attemptToUpdateProject($project, $name, $command);
