@@ -16,6 +16,7 @@ class ReportServiceProvider extends ServiceProvider
         $this->loadMigrations();
         $this->registerRoutes();
         $this->bindRepositories();
+        $this->loadViews();
     }
 
     private function registerRoutes(): void
@@ -43,5 +44,13 @@ class ReportServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(base_path('app/Core/Report/Infrastructure/database/migrations'));
 
+    }
+
+    private function loadViews(): void
+    {
+        $this->loadViewsFrom(
+            base_path('app/Core/Report/Infrastructure/views/reports'),
+            'Reports'
+        );
     }
 }
