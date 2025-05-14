@@ -36,7 +36,7 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
     {
         try {
             ProjectModel::query()->find($existingProjectId)->softDelete();
-        } catch (Throwable|Exception $exception) {
+        } catch (Throwable $exception) {
             throw new ErrorOnSaveProjectException($exception->getMessage());
         }
     }
