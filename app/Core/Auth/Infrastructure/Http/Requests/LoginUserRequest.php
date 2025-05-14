@@ -6,6 +6,9 @@ use App\Core\Shared\Infrastructure\Http\Request\HttpDataRequest;
 
 class LoginUserRequest extends HttpDataRequest
 {
+    /**
+     * @return string[]
+     */
     public function rules(): array
     {
         return [

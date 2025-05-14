@@ -8,6 +8,7 @@ use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Project\Tests\Unit\Repositories\InMemoryWriteProjectRepository;
 use App\Core\Report\Application\Command\Save\SaveReportHandler;
 use App\Core\Report\Domain\Enums\ReportMessageEnum;
+use App\Core\Report\Domain\Exceptions\ErrorOnSaveReportException;
 use App\Core\Report\Domain\Exceptions\NotFoundReportException;
 use App\Core\Report\Domain\Repositories\WriteReportRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
@@ -28,7 +29,7 @@ class SaveReportTest extends TestCase
 
     private WriteUserRepository $participantRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->idGenerator = new FixedIdGenerator;
@@ -41,14 +42,14 @@ class SaveReportTest extends TestCase
      * @throws ErrorOnSaveProjectException
      * @throws InvalidCommandException
      * @throws NotFoundProjectException
-     * @throws NotFoundReportException
+     * @throws NotFoundReportException|ErrorOnSaveReportException
      */
     public function test_can_save_report(): void
     {
         $sut = ReportSut::asSUT()
             ->withProject()
             ->build();
-        $this->projectRepository->save($sut->project->snapshot());
+        $this->projectRepository->create($sut->project->snapshot());
 
         $command = SaveReportCommandBuilder::asBuilder()
             ->withProject($sut->project->snapshot()->id)
@@ -87,14 +88,14 @@ class SaveReportTest extends TestCase
      * @throws ErrorOnSaveProjectException
      * @throws NotFoundProjectException
      * @throws NotFoundReportException
-     * @throws InvalidCommandException
+     * @throws InvalidCommandException|ErrorOnSaveReportException
      */
     public function test_can_save_report_with_participants(): void
     {
         $sut = ReportSut::asSUT()
             ->withProject()->withParticipants(['001', '003', '004', '005', '006'])
             ->build();
-        $this->projectRepository->save($sut->project->snapshot());
+        $this->projectRepository->create($sut->project->snapshot());
         $this->participantRepository->participantIds = $sut->participants;
 
         $command = SaveReportCommandBuilder::asBuilder()

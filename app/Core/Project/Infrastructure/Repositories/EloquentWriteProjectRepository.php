@@ -25,9 +25,9 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
     /**
      * @throws Exception
      */
-    public function ofSlug(string $value): ?Project
+    public function ofSlug(string $slug): ?Project
     {
-        return ProjectModel::query()->where(['slug' => Str::slug($value)])->first()
+        return ProjectModel::query()->where(['slug' => Str::slug($slug)])->first()
             ?->createFromModel();
 
     }
@@ -36,7 +36,7 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
     {
         try {
             ProjectModel::query()->find($existingProjectId)->softDelete();
-        } catch (Throwable|Exception $exception) {
+        } catch (Throwable $exception) {
             throw new ErrorOnSaveProjectException($exception->getMessage());
         }
     }
@@ -49,11 +49,10 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
     /**
      * @throws ErrorOnSaveProjectException
      */
-    public function save(ProjectSnapshot $project): void
+    public function create(ProjectSnapshot $project): void
     {
         try {
-            ProjectModel::query()->updateOrCreate(
-                ['id' => $project->id],
+            ProjectModel::query()->create(
                 array_merge($project->toArray(), ['year_id' => $this->getActiveYearsIdentifier()])
             );
         } catch (Throwable|Exception $exception) {
@@ -64,5 +63,19 @@ class EloquentWriteProjectRepository implements WriteProjectRepository
     private function getActiveYearsIdentifier(): string
     {
         return Years::query()->select(['id'])->where(['is_active' => true])->first()->id;
+    }
+
+    /**
+     * @throws ErrorOnSaveProjectException
+     */
+    public function update(ProjectSnapshot $project): void
+    {
+        try {
+            ProjectModel::query()->update(
+                $project->toArray()
+            );
+        } catch (Throwable|Exception $exception) {
+            throw new ErrorOnSaveProjectException($exception->getMessage());
+        }
     }
 }

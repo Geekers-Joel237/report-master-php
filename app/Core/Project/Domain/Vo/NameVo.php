@@ -8,12 +8,18 @@ readonly class NameVo
 {
     private string $value;
 
+    /**
+     * @throws InvalidCommandException
+     */
     public function __construct(string $name)
     {
         self::validate($name);
         $this->value = self::filter($name);
     }
 
+    /**
+     * @throws InvalidCommandException
+     */
     private static function validate(string $name): void
     {
         if (empty(trim($name))) {

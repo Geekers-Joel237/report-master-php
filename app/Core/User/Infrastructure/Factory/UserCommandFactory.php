@@ -4,7 +4,7 @@ namespace App\Core\User\Infrastructure\Factory;
 
 use App\Core\User\Application\Command\Delete\DeleteUserCommand;
 use App\Core\User\Application\Command\Save\SaveUserCommand;
-use App\Core\User\Application\Command\Save\UpdateUserCommand;
+use App\Core\User\Application\Command\Update\UpdateUserCommand;
 use App\Core\User\Infrastructure\Http\Request\DeleteUserRequest;
 use App\Core\User\Infrastructure\Http\Request\SaveUserRequest;
 use App\Core\User\Infrastructure\Http\Request\UpdateUserRequest;

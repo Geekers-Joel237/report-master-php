@@ -14,7 +14,7 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
      */
     private array $projectSnapshots = [];
 
-    public function save(ProjectSnapshot $project): void
+    public function create(ProjectSnapshot $project): void
     {
         $this->projectSnapshots[$project->id] = $project;
     }
@@ -46,10 +46,10 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
     /**
      * @throws Exception
      */
-    public function ofSlug(string $value): ?Project
+    public function ofSlug(string $slug): ?Project
     {
-        $projects = array_values(array_filter($this->projectSnapshots, function (ProjectSnapshot $project) use ($value) {
-            return $project->name === $value;
+        $projects = array_values(array_filter($this->projectSnapshots, function (ProjectSnapshot $project) use ($slug) {
+            return $project->slug === $slug;
         }));
 
         return empty($projects) ? null : $this->toDomain($projects[0]);
@@ -63,5 +63,10 @@ class InMemoryWriteProjectRepository implements WriteProjectRepository
     public function exists(string $projectId): bool
     {
         return array_key_exists($projectId, $this->projectSnapshots);
+    }
+
+    public function update(ProjectSnapshot $project): void
+    {
+        $this->projectSnapshots[$project->id] = $project;
     }
 }

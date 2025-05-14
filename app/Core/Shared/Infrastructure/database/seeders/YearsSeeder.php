@@ -14,16 +14,16 @@ class YearsSeeder extends Seeder
 
     public function run(): void
     {
-        Years::insert([
+        Years::query()->insert([
             [
                 'id' => $this->idGenerator->generate(),
                 'year' => '2025',
-                'is_active' => false,
+                'is_active' => true,
             ],
             [
                 'id' => $this->idGenerator->generate(),
                 'year' => '2024',
-                'is_active' => true,
+                'is_active' => false,
             ],
             [
                 'id' => $this->idGenerator->generate(),

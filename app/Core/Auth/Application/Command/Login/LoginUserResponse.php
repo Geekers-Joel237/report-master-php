@@ -2,7 +2,7 @@
 
 namespace App\Core\Auth\Application\Command\Login;
 
-use App\Core\Auth\Infrastructure\ViewModels\AuthUserViewModel;
+use App\Core\Auth\Domain\ViewModels\AuthUserViewModel;
 
 class LoginUserResponse
 {

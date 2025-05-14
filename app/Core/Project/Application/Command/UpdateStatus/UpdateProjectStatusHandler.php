@@ -4,7 +4,6 @@ namespace App\Core\Project\Application\Command\UpdateStatus;
 
 use App\Core\Project\Domain\Entities\Project;
 use App\Core\Project\Domain\Enums\ProjectMessageEnum;
-use App\Core\Project\Domain\Exceptions\ErrorOnSaveProjectException;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
 use App\Core\Project\Domain\Repositories\WriteProjectRepository;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
@@ -16,7 +15,6 @@ final readonly class UpdateProjectStatusHandler
     ) {}
 
     /**
-     * @throws ErrorOnSaveProjectException
      * @throws NotFoundProjectException
      */
     public function handle(UpdateProjectStatusCommand $command): UpdateProjectStatusResponse
@@ -32,7 +30,7 @@ final readonly class UpdateProjectStatusHandler
             return $response;
         }
 
-        $this->repository->save($existingProject->snapshot());
+        $this->repository->update($existingProject->snapshot());
         $response->isSaved = true;
         $response->projectId = $existingProject->snapshot()->id;
         $response->message = ProjectMessageEnum::UPDATED;

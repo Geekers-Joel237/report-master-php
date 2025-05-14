@@ -4,6 +4,7 @@ namespace App\Core\Objective\Application\Command\Save;
 
 use App\Core\Objective\Domain\Entities\Objective;
 use App\Core\Objective\Domain\Enums\ObjectiveMessageEnum;
+use App\Core\Objective\Domain\Exceptions\ErrorOnSaveObjectiveException;
 use App\Core\Objective\Domain\Exceptions\NotFoundObjectiveException;
 use App\Core\Objective\Domain\Repository\WriteObjectiveRepository;
 use App\Core\Project\Domain\Exceptions\NotFoundProjectException;
@@ -24,7 +25,7 @@ final readonly class SaveObjectiveHandler
 
     /**
      * @throws NotFoundObjectiveException
-     * @throws NotFoundProjectException
+     * @throws NotFoundProjectException|ErrorOnSaveObjectiveException
      */
     public function handle(SaveObjectiveCommand $command): SaveObjectiveResponse
     {
@@ -35,17 +36,11 @@ final readonly class SaveObjectiveHandler
         try {
 
             if (is_null($command->objectiveId)) {
-                $objective = Objective::create(
-                    $command->projectId,
-                    $command->tasks,
-                    $participantIds,
-                    $this->idGenerator->generate(),
-                    $command->ownerId
-                );
+                $objective = $this->createObjective($command, $participantIds);
                 $msg = ObjectiveMessageEnum::SAVE;
+
             } else {
                 $objective = $this->updateExistingObjective($command, $participantIds);
-
                 $msg = ObjectiveMessageEnum::UPDATED;
 
             }
@@ -96,6 +91,20 @@ final readonly class SaveObjectiveHandler
         return $eObjective->update(
             $command->tasks,
             $participantIds,
+        );
+    }
+
+    /**
+     * @throws InvalidCommandException
+     */
+    public function createObjective(SaveObjectiveCommand $command, array $participantIds): Objective
+    {
+        return Objective::create(
+            $command->projectId,
+            $command->tasks,
+            $participantIds,
+            $this->idGenerator->generate(),
+            $command->ownerId
         );
     }
 }

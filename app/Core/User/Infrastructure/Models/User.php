@@ -3,6 +3,7 @@
 namespace App\Core\User\Infrastructure\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use AllowDynamicProperties;
 use App\Core\ACL\Infrastructure\Models\ModelHasRole;
 use App\Core\ACL\Infrastructure\Models\Role;
 use App\Core\Shared\Domain\Exceptions\InvalidCommandException;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+#[AllowDynamicProperties]
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

@@ -2,7 +2,7 @@
 
 namespace App\Core\Objective\Domain\Dto;
 
-class FilterObjectiveParams
+readonly class FilterObjectiveParams
 {
     public function __construct(
         public ?string $projectId,

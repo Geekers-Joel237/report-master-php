@@ -23,16 +23,20 @@ les objectifs de manière efficace.
 Ceci est la partie API 
 ## Fonctionnalités
 
-- Gestion des projets
-- Gestion des rapports hebdomadaires
-- Suivi des objectifs de semaine 
-- Gestion des rôles, des profils et permissions (RH/administration et développeurs)
-- Rappels de rédaction des rapports (mail, discord, slack)
-- Importation des rapports existants de Discord vers la plateforme
-- Suivi des tâches et envoie automatique en fin de journée (ia ++ pour la redaction)
-- Rappels / Changement de langue en fonction de la journée (Tous les mercredi)
-- Generation rapports de fin de semaine
+- Gestion des projets : OK
+- Gestion des rapports hebdomadaires : OK
+- Suivi des objectifs de semaine : OK
+- Gestion des rôles, des profils et permissions (RH/administration et développeurs) : A faire gestion des permissions
+- Rappels de rédaction des rapports (mail, discord, slack) : A finaliser
+- Importation des rapports existants de Discord vers la plateforme : Pertinent oui
+- Telechargement rapports sur une periode precise en pdf : A finaliser
+- Suivi des tâches et envoie automatique en fin de journée (ia ++ pour la redaction) : A faire
+- Rappels / Changement de langue en fonction de la journée (Tous les mercredi) : A faire
+- Generation rapports de fin de semaine(Génerer le rapport de fin de semaine sur la base du rapport journalier lun a ven) : A faire 
 - API REST 
+- Envoie des rapports sur Discord aussi coe avant en fait pour ne pas provoquer une rupture totale
+- Historique clair de mes rapports : OK
+- Responsive ++
 ## Technologies Utilisées
 
 - Backend: PHP 8.3, Laravel
@@ -48,6 +52,7 @@ Ceci est la partie API
 - Composer
 - Node.js et npm
 - Docker
+- React / Ts / Tailwind Css / Redux
 
 ### Étapes d'installation
 
